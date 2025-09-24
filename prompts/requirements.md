@@ -63,3 +63,4 @@ Codifica todos los componentes requeridos de inicio a fin.
 Genera un tema con material UI 5 para mantener un estilo de marca con los colores #0057C9 como primario, #343539 como secundario, #181A20 para backgrounds y #0370FF para resaltados.
 Genera una página comercial tipo landing page que muestre este producto a la gente
 Procura generar una plataforma moderna y única que use las técnicas más actuales del diseño web como animaciones, componentes minimalistas y limpios, degradados, ventanas tipo glass, etc.
+Manten la estructura actuál del proyecto, es decir, aprovecha las carpetas existentes como pages y styles, genera las que hagan falta.
