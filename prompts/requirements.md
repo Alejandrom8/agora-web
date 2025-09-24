@@ -45,6 +45,7 @@ Admins:
 11. Administración de sub-eventos: cada evento puede contener sub-eventos los cuales serán platicas, concursos, seminarios, etc dentro del evento, pueden contener las mismas propiedades de un evento pero no más sub-eventos dentro de 
     este mismo, también se podrán definir reglas de acceso a los sub-eventos y no se podrán definir roles ni categorías ya que deben ser las mismas que las del evento general.
 12. Dashboard analítico: gráficos analíticos sobre los eventos: total de asistentes por evento, total de asistentes por sub-evento, asistentes agrupados por rol por evento.
+13. Landing page: página comercial moderna y bonita que muestra las funcionalidades de Agora, debe ser el sitio principal.
 
 
 ## Stack tecnológico
