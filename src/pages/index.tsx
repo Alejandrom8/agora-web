@@ -112,10 +112,10 @@ const AgoraLanding: React.FC = () => {
             <MLink href="#precios" underline="none" sx={{ mr: 1 }}>
               Precios
             </MLink>
-            <Button variant="text" color="inherit" href="#login">
+            <Button variant="text" color="inherit" href="/login">
               Ingresar
             </Button>
-            <Button variant="contained" color="primary" href="#signup" endIcon={<ArrowForwardRoundedIcon />}>
+            <Button variant="contained" color="primary" href="/sign-up" endIcon={<ArrowForwardRoundedIcon />}>
               Crear cuenta
             </Button>
           </Toolbar>

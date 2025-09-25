@@ -196,7 +196,7 @@ export default function LoginPage(): React.JSX.Element {
 
                                     <Typography variant="body2" color="text.secondary" textAlign="center">
                                         ¿Aún no tienes cuenta? {" "}
-                                        <MLink href="#/signup" underline="hover">
+                                        <MLink href="/sign-up" underline="hover">
                                             Crear cuenta
                                         </MLink>
                                     </Typography>
