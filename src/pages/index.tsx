@@ -96,12 +96,12 @@ const AgoraLanding: React.FC = () => {
       <Box
         component="header"
         sx={{
-          pt: { xs: 8, md: 14 },
+          pt: { xs: 8, md: 18 },
           pb: { xs: 8, md: 14 },
           position: "relative",
           overflow: "hidden",
           width: '100%',
-          height: '80vh',
+          height: '90vh',
           backgroundColor: "rgba(0, 0, 0, 0.1)",
           backdropFilter: "blur(12px)",
         }}
