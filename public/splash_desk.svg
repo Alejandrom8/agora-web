@@ -1,0 +1,47 @@
+<!-- Agora – Desktop SVG recreation of the reference image (static, non‑animated)
+     Size: 1920x1080 (scales via viewBox)
+     Background: black; Side ribbons: Agora blues
+     Usage: place inline or as an <img src="...svg">; preserves crisp edges at any resolution.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-label="Decorative blue ribbons on left and right edges on black background">
+    <defs>
+        <linearGradient id="gPrimary" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#0057C9"/>
+            <stop offset="100%" stop-color="#0370FF"/>
+        </linearGradient>
+        <linearGradient id="gSoft" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#8EC5FF" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="#B9D7FF" stop-opacity="0.65"/>
+        </linearGradient>
+        <linearGradient id="gSoft2" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#7DB8FF" stop-opacity="0.85"/>
+            <stop offset="100%" stop-color="#CBE2FF" stop-opacity="0.55"/>
+        </linearGradient>
+
+        <!-- Soft edge filter to mimic velvety look -->
+        <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="8" result="b"/>
+            <feBlend in="SourceGraphic" in2="b" mode="screen"/>
+        </filter>
+    </defs>
+
+    <!-- Background -->
+    <rect width="1920" height="1080" fill="transparent"/>
+
+    <!-- LEFT SIDE STACK -->
+    <!-- Back layer (large, soft) -->
+    <path filter="url(#soft)" fill="url(#gSoft2)" d="M0 0  c120 120 160 240 180 380  s-10 340 -70 500  c-40 110 -70 160 -110 200V0Z" opacity="0.85"/>
+
+    <!-- Middle ribbon (primary gradient) -->
+    <path filter="url(#soft)" fill="url(#gPrimary)" d="M0 0  c80 140 180 220 210 380  s-20 330 -100 490  c-25 50 -60 100 -110 210V0Z" opacity="0.95"/>
+
+    <!-- Front highlight ribbon -->
+    <path filter="url(#soft)" fill="url(#gSoft)" d="M0 140 c130 110 210 190 250 320 s-40 260 -160 380 c-40 40 -60 80 -90 140V140Z" opacity="0.9"/>
+
+    <!-- RIGHT SIDE STACK (mirrored) -->
+    <g transform="translate(1920,0) scale(-1,1)">
+        <path filter="url(#soft)" fill="url(#gSoft2)" d="M0 0  c120 120 160 240 180 380  s-10 340 -70 500  c-40 110 -70 160 -110 200V0Z" opacity="0.85"/>
+        <path filter="url(#soft)" fill="url(#gPrimary)" d="M0 0  c80 140 180 220 210 380  s-20 330 -100 490  c-25 50 -60 100 -110 210V0Z" opacity="0.95"/>
+        <path filter="url(#soft)" fill="url(#gSoft)" d="M0 740 c130 -110 210 -190 250 -320 s-40 -260 -160 -380 c-40 -40 -60 -80 -90 -140V740Z" opacity="0.9"/>
+    </g>
+</svg>

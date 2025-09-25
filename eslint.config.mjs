@@ -19,6 +19,10 @@ const eslintConfig = [
       "build/**",
       "next-env.d.ts",
     ],
+    extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off"
+    }
   },
 ];
 
