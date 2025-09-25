@@ -28,6 +28,7 @@ import LoginRounded from "@mui/icons-material/LoginRounded";
 import GoogleIcon from "@mui/icons-material/Google";
 import MailOutlineRounded from "@mui/icons-material/MailOutlineRounded";
 import LockRounded from "@mui/icons-material/LockRounded";
+import {useRouter} from "next/navigation";
 
 // Optional: small helper to fetch brand colors from theme
 const Logo: React.FC = () => (
@@ -60,9 +61,12 @@ export default function LoginPage(): React.JSX.Element {
     const [remember, setRemember] = React.useState(true);
     const [submitting, setSubmitting] = React.useState(false);
     const [error, setError] = React.useState<string | null>(null);
+    const router = useRouter();
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        router.push('/manage');
+        return;
         setError(null);
 
         if (!isValidEmail(email)) {

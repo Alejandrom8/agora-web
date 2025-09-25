@@ -75,7 +75,7 @@ const NAV_ITEMS: NavItem[] = [
 // Util logo
 const Logo: React.FC = () => (
     <Stack direction="row" spacing={1} alignItems="center">
-        <Box sx={{ width: 28, height: 28, borderRadius: 2, background: (t) => `linear-gradient(135deg, ${t.palette.primary.main}, ${t.palette.info.main})` }} />
+        <img src={'/logo.svg'} style={{ width: '22px', height: '22px' }}/>
         <Typography variant="h6" fontWeight={900}>Agora</Typography>
     </Stack>
 );
@@ -153,7 +153,7 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
                     <Stack direction="row" gap={1.25} alignItems="center">
                         <Avatar sx={{ width: 36, height: 36 }}>AG</Avatar>
                         <Box>
-                            <Typography variant="body2" fontWeight={700}>Alejandro Gómez</Typography>
+                            <Typography variant="body2" fontWeight={700}>Carolina Arango</Typography>
                             <Typography variant="caption" color="text.secondary">Admin</Typography>
                         </Box>
                     </Stack>

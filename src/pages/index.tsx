@@ -30,6 +30,7 @@ import ShieldRoundedIcon from "@mui/icons-material/ShieldRounded";
 import RocketLaunchRoundedIcon from "@mui/icons-material/RocketLaunchRounded";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import HorizontalNavbar from "@/components/App/HorizontalNavbar";
+import HubIcon from '@mui/icons-material/Hub';
 
 // --- Compact brand theme (matches your palette) ---
 const bgBase = "#181A20" as const;
@@ -79,20 +80,20 @@ const AgoraLanding: React.FC = () => {
           content="Agora conecta founders e inversionistas por medio de eventos tecnológicos: crea eventos, define agendas y roles, gestiona asistentes e invita a participar."
       />
       <link rel="canonical" href="https://agora-web-three.vercel.app/" />
+
+      {/* Open Graph básico */}
+      <meta property="og:title" content={`Agora`} />
+      <meta property="og:description" content="Agora - conecta founders con inversionistas" />
+      <meta property="og:image" content="https://agora-web-three.vercel.app/favicon.ico" />
+      <meta property="og:url" content="https://agora-web-three.vercel.app/" />
+      <meta property="og:type" content="website" />
     </Head>
 
     {/* NAVBAR */}
     <HorizontalNavbar />
 
     {/* HERO */}
-    <Box
-      sx={{
-        backgroundImage: 'url("/splash_desk.svg")',
-        backgroundSize: "112vw 170%",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center center",
-      }}
-    >
+    <Box sx={{ backgroundImage: 'url("/splash_desk.svg")', backgroundSize: "112vw 170%", backgroundRepeat: "no-repeat", backgroundPosition: "center center",}}>
       <Box
         component="header"
         sx={{
@@ -101,7 +102,7 @@ const AgoraLanding: React.FC = () => {
           position: "relative",
           overflow: "hidden",
           width: '100%',
-          height: '90vh',
+          height: '92vh',
           backgroundColor: "rgba(0, 0, 0, 0.1)",
           backdropFilter: "blur(12px)",
         }}
@@ -126,9 +127,9 @@ const AgoraLanding: React.FC = () => {
                   </Button>
                 </Stack>
                 <Stack direction="row" spacing={2}>
-                  <Chip icon={<RocketLaunchRoundedIcon />} label="Signup" color="info" variant="filled" />
-                  <Chip icon={<PeopleAltRoundedIcon />} label="Perfiles por rol" variant="outlined" />
-                  <Chip icon={<ShieldRoundedIcon />} label="Reglas y MFA" variant="outlined" />
+                  <Chip icon={<HubIcon fontSize={'small'} />} label="Match con IA" color="info" variant="filled"/>
+                  <Chip icon={<PeopleAltRoundedIcon />} label="Analíticas de tus eventos" variant="outlined" />
+                  <Chip icon={<ShieldRoundedIcon />} label="Un perfíl por evento" variant="outlined" />
                 </Stack>
               </Stack>
             </Grid>
@@ -138,21 +139,7 @@ const AgoraLanding: React.FC = () => {
                     component="img"
                     alt="Preview del evento"
                     height="260"
-                    image={`data:image/svg+xml;utf8,${encodeURIComponent(`
-                  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 420'>
-                    <defs>
-                      <linearGradient id='g' x1='0' x2='1'>
-                        <stop offset='0%' stop-color='${primary}'/>
-                        <stop offset='100%' stop-color='${accent}'/>
-                      </linearGradient>
-                    </defs>
-                    <rect width='100%' height='100%' fill='${surface}'/>
-                    <rect x='40' y='40' width='720' height='140' rx='16' fill='url(#g)' opacity='0.3'/>
-                    <rect x='40' y='220' width='320' height='24' rx='6' fill='white' opacity='0.7'/>
-                    <rect x='40' y='260' width='480' height='14' rx='6' fill='white' opacity='0.35'/>
-                    <rect x='40' y='290' width='420' height='14' rx='6' fill='white' opacity='0.2'/>
-                  </svg>
-                `)}`}
+                    src={'/school.jpg'}
                 />
                 <CardContent>
                   <Typography variant="subtitle2" color="text.secondary">

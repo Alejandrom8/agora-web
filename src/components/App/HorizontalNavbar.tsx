@@ -16,19 +16,19 @@ import {
     useMediaQuery,
     Divider,
 } from "@mui/material";
-import { useTheme, alpha } from "@mui/material/styles";
+import {useTheme, alpha} from "@mui/material/styles";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 
 type NavItem = { label: string; href: string };
 const NAV_ITEMS: NavItem[] = [
-    { label: "Funcionalidades", href: "#funcionalidades" },
-    { label: "Para Admins", href: "#para-admins" },
-    { label: "Precios", href: "#precios" },
+    {label: "Funcionalidades", href: "#funcionalidades"},
+    {label: "Para Admins", href: "#para-admins"},
+    {label: "Precios", href: "#precios"},
 ];
 
 const primary = "#0057C9";
-const accent  = "#0370FF";
+const accent = "#0370FF";
 
 export default function HorizontalNavbarFloating(): React.JSX.Element {
     const theme = useTheme();
@@ -36,7 +36,7 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
     const [open, setOpen] = React.useState(false);
 
     // Cambia estilos al hacer scroll
-    const scrolled = useScrollTrigger({ disableHysteresis: true, threshold: 8 });
+    const scrolled = useScrollTrigger({disableHysteresis: true, threshold: 8});
 
     const bg = scrolled ? alpha("#0B0D12", 0.1) : alpha("#0B0D12", 0);
     const border = alpha("#FFFFFF", scrolled ? 0.12 : 0.08);
@@ -44,7 +44,7 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
     return (
         <>
             {/* Spacer para que el contenido no quede debajo del navbar fijo */}
-            <Box sx={{ height: 64 }} />
+            <Box sx={{height: 64}}/>
 
             {/* Contenedor flotante (márgenes y anchura) */}
             <Box
@@ -69,17 +69,18 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                         //boxShadow: `0 10px 30px ${alpha("#000", 0.35)}`,
                     }}
                 >
-                    <Toolbar sx={{ gap: 2, minHeight: 64, px: { xs: 2, sm: 3 } }}>
+                    <Toolbar sx={{gap: 2, minHeight: 64, px: {xs: 2, sm: 3}}}>
                         {/* Izquierda: Logo */}
-                        <Stack direction="row" alignItems="center" spacing={1} sx={{ flexGrow: 1 }}>
-                            <Box
-                                sx={{
-                                    width: 28,
-                                    height: 28,
-                                    borderRadius: 2,
-                                    background: `linear-gradient(135deg, ${primary}, ${accent})`,
-                                }}
-                            />
+                        <Stack direction="row" alignItems="center" spacing={1} sx={{flexGrow: 1}}>
+                            {/*<Box*/}
+                            {/*    sx={{*/}
+                            {/*        width: 28,*/}
+                            {/*        height: 28,*/}
+                            {/*        borderRadius: 2,*/}
+                            {/*        background: `linear-gradient(135deg, ${primary}, ${accent})`,*/}
+                            {/*    }}*/}
+                            {/*/>*/}
+                            <img src={'/logo.svg'} style={{ width: '25px', height: '25px' }}/>
                             <Typography variant="h6" fontWeight={900} letterSpacing={0.2}>
                                 Agora
                             </Typography>
@@ -89,7 +90,7 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                         {mdUp ? (
                             <>
                                 {NAV_ITEMS.map((item) => (
-                                    <MLink key={item.href} href={item.href} underline="none" sx={{ mr: 1 }}>
+                                    <MLink key={item.href} href={item.href} underline="none" sx={{mr: 1}} color={'secondary'}>
                                         {item.label}
                                     </MLink>
                                 ))}
@@ -100,8 +101,8 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                                     variant="contained"
                                     color="primary"
                                     href="/sign-up"
-                                    endIcon={<ArrowForwardRoundedIcon />}
-                                    sx={{ ml: 1 }}
+                                    endIcon={<ArrowForwardRoundedIcon/>}
+                                    sx={{ml: 1}}
                                 >
                                     Crear cuenta
                                 </Button>
@@ -109,7 +110,7 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                         ) : (
                             // Mobile: botón hamburguesa
                             <IconButton edge="end" onClick={() => setOpen(true)} aria-label="Abrir menú">
-                                <MenuRoundedIcon />
+                                <MenuRoundedIcon/>
                             </IconButton>
                         )}
                     </Toolbar>
@@ -130,7 +131,7 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                     },
                 }}
             >
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ px: 1, pb: 1 }}>
+                <Stack direction="row" alignItems="center" spacing={1} sx={{px: 1, pb: 1}}>
                     <Box
                         sx={{
                             width: 24,
@@ -141,7 +142,7 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                     />
                     <Typography fontWeight={800}>Agora</Typography>
                 </Stack>
-                <Divider sx={{ mb: 1, opacity: 0.2 }} />
+                <Divider sx={{mb: 1, opacity: 0.2}}/>
                 <List>
                     {NAV_ITEMS.map((item) => (
                         <ListItemButton
@@ -150,12 +151,12 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                             href={item.href}
                             onClick={() => setOpen(false)}
                         >
-                            <ListItemText primary={item.label} />
+                            <ListItemText primary={item.label}/>
                         </ListItemButton>
                     ))}
                 </List>
-                <Divider sx={{ my: 1, opacity: 0.2 }} />
-                <Stack spacing={1} sx={{ px: 1 }}>
+                <Divider sx={{my: 1, opacity: 0.2}}/>
+                <Stack spacing={1} sx={{px: 1}}>
                     <Button variant="outlined" color="inherit" href="/login" onClick={() => setOpen(false)}>
                         Ingresar
                     </Button>
@@ -163,7 +164,7 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                         variant="contained"
                         color="primary"
                         href="/sign-up"
-                        endIcon={<ArrowForwardRoundedIcon />}
+                        endIcon={<ArrowForwardRoundedIcon/>}
                         onClick={() => setOpen(false)}
                     >
                         Crear cuenta

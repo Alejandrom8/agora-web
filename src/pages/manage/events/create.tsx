@@ -34,7 +34,7 @@ import {
     Avatar,
     Tooltip,
     Snackbar,
-    Alert,
+    Alert, Container,
 } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import AddRounded from "@mui/icons-material/AddRounded";
@@ -72,6 +72,7 @@ type RoleKey = "founder" | "investor" | "attendee";
 type RoleRule = {
     role: RoleKey;
     mfaRequired: boolean;
+    validationRequired: boolean;
     notes?: string;
 };
 
@@ -103,9 +104,9 @@ const initialForm: EventForm = {
     general: { title: "", description: "", date: new Date().toISOString().slice(0, 10) },
     agenda: [],
     roles: [
-        { role: "founder", mfaRequired: false },
-        { role: "investor", mfaRequired: true },
-        { role: "attendee", mfaRequired: false },
+        { role: "founder", mfaRequired: false, validationRequired: false, },
+        { role: "investor", mfaRequired: true, validationRequired: true, },
+        { role: "attendee", mfaRequired: false, validationRequired: false, },
     ],
     categories: ["Speaker", "Staff", "Tecnólogo"],
     attendees: [],
@@ -313,6 +314,7 @@ const StepRoles: React.FC<{
                                 </Stack>
                                 <Divider sx={{ opacity: 0.2 }} />
                                 <FormControlLabel label="Requiere MFA" control={<Switch checked={r.mfaRequired} onChange={(e) => toggle(r.role, "mfaRequired", e.target.checked as never)} />} />
+                                <FormControlLabel label="Requiere validación" control={<Switch checked={r.validationRequired} onChange={(e) => toggle(r.role, "validationRequired", e.target.checked as never)} />} />
                                 <TextField label="Notas (opcional)" value={r.notes ?? ""} onChange={(e) => toggle(r.role, "notes", e.target.value as never)} fullWidth multiline minRows={2} />
                             </Stack>
                         </CardContent>
@@ -477,52 +479,54 @@ export default function NewEventWizardPage(): React.JSX.Element {
     };
 
     return <ProtectedLayout>
-        <Stack spacing={2}>
-            {/* Header */}
-            <Stack direction={{ xs: "column", md: "row" }} justifyContent="space-between" alignItems={{ xs: "flex-start", md: "center" }} spacing={2}>
-                <Box>
-                    <Typography variant="h4" fontWeight={900}>Nuevo evento</Typography>
-                    <Typography color="text.secondary">Crea tu evento y configura agenda, roles, categorías y asistentes.</Typography>
-                </Box>
-            </Stack>
-
-            <Card>
-                <CardContent>
-                    <Stepper activeStep={active} alternativeLabel>
-                        {steps.map((s) => (
-                            <Step key={s.key}>
-                                <StepLabel>{s.label}</StepLabel>
-                            </Step>
-                        ))}
-                    </Stepper>
-                </CardContent>
-            </Card>
-
-            {/* Step content */}
-            {active === 0 && <StepGeneral form={form} setForm={setForm} />}
-            {active === 1 && <StepAgenda form={form} setForm={setForm} />}
-            {active === 2 && <StepRoles form={form} setForm={setForm} />}
-            {active === 3 && <StepCategories form={form} setForm={setForm} />}
-            {active === 4 && <StepAttendees form={form} setForm={setForm} />}
-
-            {/* Footer actions */}
-            <Stack direction={{ xs: "column", sm: "row" }} justifyContent="space-between" alignItems={{ xs: "stretch", sm: "center" }} spacing={1.5}>
-                <Stack direction="row" spacing={1}>
-                    <Button variant="outlined" color="inherit" disabled={active === 0} onClick={prev}>Atrás</Button>
-                    {active < steps.length - 1 ? (
-                        <Button variant="contained" onClick={next} disabled={!canNext()}>Continuar</Button>
-                    ) : (
-                        <Button variant="contained" onClick={handleFormSubmit} disabled={saving}>{saving ? "Creando…" : "Crear evento"}</Button>
-                    )}
+        <Container>
+            <Stack spacing={4}>
+                {/* Header */}
+                <Stack direction={{ xs: "column", md: "row" }} justifyContent="space-between" alignItems={{ xs: "flex-start", md: "center" }} spacing={2}>
+                    <Box>
+                        <Typography variant="h4" fontWeight={900}>Nuevo evento</Typography>
+                        <Typography color="text.secondary">Crea tu evento y configura agenda, roles, categorías y asistentes.</Typography>
+                    </Box>
                 </Stack>
-                <Typography variant="caption" color="text.secondary">
-                    Paso {active + 1} de {steps.length}
-                </Typography>
-            </Stack>
 
-            <Snackbar open={toast.open} autoHideDuration={2200} onClose={() => setToast((t) => ({ ...t, open: false }))}>
-                <Alert severity={toast.severity} variant="filled">{toast.message}</Alert>
-            </Snackbar>
-        </Stack>
+                <Card>
+                    <CardContent>
+                        <Stepper activeStep={active} alternativeLabel>
+                            {steps.map((s) => (
+                                <Step key={s.key}>
+                                    <StepLabel>{s.label}</StepLabel>
+                                </Step>
+                            ))}
+                        </Stepper>
+                    </CardContent>
+                </Card>
+
+                {/* Step content */}
+                {active === 0 && <StepGeneral form={form} setForm={setForm} />}
+                {active === 1 && <StepAgenda form={form} setForm={setForm} />}
+                {active === 2 && <StepRoles form={form} setForm={setForm} />}
+                {active === 3 && <StepCategories form={form} setForm={setForm} />}
+                {active === 4 && <StepAttendees form={form} setForm={setForm} />}
+
+                {/* Footer actions */}
+                <Stack direction={{ xs: "column", sm: "row" }} justifyContent="space-between" alignItems={{ xs: "stretch", sm: "center" }} spacing={1.5}>
+                    <Stack direction="row" spacing={1}>
+                        <Button variant="outlined" color="inherit" disabled={active === 0} onClick={prev}>Atrás</Button>
+                        {active < steps.length - 1 ? (
+                            <Button variant="contained" onClick={next} disabled={!canNext()}>Continuar</Button>
+                        ) : (
+                            <Button variant="contained" onClick={handleFormSubmit} disabled={saving}>{saving ? "Creando…" : "Crear evento"}</Button>
+                        )}
+                    </Stack>
+                    <Typography variant="caption" color="text.secondary">
+                        Paso {active + 1} de {steps.length}
+                    </Typography>
+                </Stack>
+
+                <Snackbar open={toast.open} autoHideDuration={2200} onClose={() => setToast((t) => ({ ...t, open: false }))}>
+                    <Alert severity={toast.severity} variant="filled">{toast.message}</Alert>
+                </Snackbar>
+            </Stack>
+        </Container>
     </ProtectedLayout>;
 }
