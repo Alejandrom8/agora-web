@@ -37,6 +37,7 @@ import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import InsightsRoundedIcon from "@mui/icons-material/InsightsRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import {useRouter} from "next/navigation";
 
 // ------- Mock auth hook (replace with NextAuth or your auth) -------
 // Example with NextAuth:
@@ -65,10 +66,10 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-    { label: "Dashboard", href: "/dashboard", icon: <DashboardRoundedIcon /> },
-    { label: "Eventos", href: "/events", icon: <EventRoundedIcon /> },
-    { label: "Asistentes", href: "/attendees", icon: <PeopleAltRoundedIcon /> },
-    { label: "Análisis", href: "/analytics", icon: <InsightsRoundedIcon /> },
+    { label: "Dashboard", href: "/manage", icon: <DashboardRoundedIcon /> },
+    { label: "Eventos", href: "/manage/events", icon: <EventRoundedIcon /> },
+    { label: "Asistentes", href: "/manage/attendees", icon: <PeopleAltRoundedIcon /> },
+    { label: "Análisis", href: "/manage/analytics", icon: <InsightsRoundedIcon /> },
 ];
 
 // Util logo
@@ -111,6 +112,7 @@ export const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({ child
 
 // ------- AppLayout --------
 export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const router = useRouter();
     const theme = useTheme();
     const mdUp = useMediaQuery((t: Theme) => t.breakpoints.up("md"));
     const [open, setOpen] = React.useState(false);
@@ -131,7 +133,7 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
                     {NAV_ITEMS.map((item) => (
                         <ListItemButton
                             key={item.href}
-                            href={item.href}
+                            onClick={() => router.push(item.href)}
                             sx={{
                                 borderRadius: 1.5,
                                 px: 1.25,
@@ -195,6 +197,7 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
                         sx: {
                             position: "relative",
                             width: DRAWER_WIDTH,
+                            height: '100vh',
                             borderRight: `1px solid ${alpha("#FFFFFF", 0.08)}`,
                             backgroundImage: "none",
                         },
@@ -221,10 +224,12 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
             )}
 
             {/* Right panel */}
-            <Box component="main" sx={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
+            <Box component="main" sx={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", height: '100vh', overflow: 'hidden' }}>
                 {/* Spacer for mobile appbar */}
                 {!mdUp && <Toolbar />}
-                <Box sx={{ p: { xs: 2, sm: 3, md: 4 }, flex: 1 }}>{children}</Box>
+                <Box sx={{ p: { xs: 2, sm: 3, md: 4 }, flex: 1, overflowY: 'scroll' }}>
+                    {children}
+                </Box>
             </Box>
         </Box>
     );
