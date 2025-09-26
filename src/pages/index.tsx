@@ -102,7 +102,7 @@ const AgoraLanding: React.FC = () => {
           position: "relative",
           overflow: "hidden",
           width: '100%',
-          height: '92vh',
+          height: '72vh',
           backgroundColor: "rgba(0, 0, 0, 0.1)",
           backdropFilter: "blur(12px)",
         }}
