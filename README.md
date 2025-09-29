@@ -1,40 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Agora Web
 
-## Getting Started
+Agora es una plataforma para conectar founders con inversionistas por medio de eventos de tecnología.
+Trata de resolver la necesidad tanto de los founders primerizos como de los inversionistas que buscan
+proyectos en los que participar al conectarlos por medio de una plataforma que permite ver sus perfiles
+durante y después de un evento tecnológico.
 
-First, run the development server:
+Por medio de esta plataforma se podrán crear eventos, agregar agendas, tener distintos perfiles de tecnólogo,
+founder, inversionista dependiendo el evento, enviar invitaciones (admin), agregar asistentes, poner reglas
+para asistentes, etc.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Funcionalidades
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Usuarios asistentes y admins:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+1. Login
+2. Signup
+3. Ver eventos
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Admins:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+1. Crear eventos:
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+- 1.1: Datos generales: título, descripción, portada, fecha.
+- 1.2: Definir agenda: sub-eventos con horario, descripción, portada, speaker (opcional) y registro
+- 1.3: Definir roles y categorías: al inicio existirán 3 roles (founder, inversionista, asistente) para los cuales el admin podrá definir las reglas asociadas a cada uno, por ejemplo,
+  que los usuarios inversionistas deban iniciar sesión por medio de MFA, o que los usuarios founders.
+- 1.4: Definir categorías: las categorías son los sub-roles que puede tener un asistente en el evento, ejemplo: speaker, staff, tecnólogo, etc. El admin debe poder definir estas categorías.
+- 1.5: Definir asistentes: ya sea por un archivo excel o creándolos a mano por medio de un formulario (nombre, correo, rol, categoría)
