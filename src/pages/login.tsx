@@ -29,24 +29,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import MailOutlineRounded from '@mui/icons-material/MailOutlineRounded';
 import LockRounded from '@mui/icons-material/LockRounded';
 import { useRouter } from 'next/navigation';
-
-// Optional: small helper to fetch brand colors from theme
-const Logo: React.FC = () => (
-  <Stack direction="row" spacing={1} alignItems="center">
-    <Box
-      sx={{
-        width: 28,
-        height: 28,
-        borderRadius: 2,
-        background: (t) =>
-          `linear-gradient(135deg, ${t.palette.primary.main}, ${t.palette.info.main})`,
-      }}
-    />
-    <Typography variant="h6" fontWeight={900}>
-      Agora
-    </Typography>
-  </Stack>
-);
+import TypoLogo from '@/components/App/TypoLogo';
 
 const panelSx: SxProps<Theme> = (t) => ({
   borderRadius: 2,
@@ -106,7 +89,7 @@ export default function LoginPage(): React.JSX.Element {
   return (
     <>
       <Head>
-        <title>Ingresar a Agora</title>
+        <title>Agora | Login</title>
         <meta
           name="description"
           content="Inicia sesión en Agora para crear y descubrir eventos tecnológicos."
@@ -117,7 +100,7 @@ export default function LoginPage(): React.JSX.Element {
         <Box sx={{ width: '100%', py: { xs: 8, md: 10 }, ...subtleBg }}>
           <Container maxWidth="sm">
             <Stack spacing={3} alignItems="center" sx={{ mb: 2 }}>
-              <Logo />
+              <TypoLogo />
               <Typography variant="h3" fontWeight={900} textAlign="center">
                 Bienvenido de vuelta
               </Typography>
@@ -236,10 +219,10 @@ export default function LoginPage(): React.JSX.Element {
                   </Typography>
 
                   {/* Security hint (roles/MFA) */}
-                  <Alert severity="info" variant="outlined" sx={{ mt: 1 }}>
-                    Para eventos con reglas avanzadas, los inversionistas podrían requerir{' '}
-                    <strong>MFA</strong>.
-                  </Alert>
+                  {/*<Alert severity="info" variant="outlined" sx={{ mt: 1 }}>*/}
+                  {/*  Para eventos con reglas avanzadas, los inversionistas podrían requerir{' '}*/}
+                  {/*  <strong>MFA</strong>.*/}
+                  {/*</Alert>*/}
                 </Stack>
               </CardContent>
             </Card>

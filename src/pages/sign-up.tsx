@@ -31,6 +31,7 @@ import PersonOutlineRounded from '@mui/icons-material/PersonOutlineRounded';
 import MailOutlineRounded from '@mui/icons-material/MailOutlineRounded';
 import LockRounded from '@mui/icons-material/LockRounded';
 import HowToRegRounded from '@mui/icons-material/HowToRegRounded';
+import TypoLogo from '@/components/App/TypoLogo';
 
 // Roles & Categories aligned with Agora context
 const ROLES = [
@@ -40,23 +41,6 @@ const ROLES = [
 ] as const;
 
 const CATEGORIES = ['Speaker', 'Staff', 'Tecnólogo', 'Mentor', 'Jurado', 'Prensa'];
-
-const Logo: React.FC = () => (
-  <Stack direction="row" spacing={1} alignItems="center">
-    <Box
-      sx={{
-        width: 28,
-        height: 28,
-        borderRadius: 2,
-        background: (t) =>
-          `linear-gradient(135deg, ${t.palette.primary.main}, ${t.palette.info.main})`,
-      }}
-    />
-    <Typography variant="h6" fontWeight={900}>
-      Agora
-    </Typography>
-  </Stack>
-);
 
 const panelSx: SxProps<Theme> = (t) => ({
   borderRadius: 2,
@@ -140,7 +124,7 @@ export default function SignupPage(): React.JSX.Element {
         <Box sx={{ width: '100%', py: { xs: 8, md: 10 }, ...subtleBg }}>
           <Container maxWidth="sm">
             <Stack spacing={3} alignItems="center" sx={{ mb: 2 }}>
-              <Logo />
+              <TypoLogo />
               <Typography variant="h3" fontWeight={900} textAlign="center">
                 Crea tu cuenta
               </Typography>
@@ -325,10 +309,10 @@ export default function SignupPage(): React.JSX.Element {
                     Ir a Ingresar
                   </Button>
 
-                  <Alert severity="info" variant="outlined" sx={{ mt: 1 }}>
-                    Nota: Algunos eventos podrían requerir <strong>MFA</strong> para perfiles de
-                    inversionista.
-                  </Alert>
+                  {/*<Alert severity="info" variant="outlined" sx={{ mt: 1 }}>*/}
+                  {/*  Nota: Algunos eventos podrían requerir <strong>MFA</strong> para perfiles de*/}
+                  {/*  inversionista.*/}
+                  {/*</Alert>*/}
                 </Stack>
               </CardContent>
             </Card>
