@@ -15,6 +15,10 @@ import {
   useScrollTrigger,
   useMediaQuery,
   Divider,
+  Container,
+  Menu,
+  MenuItem,
+  Chip,
 } from '@mui/material';
 import NextLink from 'next/link';
 import { useTheme, alpha } from '@mui/material/styles';
@@ -30,8 +34,12 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'Precios', href: '#precios' },
 ];
 
-const primary = '#0057C9';
-const accent = '#0370FF';
+
+const REGION_FLAGS: Record<string, string> = {
+  MX: '🇲🇽',
+  ARG: '🇦🇷',
+  USA: '🇺🇸',
+};
 
 export default function HorizontalNavbarFloating(): React.JSX.Element {
   const theme = useTheme();
@@ -42,101 +50,156 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
   // Cambia estilos al hacer scroll
   const scrolled = useScrollTrigger({ disableHysteresis: true, threshold: 8 });
 
-  const bg = scrolled ? alpha('#0B0D12', 0.1) : alpha('#0B0D12', 0);
-  const border = alpha('#FFFFFF', scrolled ? 0.12 : 0.08);
+  // Fondo y bordes con glassmorphism
+  const bg = alpha('#0B0D12', scrolled ? 0.55 : 0.35);
+  const border = alpha('#FFFFFF', scrolled ? 0.16 : 0.12);
+
+  // Region selector
+  const [region, setRegion] = React.useState<'MX' | 'ARG' | 'USA'>('MX');
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const openRegion = Boolean(anchorEl);
+  const handleOpenRegion = (e: React.MouseEvent<HTMLElement>) => setAnchorEl(e.currentTarget);
+  const handleCloseRegion = () => setAnchorEl(null);
 
   return (
     <>
-      {/* Spacer para que el contenido no quede debajo del navbar fijo */}
-      <Box sx={{ height: 64 }} />
+      {/* Contenedor flotante con pill */}
+      <Box sx={{ position: 'fixed', top: 20, left: 0, right: 0, zIndex: (t) => t.zIndex.appBar }}>
+        <Container maxWidth="lg" disableGutters sx={{ px: { xs: 1.25, sm: 2, md: 0 } }}>
+          <AppBar
+            position="static"
+            color="transparent"
+            elevation={0}
+            sx={{
+              background: bg,
+              border: `1px solid ${border}`,
+              borderRadius: 999,
+              boxShadow: `0 8px 30px ${alpha('#000', 0.35)}`,
+              backdropFilter: 'saturate(140%) blur(10px)',
+            }}
+          >
+            <Toolbar sx={{ 
+              minHeight: { xs: 56, md: 64 }, px: { xs: 1, sm: 2.5, md: 3 }, 
+              display: { xs: 'flex' }, 
+              justifyContent: { xs: 'space-between'  },
+              paddingX: { xs: 3 }
+            }}>
+              {/* Izquierda: Logo */}
+              <TypoLogo sx={{ mr: 1 }} />
 
-      {/* Contenedor flotante (márgenes y anchura) */}
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: (t) => t.zIndex.appBar,
-        }}
-      >
-        <AppBar
-          position="static"
-          color="transparent"
-          elevation={0}
-          sx={{
-            background: bg,
-            border: 0,
-            backdropFilter: 'saturate(140%) blur(10px)',
-            //border: `1px solid ${border}`,
-            borderRadius: 0, // esquinas redondeadas
-            //boxShadow: `0 10px 30px ${alpha("#000", 0.35)}`,
-          }}
-        >
-          <Toolbar sx={{ gap: 2, minHeight: 64, px: { xs: 2, sm: 3, md: 20 } }}>
-            {/* Izquierda: Logo */}
-            <TypoLogo sx={{ flexGrow: 1 }} />
-
-            {/* Desktop: links + CTAs */}
-            {mdUp ? (
-              <>
-                {NAV_ITEMS.map((item) => (
-                  <MLink
-                    component={NextLink}
-                    key={item.href}
-                    href={item.href}
-                    underline="none"
-                    sx={{
-                      mr: 1,
-                      position: 'relative',
-                      color: 'rgba(255,255,255,0.85)',
-                      fontWeight: 500,
-                      display: 'inline-block',
-                      '&::after': {
-                        content: '""',
-                        position: 'absolute',
-                        width: '100%',
-                        transform: 'scaleX(0)',
-                        height: '2px',
-                        bottom: 0,
-                        left: 0,
-                        backgroundColor: '#0370FF', // color de acento
-                        transformOrigin: 'bottom right',
-                        transition: 'transform 0.25s ease-out',
-                      },
-                      '&:hover': {
-                        color: '#ffffff',
+              {/* Centro: Links */}
+              {mdUp && (
+                <Stack
+                  direction="row"
+                  spacing={1.5}
+                  sx={{
+                    ml: 2,
+                    mr: 'auto',
+                    alignItems: 'center',
+                  }}
+                >
+                  {NAV_ITEMS.map((item) => (
+                    <MLink
+                      component={NextLink}
+                      key={item.href}
+                      href={item.href}
+                      underline="none"
+                      sx={{
+                        position: 'relative',
+                        color: 'rgba(255,255,255,0.85)',
+                        fontWeight: 500,
+                        py: 0.5,
                         '&::after': {
-                          transform: 'scaleX(1)',
-                          transformOrigin: 'bottom left',
+                          content: '""',
+                          position: 'absolute',
+                          width: '100%',
+                          transform: 'scaleX(0)',
+                          height: '2px',
+                          bottom: -4,
+                          left: 0,
+                          backgroundColor: '#0370FF',
+                          transformOrigin: 'bottom right',
+                          transition: 'transform 0.25s ease-out',
                         },
-                      },
+                        '&:hover': {
+                          color: '#ffffff',
+                          '&::after': { transform: 'scaleX(1)', transformOrigin: 'bottom left' },
+                        },
+                      }}
+                    >
+                      {item.label}
+                    </MLink>
+                  ))}
+                </Stack>
+              )}
+
+              {/* Derecha: Region, Ingresar, CTA o Hamburguesa */}
+              {mdUp ? (
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <Button
+                    variant="text"
+                    color="inherit"
+                    onClick={() => router.push('/login')}
+                    sx={{ textTransform: 'none' }}
+                  >
+                    Ingresar
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    endIcon={<ArrowForwardRoundedIcon />}
+                    sx={{ ml: 0.5 }}
+                    onClick={() => router.push('/sign-up')}
+                  >
+                    Crear cuenta
+                  </Button>
+                  <Button
+                    id="region-button"
+                    aria-haspopup="true"
+                    aria-controls={openRegion ? 'region-menu' : undefined}
+                    aria-expanded={openRegion ? 'true' : undefined}
+                    onClick={handleOpenRegion}
+                    variant="outlined"
+                    color="inherit"
+                    sx={{
+                      borderColor: alpha('#FFF', 0.2),
+                      bgcolor: alpha('#FFF', 0.04),
+                      textTransform: 'none',
                     }}
                   >
-                    {item.label}
-                  </MLink>
-                ))}
-                <Button variant="text" color="inherit" onClick={() => router.push('/login')}>
-                  Ingresar
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  endIcon={<ArrowForwardRoundedIcon />}
-                  sx={{ ml: 1 }}
-                  onClick={() => router.push('/sign-up')}
-                >
-                  Crear cuenta
-                </Button>
-              </>
-            ) : (
-              // Mobile: botón hamburguesa
-              <IconButton edge="end" onClick={() => setOpen(true)} aria-label="Abrir menú">
-                <MenuRoundedIcon />
-              </IconButton>
-            )}
-          </Toolbar>
-        </AppBar>
+                    <Box component="span" sx={{ mr: 1 }}>{REGION_FLAGS[region]}</Box>
+                    {region}
+                  </Button>
+                  <Menu
+                    id="region-menu"
+                    anchorEl={anchorEl}
+                    open={openRegion}
+                    onClose={handleCloseRegion}
+                    MenuListProps={{ 'aria-labelledby': 'region-button' }}
+                  >
+                    {(['MX', 'ARG', 'USA'] as const).map((code) => (
+                      <MenuItem
+                        key={code}
+                        selected={region === code}
+                        onClick={() => {
+                          setRegion(code);
+                          handleCloseRegion();
+                        }}
+                      >
+                        <Box component="span" sx={{ mr: 1 }}>{REGION_FLAGS[code]}</Box>
+                        {code}
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </Stack>
+              ) : (
+                <IconButton edge="end" onClick={() => setOpen(true)} aria-label="Abrir menú">
+                  <MenuRoundedIcon />
+                </IconButton>
+              )}
+            </Toolbar>
+          </AppBar>
+        </Container>
       </Box>
 
       {/* Drawer mobile */}
@@ -146,10 +209,13 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
         onClose={() => setOpen(false)}
         PaperProps={{
           sx: {
-            width: 300,
+            width: 320,
             backgroundImage: 'none',
+            backgroundColor: alpha('#0B0D12', 0.98),
             borderLeft: `1px solid ${alpha('#FFFFFF', 0.08)}`,
             p: 1.5,
+            borderTopLeftRadius: 16,
+            borderBottomLeftRadius: 16,
           },
         }}
       >
@@ -190,6 +256,18 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
           >
             Crear cuenta
           </Button>
+          <Divider sx={{ my: 1, opacity: 0.12 }} />
+          <Stack direction="row" spacing={1}>
+            {(['MX', 'ARG', 'USA'] as const).map((code) => (
+              <Chip
+                key={code}
+                label={`${REGION_FLAGS[code]} ${code}`}
+                onClick={() => setRegion(code)}
+                variant={region === code ? 'filled' : 'outlined'}
+                sx={{ borderColor: alpha('#FFF', 0.2) }}
+              />
+            ))}
+          </Stack>
         </Stack>
       </Drawer>
     </>

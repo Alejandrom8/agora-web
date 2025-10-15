@@ -31,13 +31,13 @@ export default function LandingHero() {
       <Box
         component="header"
         sx={{
-          pt: { xs: 8, md: 15 },
+          pt: { xs: 15, md: 22 },
           pb: { xs: 8, md: 14 },
           position: 'relative',
           overflow: 'hidden',
           width: '100%',
-          height: '90vh',
-          backgroundColor: 'rgba(0, 0, 0, 0.1)',
+          minHeight: '100vh',
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
           backdropFilter: 'blur(12px)',
         }}
       >
