@@ -1,7 +1,3 @@
-// Agora Login Page — Material UI 5 + TypeScript (Next.js friendly)
-// Drop-in page component. If you're using Next.js App Router, you can save it as app/login/page.tsx
-// It assumes you already wrapped your app with ThemeProvider using the Agora theme.
-
 import * as React from 'react';
 import Head from 'next/head';
 import {
@@ -30,6 +26,8 @@ import MailOutlineRounded from '@mui/icons-material/MailOutlineRounded';
 import LockRounded from '@mui/icons-material/LockRounded';
 import { useRouter } from 'next/navigation';
 import TypoLogo from '@/components/App/TypoLogo';
+import { login } from '@/hooks/useSession';
+import { useSnackbar } from 'notistack';
 
 const panelSx: SxProps<Theme> = (t) => ({
   borderRadius: 2,
@@ -55,11 +53,10 @@ export default function LoginPage(): React.JSX.Element {
   const [submitting, setSubmitting] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push('/manage');
-    return;
     setError(null);
 
     if (!isValidEmail(email)) {
@@ -73,13 +70,11 @@ export default function LoginPage(): React.JSX.Element {
 
     try {
       setSubmitting(true);
-      // TODO: Replace with your auth call
-      // Example: await signIn({ email, password, remember })
-      await new Promise((res) => setTimeout(res, 900));
-      // Redirect to events or admin dashboard based on role
-      // router.push("/events");
-      console.log({ email, passwordMasked: '••••••••', remember });
+      await login(email, password);
+      //enqueueSnackbar('Inicio de sesión exitoso', { variant: 'success' });
+      router.push('/events');
     } catch (err) {
+      console.log(err);
       setError('No pudimos iniciar sesión. Inténtalo de nuevo.');
     } finally {
       setSubmitting(false);
