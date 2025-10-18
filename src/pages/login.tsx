@@ -74,9 +74,7 @@ export default function LoginPage(): React.JSX.Element {
       //enqueueSnackbar('Inicio de sesión exitoso', { variant: 'success' });
       router.push('/events');
     } catch (err) {
-      console.log(err);
       setError('No pudimos iniciar sesión. Inténtalo de nuevo.');
-    } finally {
       setSubmitting(false);
     }
   };

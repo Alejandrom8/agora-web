@@ -1,9 +1,5 @@
 import { createAuthCookie, setCookies } from '@/lib/cookies';
-
-export interface SessionTokens {
-  jwt: string;
-  refresh_token?: string;
-}
+import { SessionTokens } from './types';
 
 /**
  * Guarda cookies de sesión de forma estándar.

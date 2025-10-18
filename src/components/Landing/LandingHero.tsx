@@ -36,9 +36,12 @@ export default function LandingHero() {
           position: 'relative',
           overflow: 'hidden',
           width: '100%',
-          minHeight: '100vh',
+          minHeight: { xs: '100vh', md: '100vh', xl: 'auto' },
           backgroundColor: 'rgba(0, 0, 0, 0.7)',
           backdropFilter: 'blur(12px)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <Container>

@@ -1,7 +1,3 @@
-// Agora Signup Page — Material UI 5 + TypeScript (Next.js friendly)
-// Save as: app/signup/page.tsx (App Router) or pages/signup.tsx (Pages Router)
-// Assumes your app is wrapped with ThemeProvider using the Agora theme.
-
 import * as React from 'react';
 import Head from 'next/head';
 import {
@@ -32,6 +28,8 @@ import MailOutlineRounded from '@mui/icons-material/MailOutlineRounded';
 import LockRounded from '@mui/icons-material/LockRounded';
 import HowToRegRounded from '@mui/icons-material/HowToRegRounded';
 import TypoLogo from '@/components/App/TypoLogo';
+import { signUp } from '@/hooks/useSession';
+import { useRouter } from 'next/router';
 
 // Roles & Categories aligned with Agora context
 const ROLES = [
@@ -69,7 +67,7 @@ const pwScore = (pw: string) => {
 const pwLabel = (s: number) => ['Muy débil', 'Débil', 'Aceptable', 'Fuerte', 'Muy fuerte'][s] ?? '';
 
 export default function SignupPage(): React.JSX.Element {
-  const [name, setName] = React.useState('');
+  const [username, setUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [role, setRole] = React.useState<(typeof ROLES)[number]['value']>('founder');
   const [category, setCategory] = React.useState('');
@@ -81,6 +79,7 @@ export default function SignupPage(): React.JSX.Element {
   const [submitting, setSubmitting] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [ok, setOk] = React.useState(false);
+  const router = useRouter();
 
   const score = pwScore(password);
   const progress = (score / 4) * 100;
@@ -89,7 +88,7 @@ export default function SignupPage(): React.JSX.Element {
     e.preventDefault();
     setError(null);
 
-    if (!name.trim()) return setError('Por favor ingresa tu nombre.');
+    if (!username.trim()) return setError('Por favor ingresa tu nombre de usuario.');
     if (!isValidEmail(email)) return setError('Ingresa un correo válido.');
     if (!tos) return setError('Debes aceptar los Términos y la Privacidad.');
     if (password.length < 8) return setError('La contraseña debe tener al menos 8 caracteres.');
@@ -97,12 +96,9 @@ export default function SignupPage(): React.JSX.Element {
 
     try {
       setSubmitting(true);
-      // TODO: Replace with your signup API
-      await new Promise((res) => setTimeout(res, 900));
-      // Example: await signUp({ name, email, role, category, password })
+      await signUp(email, password, username);
       setOk(true);
-      // router.push("/events")
-      console.log({ name, email, role, category, passwordMasked: '••••••••' });
+      router.push('/verify?email=' + encodeURIComponent(email));
     } catch (err) {
       setError('No pudimos crear tu cuenta. Intenta nuevamente.');
     } finally {
@@ -143,10 +139,10 @@ export default function SignupPage(): React.JSX.Element {
                   )}
 
                   <TextField
-                    label="Nombre completo"
-                    placeholder="Tu nombre"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    label="Nombre de usuario"
+                    placeholder="Nombre de usuario"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     fullWidth
                     required
                     InputProps={{
@@ -176,7 +172,7 @@ export default function SignupPage(): React.JSX.Element {
                     }}
                   />
 
-                  <TextField
+                  {/* <TextField
                     select
                     label="Rol principal"
                     value={role}
@@ -189,9 +185,9 @@ export default function SignupPage(): React.JSX.Element {
                         {r.label}
                       </MenuItem>
                     ))}
-                  </TextField>
+                  </TextField> */}
 
-                  <TextField
+                  {/* <TextField
                     select
                     label="Categoría (opcional)"
                     value={category}
@@ -204,7 +200,7 @@ export default function SignupPage(): React.JSX.Element {
                         {c}
                       </MenuItem>
                     ))}
-                  </TextField>
+                  </TextField> */}
 
                   <Stack spacing={1.5}>
                     <TextField
@@ -235,19 +231,23 @@ export default function SignupPage(): React.JSX.Element {
                         ),
                       }}
                     />
-                    <LinearProgress
-                      variant="determinate"
-                      value={progress}
-                      sx={{ height: 6, borderRadius: 3 }}
-                    />
-                    <Typography
-                      variant="caption"
-                      color={
-                        progress < 50 ? 'error' : progress < 75 ? 'warning.main' : 'success.main'
-                      }
-                    >
-                      Fortaleza: {pwLabel(score)}
-                    </Typography>
+                    {
+                        password && <>
+                            <LinearProgress
+                                variant="determinate"
+                                value={progress}
+                                sx={{ height: 6, borderRadius: 3 }}
+                            />
+                            <Typography
+                                variant="caption"
+                                color={
+                                    progress < 50 ? 'error' : progress < 75 ? 'warning.main' : 'success.main'
+                                }
+                            >
+                                Fortaleza: {pwLabel(score)}
+                            </Typography>
+                        </>
+                    }
                   </Stack>
 
                   <TextField
@@ -306,7 +306,7 @@ export default function SignupPage(): React.JSX.Element {
                   </Divider>
 
                   <Button variant="outlined" onClick={() => (window.location.href = '/login')}>
-                    Ir a Ingresar
+                    Ir a Iniciar sesión
                   </Button>
 
                   {/*<Alert severity="info" variant="outlined" sx={{ mt: 1 }}>*/}

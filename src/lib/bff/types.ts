@@ -2,17 +2,17 @@ type AgoraApiResponse<T> = {
     data: T;
     status_code: number;
     success: boolean;
-    trace_id: string
+    trace_id: string;
 };
 
-interface Tokens {
+export type SessionTokens = {
     jwt: string;
     refresh_token?: string;
 }
 
-export interface LoginResponse extends AgoraApiResponse<Tokens> {};
+export interface LoginResponse extends AgoraApiResponse<SessionTokens> {};
 
-interface Profile {
+export interface UserProfileResponse extends AgoraApiResponse<{
     id: string;
     user_id: string;
     email: string;
@@ -21,6 +21,10 @@ interface Profile {
     profile_type: string;
     created_at: string;
     updated_at: string;
-}
+}> {};
 
-export interface UserProfileResponse extends AgoraApiResponse<Profile> {};
+export interface SignUpResponse extends AgoraApiResponse<{
+    message: string;
+}> {};
+
+export interface VerifiyEmailResponse extends AgoraApiResponse<SessionTokens> {};

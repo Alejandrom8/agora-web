@@ -29,15 +29,14 @@ import TypoLogo from '@/components/App/TypoLogo';
 
 type NavItem = { label: string; href: string };
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Funcionalidades', href: '#funcionalidades' },
-  { label: 'Para Admins', href: '#para-admins' },
+  { label: 'Eventos', href: '#funcionalidades' },
+  { label: 'Hostea tus eventos', href: '#para-admins' },
   { label: 'Precios', href: '#precios' },
 ];
 
 
 const REGION_FLAGS: Record<string, string> = {
   MX: '🇲🇽',
-  ARG: '🇦🇷',
   USA: '🇺🇸',
 };
 
@@ -177,7 +176,7 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                     onClose={handleCloseRegion}
                     MenuListProps={{ 'aria-labelledby': 'region-button' }}
                   >
-                    {(['MX', 'ARG', 'USA'] as const).map((code) => (
+                    {(['MX', 'USA'] as const).map((code) => (
                       <MenuItem
                         key={code}
                         selected={region === code}
