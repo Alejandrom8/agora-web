@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { createHandler } from '@/lib/bff/handler';
 import { saveSessionCookies } from '@/lib/bff/session';
 import { v1Client } from '@/lib/clients/v1';
-import { VerifiyEmailResponse } from '@/lib/bff/types';
+import { SessionTokens, VerifiyEmailResponse } from '@/lib/bff/types';
 
 export default createHandler(['POST'], async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, code } = req.body;
@@ -10,6 +10,6 @@ export default createHandler(['POST'], async (req: NextApiRequest, res: NextApiR
     email,
     code
   });
-  saveSessionCookies(res, result.data);
+  saveSessionCookies(res, result.data as SessionTokens);
   res.status(200).json({ success: true, message: 'Email verified successfully' });
 });
