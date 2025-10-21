@@ -48,7 +48,7 @@ import { ProtectedLayout } from '@/components/App/ProtectedLayout';
 
 // Events list
 const EVENTS = [
-  { id: 'evt-1', name: 'Pitch Day CDMX' },
+  { id: 'evt-1', name: 'Let Her Pitch' },
   { id: 'evt-2', name: 'AI & Fintech Summit' },
   { id: 'evt-3', name: 'Climate Tech Meetup' },
 ];
@@ -109,7 +109,7 @@ const KpiCard: React.FC<{
   helper?: string;
   color?: 'default' | 'primary' | 'info' | 'success' | 'warning' | 'error';
 }> = ({ label, value, icon, helper, color = 'default' }) => (
-  <Card>
+  <Card sx={{ backgroundColor: 'transparent', elevation: 0, boxShadow: 'none', backgroundImage: 'none' }}>
     <CardContent>
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
         <Typography variant="overline" color="text.secondary">
@@ -138,7 +138,7 @@ const CardSection: React.FC<{
   action?: React.ReactNode;
   children: React.ReactNode;
 }> = ({ title, subtitle, action, children }) => (
-  <Card>
+  <Card sx={{ backgroundColor: 'transparent', elevation: 0, boxShadow: 'none', backgroundImage: 'none' }}>
     <CardContent>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
@@ -209,7 +209,7 @@ export default function AdminDashboardPage(): React.JSX.Element {
         >
           <Box>
             <Typography variant="h4" fontWeight={900}>
-              Dashboard
+              Como va tu evento
             </Typography>
             <Typography color="text.secondary">
               Panel analítico de tus eventos y asistentes.

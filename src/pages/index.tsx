@@ -14,18 +14,27 @@ const AgoraLanding: React.FC = () => {
     <>
       <Head>
         <title>Agora | Conecta Founders e Inversionistas</title>
-        <meta
-          name="description"
-          content="Agora conecta founders e inversionistas por medio de eventos tecnológicos: crea eventos, define agendas y roles, gestiona asistentes e invita a participar."
-        />
+        <meta name="description" content="Agora conecta founders e inversionistas por medio de eventos tecnológicos: crea eventos, define agendas y roles, gestiona asistentes e invita a participar." />
         <link rel="canonical" href="https://agora-web-three.vercel.app/" />
-
-        {/* Open Graph básico */}
-        <meta property="og:title" content="Agora" />
-        <meta property="og:description" content="Agora - conecta founders con inversionistas" />
-        <meta property="og:image" content="https://agora-web-three.vercel.app/favicon.ico" />
+        <meta name="keywords" content="Agora, eventos, tecnología, founders, inversionistas, networking, startups, agenda, asistentes, gestión" />
+        <meta name="author" content="Agora Team" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="index, follow" />
+        {/* Open Graph mejorado */}
+        <meta property="og:title" content="Agora | Conecta Founders e Inversionistas" />
+        <meta property="og:description" content="Agora conecta founders e inversionistas por medio de eventos tecnológicos: crea eventos, define agendas y roles, gestiona asistentes e invita a participar." />
+        <meta property="og:image" content="https://agora-web-three.vercel.app/og-image.png" />
         <meta property="og:url" content="https://agora-web-three.vercel.app/" />
         <meta property="og:type" content="website" />
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Agora | Conecta Founders e Inversionistas" />
+        <meta name="twitter:description" content="Agora conecta founders e inversionistas por medio de eventos tecnológicos." />
+        <meta name="twitter:image" content="https://agora-web-three.vercel.app/og-image.png" />
+        <meta name="twitter:site" content="@agora" />
+        {/* Favicon y manifest */}
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="manifest" href="/manifest.json" />
       </Head>
 
       {/* NAVBAR */}

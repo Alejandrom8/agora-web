@@ -38,6 +38,8 @@ import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { useRouter } from 'next/navigation';
+import DashboardHeader from '../Dashboard/Header';
+import MicExternalOnIcon from '@mui/icons-material/MicExternalOn';
 
 // ------- Mock auth hook (replace with NextAuth or your auth) -------
 // Example with NextAuth:
@@ -56,7 +58,7 @@ const useAuth = () => {
 };
 
 // ------- Layout constants -------
-const DRAWER_WIDTH = 280;
+const DRAWER_WIDTH = 240;
 
 // ------- Nav config -------
 interface NavItem {
@@ -66,10 +68,11 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Dashboard', href: '/manage', icon: <DashboardRoundedIcon /> },
-  { label: 'Eventos', href: '/manage/events', icon: <EventRoundedIcon /> },
-  { label: 'Asistentes', href: '/manage/attendees', icon: <PeopleAltRoundedIcon /> },
-  { label: 'Análisis', href: '/manage/analytics', icon: <InsightsRoundedIcon /> },
+  { label: 'Resumen', href: '/manage', icon: <DashboardRoundedIcon /> },
+  { label: 'Agenda', href: '/manage/events', icon: <EventRoundedIcon /> },
+  { label: 'Speakers', href: '/manage/attendees', icon: <MicExternalOnIcon /> },
+  { label: 'Asistentes', href: '/manage/analytics', icon: <PeopleAltRoundedIcon /> },
+  { label: 'Feedback', href: '/manage/analytics', icon: <InsightsRoundedIcon /> },
 ];
 
 // Util logo
@@ -122,10 +125,17 @@ export const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({ child
   return <AppLayout>{children}</AppLayout>;
 };
 
+const mockEvents = [
+  { id: "1", name: "Techstars LATAM 2025" },
+  { id: "2", name: "Agora Founders Summit 2024" },
+  { id: "3", name: "AI & Innovation Week" },
+];
+
 // ------- AppLayout --------
 export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
   const theme = useTheme();
+  const [activeEvent, setActiveEvent] = React.useState("1");
   const mdUp = useMediaQuery((t: Theme) => t.breakpoints.up('md'));
   const [open, setOpen] = React.useState(false);
 
@@ -216,6 +226,10 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
         <Drawer
           variant="permanent"
           open
+          sx={{
+            position: 'relative',
+            zIndex: 101,
+          }}
           PaperProps={{
             sx: {
               position: 'relative',
@@ -223,6 +237,7 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
               height: '100vh',
               borderRight: `1px solid ${alpha('#FFFFFF', 0.08)}`,
               backgroundImage: 'none',
+              backgroundColor: 'transparent'
             },
           }}
         >
@@ -245,6 +260,22 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
           {drawerContent}
         </Drawer>
       )}
+
+      {/* {
+        mdUp && <DashboardHeader
+          drawerSize={DRAWER_WIDTH}
+          organizationName="Agora LATAM"
+          events={mockEvents}
+          activeEventId={activeEvent}
+          onChangeEvent={setActiveEvent}
+          onSettingsClick={() => alert("Abrir configuración")}
+          user={{
+            name: "Alejandro Gómez",
+            avatarUrl:
+              "https://res.cloudinary.com/dwcemtz63/image/upload/v1726317512/split_mate/profiles/ag_avatar.png",
+          }}
+        />
+      } */}
 
       {/* Right panel */}
       <Box

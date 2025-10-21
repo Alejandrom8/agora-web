@@ -7,7 +7,7 @@ export const v1Client = new ApiClient({
   retries: 1,
   headers: {
     'Content-Type': 'application/json',
-    'X-API-KEY': 'pk_live_7e6b8db20e410eaa97684424_CFo2DeQtu_d6sZcKEZAvRulaKfSHgObvlBcMifwvw3TSaat_UN60oh9L_cqESZor',
+    'X-API-KEY': process.env.V1_API_KEY || '',
   },
   onError: (e, ctx) => {
     console.error(`[AgoraAPI] ${ctx.method} ${ctx.url}:`, e.status, e.details);

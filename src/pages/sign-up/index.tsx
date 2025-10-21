@@ -110,10 +110,25 @@ export default function SignupPage(): React.JSX.Element {
     <>
       <Head>
         <title>Crear cuenta — Agora</title>
-        <meta
-          name="description"
-          content="Crea tu cuenta en Agora para participar en eventos tecnológicos y conectar con el ecosistema."
-        />
+        <meta name="description" content="Crea tu cuenta en Agora para participar en eventos tecnológicos y conectar con el ecosistema." />
+        <meta name="keywords" content="Agora, registro, crear cuenta, eventos, tecnología, founders, inversionistas" />
+        <meta name="author" content="Agora Team" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="index, follow" />
+        {/* Open Graph */}
+        <meta property="og:title" content="Crear cuenta — Agora" />
+        <meta property="og:description" content="Crea tu cuenta en Agora para participar en eventos tecnológicos y conectar con el ecosistema." />
+        <meta property="og:image" content="https://agora-web-three.vercel.app/og-image.png" />
+        <meta property="og:url" content="https://agora-web-three.vercel.app/sign-up" />
+        <meta property="og:type" content="website" />
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Crear cuenta — Agora" />
+        <meta name="twitter:description" content="Crea tu cuenta en Agora para participar en eventos tecnológicos y conectar con el ecosistema." />
+        <meta name="twitter:image" content="https://agora-web-three.vercel.app/og-image.png" />
+        <meta name="twitter:site" content="@agora" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="manifest" href="/manifest.json" />
       </Head>
 
       <Box sx={{ minHeight: '100dvh', display: 'grid', placeItems: 'center' }}>

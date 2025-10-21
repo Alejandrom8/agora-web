@@ -1,0 +1,16 @@
+{
+  "name": "Agora Web",
+  "short_name": "Agora",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1976d2",
+  "description": "Plataforma Agora para eventos y gestión organizacional.",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}

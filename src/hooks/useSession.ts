@@ -1,6 +1,7 @@
 // hooks/useSession.ts
 import useSWR, { mutate } from 'swr';
 import { bffClient } from '@/lib/clients/bff';
+import { EmailExistsResponse } from '@/lib/clients/types';
 
 export type Me = { id: string; email: string; name?: string };
 
@@ -26,4 +27,9 @@ export async function signUp(email: string, password: string, user_name: string)
 export async function verifyEmail(email: string, code: string) {
   await bffClient.post('/api/auth/activate', { email, code });
   await mutate('/api/auth/me'); // refresca la sesión cacheada
+}
+
+export async function emailExists(email: string): Promise<boolean> {
+  const response = await bffClient.post<EmailExistsResponse>('/api/auth/email-exists', { email });
+  return response.exists;
 }

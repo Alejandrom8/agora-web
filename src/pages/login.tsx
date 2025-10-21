@@ -16,18 +16,23 @@ import {
   InputAdornment,
   IconButton,
   Alert,
+  CircularProgress,
+  Collapse,
 } from '@mui/material';
 import { alpha, type SxProps, type Theme } from '@mui/material/styles';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Visibility from '@mui/icons-material/Visibility';
 import LoginRounded from '@mui/icons-material/LoginRounded';
 import GoogleIcon from '@mui/icons-material/Google';
+import AppleIcon from '@mui/icons-material/Apple';
 import MailOutlineRounded from '@mui/icons-material/MailOutlineRounded';
 import LockRounded from '@mui/icons-material/LockRounded';
 import { useRouter } from 'next/navigation';
 import TypoLogo from '@/components/App/TypoLogo';
-import { login } from '@/hooks/useSession';
+import { emailExists, login } from '@/hooks/useSession';
 import { useSnackbar } from 'notistack';
+import { is } from 'zod/locales';
+import Link from 'next/link';
 
 const panelSx: SxProps<Theme> = (t) => ({
   borderRadius: 2,
@@ -52,6 +57,7 @@ export default function LoginPage(): React.JSX.Element {
   const [remember, setRemember] = React.useState(true);
   const [submitting, setSubmitting] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [isEmailValidated, setIsEmailValidated] = React.useState(false);
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -59,23 +65,43 @@ export default function LoginPage(): React.JSX.Element {
     e.preventDefault();
     setError(null);
 
-    if (!isValidEmail(email)) {
-      setError('Por favor ingresa un correo válido.');
-      return;
-    }
-    if (password.length < 8) {
-      setError('La contraseña debe tener al menos 8 caracteres.');
-      return;
-    }
+    if (!isEmailValidated) {
+      if (!isValidEmail(email)) {
+        setError('Por favor ingresa un correo válido.');
+        return;
+      }
 
-    try {
-      setSubmitting(true);
-      await login(email, password);
-      //enqueueSnackbar('Inicio de sesión exitoso', { variant: 'success' });
-      router.push('/events');
-    } catch (err) {
-      setError('No pudimos iniciar sesión. Inténtalo de nuevo.');
-      setSubmitting(false);
+      try {
+        setSubmitting(true);
+        const exists = await emailExists(email);
+        if (!exists) {
+          setError('No existe una cuenta asociada a este correo.');
+          setSubmitting(false);
+          return;
+        }
+        setSubmitting(false);
+        setIsEmailValidated(true);
+      } catch (err) {
+        console.log(err);
+        setError('No pudimos verificar el correo. Inténtalo de nuevo.');
+        setSubmitting(false);
+      }
+    } else {
+      if (password.length < 8) {
+        setError('La contraseña debe tener al menos 8 caracteres.');
+        return;
+      }
+
+      try {
+        setSubmitting(true);
+        await login(email, password);
+        //enqueueSnackbar('Inicio de sesión exitoso', { variant: 'success' });
+        router.push('/events');
+      } catch (err) {
+        console.log(err);
+        setError('No pudimos iniciar sesión. Inténtalo de nuevo.');
+        setSubmitting(false);
+      } 
     }
   };
 
@@ -83,10 +109,25 @@ export default function LoginPage(): React.JSX.Element {
     <>
       <Head>
         <title>Agora | Login</title>
-        <meta
-          name="description"
-          content="Inicia sesión en Agora para crear y descubrir eventos tecnológicos."
-        />
+        <meta name="description" content="Inicia sesión en Agora para crear y descubrir eventos tecnológicos." />
+        <meta name="keywords" content="Agora, login, acceso, eventos, tecnología, founders, inversionistas" />
+        <meta name="author" content="Agora Team" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="index, follow" />
+        {/* Open Graph */}
+        <meta property="og:title" content="Agora | Login" />
+        <meta property="og:description" content="Inicia sesión en Agora para crear y descubrir eventos tecnológicos." />
+        <meta property="og:image" content="https://agora-web-three.vercel.app/og-image.png" />
+        <meta property="og:url" content="https://agora-web-three.vercel.app/login" />
+        <meta property="og:type" content="website" />
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Agora | Login" />
+        <meta name="twitter:description" content="Inicia sesión en Agora para crear y descubrir eventos tecnológicos." />
+        <meta name="twitter:image" content="https://agora-web-three.vercel.app/og-image.png" />
+        <meta name="twitter:site" content="@agora" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="manifest" href="/manifest.json" />
       </Head>
 
       <Box sx={{ minHeight: '100dvh', display: 'grid', placeItems: 'center' }}>
@@ -98,7 +139,11 @@ export default function LoginPage(): React.JSX.Element {
                 Bienvenido de vuelta
               </Typography>
               <Typography color="text.secondary" textAlign="center">
-                Conecta founders e inversionistas por medio de eventos de tecnología.
+                {
+                  isEmailValidated
+                  ? <>Hola <strong>{email}</strong>, ingresa tu contraseña para continuar.</>
+                  : 'Inicia sesión para continuar a Agora.'
+                }
               </Typography>
             </Stack>
 
@@ -111,106 +156,160 @@ export default function LoginPage(): React.JSX.Element {
                     </Alert>
                   )}
 
-                  <TextField
-                    type="email"
-                    label="Correo electrónico"
-                    placeholder="tu@correo.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    fullWidth
-                    required
-                    autoComplete="email"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <MailOutlineRounded />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
 
-                  <TextField
-                    type={showPw ? 'text' : 'password'}
-                    label="Contraseña"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    fullWidth
-                    required
-                    autoComplete="current-password"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <LockRounded />
-                        </InputAdornment>
-                      ),
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="mostrar contraseña"
-                            onClick={() => setShowPw((s) => !s)}
-                            edge="end"
-                          >
-                            {showPw ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-
-                  <Stack
-                    direction={{ xs: 'column', sm: 'row' }}
-                    justifyContent="space-between"
-                    alignItems={{ xs: 'flex-start', sm: 'center' }}
-                  >
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={remember}
-                          onChange={(e) => setRemember(e.target.checked)}
-                        />
-                      }
-                      label="Recordarme"
+                  { !isEmailValidated && (
+                    <TextField
+                      type="email"
+                      label="Correo electrónico"
+                      placeholder="tu@correo.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      fullWidth
+                      required
+                      autoComplete="email"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <MailOutlineRounded />
+                          </InputAdornment>
+                        ),
+                        endAdornment: isEmailValidated && (
+                          <MLink underline='none' sx={{ cursor: 'pointer' }} onClick={() => {
+                            setIsEmailValidated(false);
+                            setPassword('');
+                          }}>
+                            editar
+                          </MLink>
+                        )
+                      }}
                     />
-                    <MLink href="#/forgot" underline="hover">
-                      ¿Olvidaste tu contraseña?
-                    </MLink>
-                  </Stack>
+                  )}
+
+                  {
+                    isEmailValidated && <>
+                      <TextField
+                        type={showPw ? 'text' : 'password'}
+                        label="Contraseña"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        fullWidth
+                        required
+                        autoComplete="current-password"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <LockRounded />
+                            </InputAdornment>
+                          ),
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="mostrar contraseña"
+                                onClick={() => setShowPw((s) => !s)}
+                                edge="end"
+                              >
+                                {showPw ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                      
+
+                      <Stack
+                        direction={{ xs: 'column', sm: 'row' }}
+                        justifyContent="flex-end"
+                        alignItems={{ xs: 'flex-start', sm: 'center' }}
+                      >
+                        {/* <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={remember}
+                              onChange={(e) => setRemember(e.target.checked)}
+                            />
+                          }
+                          label="Recordarme"
+                        /> */}
+                        <MLink href="/recovery" underline="hover" component={Link}>
+                          ¿Olvidaste tu contraseña?
+                        </MLink>
+                      </Stack>
+                    </>
+                  }
 
                   <Button
                     type="submit"
                     size="large"
                     variant="contained"
-                    startIcon={<LoginRounded />}
+                    startIcon={isEmailValidated && <LoginRounded />}
                     disabled={submitting}
                   >
-                    {submitting ? 'Iniciando…' : 'Ingresar'}
+                    {
+                      isEmailValidated
+                        ? (submitting ? <CircularProgress size={24} /> : 'Ingresar')
+                        : (submitting ? <CircularProgress size={24} /> : 'Continuar')
+                    }
                   </Button>
 
-                  <Divider flexItem>
-                    <Typography variant="caption" color="text.secondary">
-                      o continúa con
-                    </Typography>
-                  </Divider>
+                  {
+                    isEmailValidated && (
+                      <Button
+                        size="large"
+                        variant="outlined"
+                        onClick={() => {
+                          setIsEmailValidated(false);
+                          setPassword('');
+                        }}
+                      >
+                        Cancelar
+                      </Button>
+                    )
+                  }
 
-                  <Button
-                    variant="outlined"
-                    startIcon={<GoogleIcon />}
-                    onClick={() => {
-                      // TODO: start your OAuth flow
-                      console.log('Google OAuth');
-                    }}
-                  >
-                    Google
-                  </Button>
+                  {
+                    !isEmailValidated && <>
+                      <Divider flexItem>
+                        <Typography variant="caption" color="text.secondary">
+                          o continúa con
+                        </Typography>
+                      </Divider>
 
-                  <Typography variant="body2" color="text.secondary" textAlign="center">
-                    ¿Aún no tienes cuenta?{' '}
-                    <MLink href="/sign-up" underline="hover">
-                      Crear cuenta
-                    </MLink>
-                  </Typography>
 
+                      <Stack spacing={2} direction={'row'} justifyContent="center">
+                        <Button
+                          variant="outlined"
+                          startIcon={<GoogleIcon />}
+                          fullWidth
+                          onClick={() => {
+                            // TODO: start your OAuth flow
+                            console.log('Google OAuth');
+                          }}
+                        >
+                          Google
+                        </Button>
+
+                        <Button
+                          variant="outlined"
+                          fullWidth
+                          startIcon={<AppleIcon />}
+                          onClick={() => {
+                            // TODO: start your OAuth flow
+                            console.log('Apple OAuth');
+                          }}
+                        >
+                          Apple
+                        </Button>
+                      </Stack>              
+
+                      <Typography variant="body2" color="text.secondary" textAlign="center">
+                        ¿Aún no tienes cuenta?{' '}
+                        <MLink href="/sign-up" underline="hover">
+                          Crear cuenta
+                        </MLink>
+                      </Typography>
+                    </>
+                  }
                   {/* Security hint (roles/MFA) */}
                   {/*<Alert severity="info" variant="outlined" sx={{ mt: 1 }}>*/}
                   {/*  Para eventos con reglas avanzadas, los inversionistas podrían requerir{' '}*/}
