@@ -37,14 +37,11 @@ import {
   Alert,
   Container,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import AddRounded from '@mui/icons-material/AddRounded';
 import DeleteRounded from '@mui/icons-material/DeleteRounded';
-import EditRounded from '@mui/icons-material/EditRounded';
 import EventRounded from '@mui/icons-material/EventRounded';
 import DescriptionRounded from '@mui/icons-material/DescriptionRounded';
 import ImageRounded from '@mui/icons-material/ImageRounded';
-import ScheduleRounded from '@mui/icons-material/ScheduleRounded';
 import PersonRounded from '@mui/icons-material/PersonRounded';
 import CloudUploadRounded from '@mui/icons-material/CloudUploadRounded';
 import DownloadRounded from '@mui/icons-material/DownloadRounded';
@@ -655,7 +652,7 @@ export default function NewEventWizardPage(): React.JSX.Element {
       setToast({ open: true, message: 'Evento creado con éxito', severity: 'success' });
       // router.push("/events");
       console.log('Submitted payload', payload);
-    } catch (e) {
+    } catch {
       setToast({ open: true, message: 'No se pudo crear el evento', severity: 'error' });
     } finally {
       setSaving(false);

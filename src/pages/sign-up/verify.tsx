@@ -9,7 +9,6 @@ import {
   TextField,
   Button,
 } from '@mui/material';
-import { bffClient } from '@/lib/clients/bff';
 import { verifyEmail } from '@/hooks/useSession';
 
 
@@ -83,7 +82,7 @@ function VerificationPage({ email }: { email: string }): React.JSX.Element {
 
     try {
       await verifyEmail(email, code);
-    } catch (error) {
+    } catch {
       setError('Código inválido. Intenta nuevamente.');
       setValues(Array.from({ length: CELLS }, () => ''));
       focusAt(0);

@@ -17,10 +17,9 @@ export type SessionTokens = {
   refresh_token?: string;
 };
 
-export interface LoginResponse extends AgoraApiResponse<SessionTokens> {}
+export type LoginResponse = AgoraApiResponse<SessionTokens>
 
-export interface UserProfileResponse
-  extends AgoraApiResponse<{
+export type UserProfileResponse = AgoraApiResponse<{
     id: string;
     user_id: string;
     email: string;
@@ -29,22 +28,20 @@ export interface UserProfileResponse
     profile_type: string;
     created_at: string;
     updated_at: string;
-  }> {}
+  }>
 
-export interface SignUpResponse
-  extends AgoraApiResponse<{
+export type SignUpResponse = AgoraApiResponse<{
     message: string;
-  }> {}
+  }>
 
-export interface VerifiyEmailResponse extends AgoraApiResponse<SessionTokens> {}
+export type VerifiyEmailResponse = AgoraApiResponse<SessionTokens>
 
-export interface EmailExistsResponse
-  extends AgoraApiResponse<{
+export type EmailExistsResponse = AgoraApiResponse<{
     error?: any;
     data?: boolean;
-  }> {}
+  }>
 
-export interface VerifyOrgInvitationCodeResponse extends AgoraApiResponse<{}> {}
+export type VerifyOrgInvitationCodeResponse = AgoraApiResponse<object>
 
 export type Organization = {
   id: string;
@@ -53,4 +50,4 @@ export type Organization = {
   identifier: string;
 };
 
-export interface CreateOrgResponse extends AgoraApiResponse<Organization> {}
+export type CreateOrgResponse = AgoraApiResponse<Organization>

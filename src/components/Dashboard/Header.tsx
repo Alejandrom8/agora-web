@@ -2,19 +2,16 @@ import React from 'react';
 import {
   AppBar,
   Toolbar,
-  Typography,
   Box,
   IconButton,
   Avatar,
   MenuItem,
   Select,
   FormControl,
-  InputLabel,
   SelectChangeEvent,
 } from '@mui/material';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import TypoLogo from '../App/TypoLogo';
 
 // 🧠 Tipos de datos
 interface EventOption {
@@ -40,8 +37,6 @@ interface DashboardHeaderProps {
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   drawerSize,
-  logoUrl = '/images/agora-logo.svg',
-  organizationName,
   events,
   activeEventId,
   onChangeEvent,

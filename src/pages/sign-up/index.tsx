@@ -16,7 +16,6 @@ import {
   InputAdornment,
   IconButton,
   Alert,
-  MenuItem,
   LinearProgress,
   Snackbar,
 } from '@mui/material';
@@ -32,15 +31,15 @@ import { signUp } from '@/hooks/useSession';
 import { useRouter } from 'next/router';
 
 // Roles & Categories aligned with Agora context
-const ROLES = [
-  { value: 'founder', label: 'Founder' },
-  { value: 'investor', label: 'Inversionista' },
-  { value: 'attendee', label: 'Asistente' },
-] as const;
+// const ROLES = [
+//   { value: 'founder', label: 'Founder' },
+//   { value: 'investor', label: 'Inversionista' },
+//   { value: 'attendee', label: 'Asistente' },
+// ] as const;
 
-const CATEGORIES = ['Speaker', 'Staff', 'Tecnólogo', 'Mentor', 'Jurado', 'Prensa'];
+// const CATEGORIES = ['Speaker', 'Staff', 'Tecnólogo', 'Mentor', 'Jurado', 'Prensa'];
 
-const panelSx: SxProps<Theme> = (t) => ({
+const panelSx: SxProps<Theme> = () => ({
   borderRadius: 2,
   backgroundImage: 'none',
   border: `1px solid ${alpha('#FFFFFF', 0.08)}`,
@@ -69,8 +68,6 @@ const pwLabel = (s: number) => ['Muy débil', 'Débil', 'Aceptable', 'Fuerte', '
 export default function SignupPage(): React.JSX.Element {
   const [username, setUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
-  const [role, setRole] = React.useState<(typeof ROLES)[number]['value']>('founder');
-  const [category, setCategory] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirm, setConfirm] = React.useState('');
   const [showPw, setShowPw] = React.useState(false);
@@ -99,7 +96,7 @@ export default function SignupPage(): React.JSX.Element {
       await signUp(email, password, username);
       setOk(true);
       router.push('/verify?email=' + encodeURIComponent(email));
-    } catch (err) {
+    } catch {
       setError('No pudimos crear tu cuenta. Intenta nuevamente.');
     } finally {
       setSubmitting(false);

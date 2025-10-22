@@ -27,7 +27,6 @@ import {
   LinearProgress,
   Tabs,
   Tab,
-  IconButton,
   Alert,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
@@ -171,7 +170,6 @@ export default function CreateProfileWizard() {
     handleSubmit,
     control,
     watch,
-    setValue,
     trigger,
     getValues,
     formState: { isSubmitting, errors },
@@ -204,7 +202,7 @@ export default function CreateProfileWizard() {
             'radial-gradient(1200px 600px at -10% -20%, #FFD54F40, transparent 50%), radial-gradient(900px 500px at 110% -10%, #7C4DFF30, transparent 50%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0))',
           pointerEvents: 'none',
         },
-        border: (t) => `1px solid ${alpha('#FFFFFF', 0.12)}`,
+        border: () => `1px solid ${alpha('#FFFFFF', 0.12)}`,
         backdropFilter: 'blur(8px) saturate(130%)',
       }}
     >
@@ -570,8 +568,8 @@ export default function CreateProfileWizard() {
                   m: 0,
                   p: 2,
                   borderRadius: 2,
-                  bgcolor: (t) => alpha('#FFFFFF', 0.04),
-                  border: (t) => `1px solid ${alpha('#FFFFFF', 0.12)}`,
+                  bgcolor: () => alpha('#FFFFFF', 0.04),
+                  border: () => `1px solid ${alpha('#FFFFFF', 0.12)}`,
                   maxHeight: 360,
                   overflow: 'auto',
                 }}

@@ -315,7 +315,7 @@ export default function AdminEventsPage(): React.JSX.Element {
   }, [rows, q, dateFrom, dateTo, attRange, categories]);
 
   // Handlers
-  const onCreate = () => setEditState({ open: true, mode: 'create', row: emptyEvent });
+  // const onCreate = () => setEditState({ open: true, mode: 'create', row: emptyEvent });
   const onEdit = (row: EventRow) => setEditState({ open: true, mode: 'edit', row });
   const onDelete = (id: string) => setConfirm({ open: true, id });
 
@@ -460,7 +460,7 @@ export default function AdminEventsPage(): React.JSX.Element {
                     textAlign: 'left',
                     py: 1,
                     color: 'text.secondary',
-                    borderBottom: (t) => `1px solid ${alpha('#FFFFFF', 0.08)}`,
+                    borderBottom: () => `1px solid ${alpha('#FFFFFF', 0.08)}`,
                   },
                 }}
               >
@@ -477,7 +477,7 @@ export default function AdminEventsPage(): React.JSX.Element {
               <Box
                 component="tbody"
                 sx={{
-                  '& td': { py: 1.25, borderBottom: (t) => `1px solid ${alpha('#FFFFFF', 0.06)}` },
+                  '& td': { py: 1.25, borderBottom: () => `1px solid ${alpha('#FFFFFF', 0.06)}` },
                 }}
               >
                 {filtered.map((r) => (

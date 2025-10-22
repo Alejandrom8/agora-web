@@ -3,7 +3,6 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  Typography,
   Stack,
   Box,
   Link as MLink,
@@ -30,8 +29,9 @@ import TypoLogo from '@/components/App/TypoLogo';
 type NavItem = { label: string; href: string };
 const NAV_ITEMS: NavItem[] = [
   { label: 'Eventos', href: '#funcionalidades' },
-  { label: 'Hostea tus eventos', href: '#para-admins' },
+  { label: 'Hosts', href: '#para-admins' },
   { label: 'Precios', href: '#precios' },
+  { label: 'Legal', href: '/legal' },
 ];
 
 

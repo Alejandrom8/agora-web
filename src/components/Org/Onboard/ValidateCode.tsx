@@ -1,8 +1,7 @@
 // pages/verification.tsx
 import * as React from 'react';
-import { Box, Stack, Typography, TextField, Button, CircularProgress } from '@mui/material';
+import { Box, Stack, Typography, TextField, Button } from '@mui/material';
 import TypoLogo from '@/components/App/TypoLogo';
-import { bffClient } from '@/lib/clients/bff';
 import { mockClient } from '@/lib/clients/mock';
 import { VerifyOrgInvitationCodeResponse } from '@/lib/bff/types';
 import { ApiError } from '@/lib/apiClient';

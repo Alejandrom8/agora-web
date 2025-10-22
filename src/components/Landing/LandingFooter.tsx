@@ -2,10 +2,6 @@ import { alpha, Box, Container, Link as MLink, Stack, Typography } from '@mui/ma
 import * as React from 'react';
 import TypoLogo from '@/components/App/TypoLogo';
 
-// --- Compact brand theme (matches your palette) ---
-const primary = '#0057C9' as const;
-const accent = '#0370FF' as const;
-
 export default function LandingFooter() {
   return (
     <Box component="footer" sx={{ py: 6, borderTop: `1px solid ${alpha('#FFFFFF', 0.06)}` }}>

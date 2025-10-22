@@ -54,7 +54,7 @@ const EVENTS = [
 ];
 
 // KPIs per selected event (could also be aggregated)
-const getKpis = (eventId: string) => ({
+const getKpis = () => ({
   totalAttendees: 482,
   totalFounders: 164,
   totalInvestors: 76,
@@ -187,7 +187,7 @@ export default function AdminDashboardPage(): React.JSX.Element {
   const [range, setRange] = React.useState<string>('7d');
   const [eventId, setEventId] = React.useState<string>(EVENTS[0].id);
 
-  const kpis = React.useMemo(() => getKpis(eventId), [eventId]);
+  const kpis = React.useMemo(() => getKpis(), []);
 
   const COLORS = [
     theme.palette.primary.main,
@@ -447,8 +447,8 @@ const Tip: React.FC<{ title: string; body: string }> = ({ title, body }) => (
     sx={{
       p: 1.25,
       borderRadius: 1.5,
-      backgroundColor: (t) => alpha('#FFFFFF', 0.04),
-      border: (t) => `1px solid ${alpha('#FFFFFF', 0.08)}`,
+      backgroundColor: () => alpha('#FFFFFF', 0.04),
+      border: () => `1px solid ${alpha('#FFFFFF', 0.08)}`,
     }}
   >
     <Typography variant="subtitle2" fontWeight={800}>

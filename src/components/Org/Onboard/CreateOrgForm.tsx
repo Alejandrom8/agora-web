@@ -19,7 +19,7 @@ import { mockClient } from '@/lib/clients/mock';
 import { ApiError } from '@/lib/apiClient';
 import { CreateOrgResponse, Organization } from '@/lib/bff/types';
 
-const panelSx: SxProps<Theme> = (t) => ({
+const panelSx: SxProps<Theme> = () => ({
   borderRadius: 2,
   backgroundImage: 'none',
   border: `1px solid ${alpha('#FFFFFF', 0.08)}`,

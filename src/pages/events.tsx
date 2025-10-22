@@ -23,8 +23,7 @@ import {
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import EventSeatRoundedIcon from '@mui/icons-material/EventSeatRounded';
-import { alpha, useTheme } from '@mui/material/styles';
-import useSWR from 'swr';
+import { alpha } from '@mui/material/styles';
 import { withAuth } from '@/lib/authSSR';
 
 /**
@@ -91,7 +90,6 @@ function FilterBar({
   setSelected: (v: string[]) => void;
   onClear: () => void;
 }) {
-  const theme = useTheme();
   const glass = {
     backgroundColor: alpha('#0B0D12', 0.35),
     border: `1px solid ${alpha('#FFFFFF', 0.14)}`,
@@ -173,7 +171,7 @@ function EventCard({ ev }: { ev: EventItem }) {
       sx={{
         height: '100%',
         bgcolor: 'transparent',
-        borderColor: (t) => alpha('#FFFFFF', 0.12),
+        borderColor: () => alpha('#FFFFFF', 0.12),
         overflow: 'hidden',
       }}
     >
@@ -255,7 +253,6 @@ function EventsPage() {
   const [events, setEvents] = React.useState<EventItem[]>([]);
   const [query, setQuery] = React.useState('');
   const [selected, setSelected] = React.useState<string[]>([]);
-  const { data, isLoading } = useSWR('/api/auth/me');
 
   React.useEffect(() => {
     let active = true;

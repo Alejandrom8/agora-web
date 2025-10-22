@@ -38,7 +38,6 @@ import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { useRouter } from 'next/navigation';
-import DashboardHeader from '../Dashboard/Header';
 import MicExternalOnIcon from '@mui/icons-material/MicExternalOn';
 
 // ------- Mock auth hook (replace with NextAuth or your auth) -------
@@ -124,18 +123,10 @@ export const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({ child
 
   return <AppLayout>{children}</AppLayout>;
 };
-
-const mockEvents = [
-  { id: "1", name: "Techstars LATAM 2025" },
-  { id: "2", name: "Agora Founders Summit 2024" },
-  { id: "3", name: "AI & Innovation Week" },
-];
-
 // ------- AppLayout --------
 export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
   const theme = useTheme();
-  const [activeEvent, setActiveEvent] = React.useState("1");
   const mdUp = useMediaQuery((t: Theme) => t.breakpoints.up('md'));
   const [open, setOpen] = React.useState(false);
 

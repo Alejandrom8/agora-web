@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createHandler } from '@/lib/bff/handler';
-import { saveSessionCookies } from '@/lib/bff/session';
 import { v1Client } from '@/lib/clients/v1';
 import { SignUpResponse } from '@/lib/bff/types';
 

@@ -6,8 +6,6 @@ import {
   Stack,
   Typography,
   TextField,
-  Checkbox,
-  FormControlLabel,
   Button,
   Link as MLink,
   Divider,
@@ -17,7 +15,6 @@ import {
   IconButton,
   Alert,
   CircularProgress,
-  Collapse,
 } from '@mui/material';
 import { alpha, type SxProps, type Theme } from '@mui/material/styles';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -30,11 +27,9 @@ import LockRounded from '@mui/icons-material/LockRounded';
 import { useRouter } from 'next/navigation';
 import TypoLogo from '@/components/App/TypoLogo';
 import { emailExists, login } from '@/hooks/useSession';
-import { useSnackbar } from 'notistack';
-import { is } from 'zod/locales';
 import Link from 'next/link';
 
-const panelSx: SxProps<Theme> = (t) => ({
+const panelSx: SxProps<Theme> = () => ({
   borderRadius: 2,
   backgroundImage: 'none',
   border: `1px solid ${alpha('#FFFFFF', 0.08)}`,
@@ -54,12 +49,10 @@ export default function LoginPage(): React.JSX.Element {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [showPw, setShowPw] = React.useState(false);
-  const [remember, setRemember] = React.useState(true);
   const [submitting, setSubmitting] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [isEmailValidated, setIsEmailValidated] = React.useState(false);
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
