@@ -24,7 +24,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import AppleIcon from '@mui/icons-material/Apple';
 import MailOutlineRounded from '@mui/icons-material/MailOutlineRounded';
 import LockRounded from '@mui/icons-material/LockRounded';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import TypoLogo from '@/components/App/TypoLogo';
 import { emailExists, login } from '@/hooks/useSession';
 import Link from 'next/link';
