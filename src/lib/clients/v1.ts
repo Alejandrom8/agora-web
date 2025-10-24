@@ -1,5 +1,6 @@
 // lib/clients/agora.ts
 import { ApiClient } from '@/lib/apiClient';
+import * as Sentry from '@sentry/nextjs';
 
 export const v1Client = new ApiClient({
   baseUrl: 'https://development.agorahub.app',
@@ -10,6 +11,6 @@ export const v1Client = new ApiClient({
     'X-API-KEY': process.env.V1_API_KEY || '',
   },
   onError: (e, ctx) => {
-    console.error(`[AgoraAPI] ${ctx.method} ${ctx.url}:`, e.status, e.details);
+    Sentry.logger.error(`[AgoraAPI] ${ctx.method} ${ctx.url}:`, e.status, e.details);
   },
 });

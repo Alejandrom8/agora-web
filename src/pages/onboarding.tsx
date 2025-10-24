@@ -1,5 +1,6 @@
 // pages/profile/create.tsx
 import * as React from 'react';
+import * as Sentry from '@sentry/nextjs';
 import Head from 'next/head';
 import {
   Box,
@@ -243,7 +244,7 @@ export default function CreateProfileWizard() {
   const onSubmit = async (data: FormValues) => {
     // Conectar a tu BFF:
     // await bffClient.post('/api/profile', data);
-    console.log('Payload final:', data);
+    Sentry.logger.info('Payload final:', data);
     goTo(steps.length - 1);
   };
 

@@ -12,6 +12,7 @@
 //  - If you don't have xlsx, CSV parsing fallback is included (very basic)
 
 import * as React from 'react';
+import * as Sentry from '@sentry/nextjs';
 import {
   Box,
   Stack,
@@ -502,7 +503,7 @@ const StepAttendees: React.FC<{
       else parsed = await parseCSV(file); // fallback to CSV parser
       setForm((s) => ({ ...s, attendees: [...s.attendees, ...parsed] }));
     } catch (e) {
-      console.error(e);
+      Sentry.logger.error(JSON.stringify(e));
       alert('No se pudo leer el archivo. Asegúrate de usar CSV o XLSX');
     }
   };
@@ -651,7 +652,7 @@ export default function NewEventWizardPage(): React.JSX.Element {
       await new Promise((res) => setTimeout(res, 800));
       setToast({ open: true, message: 'Evento creado con éxito', severity: 'success' });
       // router.push("/events");
-      console.log('Submitted payload', payload);
+      Sentry.logger.info('Submitted payload', payload);
     } catch {
       setToast({ open: true, message: 'No se pudo crear el evento', severity: 'error' });
     } finally {

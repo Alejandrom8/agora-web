@@ -1,5 +1,6 @@
 // lib/clients/bff.ts
 import { ApiClient } from '@/lib/apiClient';
+import * as Sentry from '@sentry/nextjs';
 
 // Detecta entorno para resolver base URL (SSR vs CSR)
 function getBaseUrl() {
@@ -14,7 +15,7 @@ export const bffClient = new ApiClient({
   timeout: 8000,
   retries: 1,
   onError: (e, ctx) => {
-    console.error(`[BFF] ${ctx.method} ${ctx.url}`, e.status, e.details);
+    Sentry.logger.error(`[BFF] ${ctx.method} ${ctx.url}`, e.status, e.details);
   },
 });
 

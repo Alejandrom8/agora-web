@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as Sentry from '@sentry/nextjs';
 import Head from 'next/head';
 import {
   Box,
@@ -24,7 +25,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import AppleIcon from '@mui/icons-material/Apple';
 import MailOutlineRounded from '@mui/icons-material/MailOutlineRounded';
 import LockRounded from '@mui/icons-material/LockRounded';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import TypoLogo from '@/components/App/TypoLogo';
 import { emailExists, login } from '@/hooks/useSession';
 import Link from 'next/link';
@@ -75,7 +76,7 @@ export default function LoginPage(): React.JSX.Element {
         setSubmitting(false);
         setIsEmailValidated(true);
       } catch (err) {
-        console.log(err);
+        Sentry.logger.error(JSON.stringify(err));
         setError('No pudimos verificar el correo. Inténtalo de nuevo.');
         setSubmitting(false);
       }
@@ -90,10 +91,11 @@ export default function LoginPage(): React.JSX.Element {
         await login(email, password);
         //enqueueSnackbar('Inicio de sesión exitoso', { variant: 'success' });
         router.push('/events');
-      } catch {
+      } catch (err) {
+        Sentry.logger.error(JSON.stringify(err));
         setError('No pudimos iniciar sesión. Inténtalo de nuevo.');
         setSubmitting(false);
-      }
+      } 
     }
   };
 
@@ -275,7 +277,7 @@ export default function LoginPage(): React.JSX.Element {
                           fullWidth
                           onClick={() => {
                             // TODO: start your OAuth flow
-                            console.log('Google OAuth');
+                            Sentry.logger.info('Google OAuth');
                           }}
                         >
                           Google
@@ -287,7 +289,7 @@ export default function LoginPage(): React.JSX.Element {
                           startIcon={<AppleIcon />}
                           onClick={() => {
                             // TODO: start your OAuth flow
-                            console.log('Apple OAuth');
+                            Sentry.logger.info('Apple OAuth');
                           }}
                         >
                           Apple

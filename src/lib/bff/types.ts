@@ -1,4 +1,4 @@
-type ApiError = {
+export type ApiError = {
   code: number;
   message: string;
   scope: string;
