@@ -19,15 +19,42 @@ export type SessionTokens = {
 
 export type LoginResponse = AgoraApiResponse<SessionTokens>
 
+type UserAuth = {
+  app_id: string;
+  created_at: string;
+  email: string;
+  id: string;
+  udpated_at: string;
+  user_id: string;
+};
+
+type UserLoginMethod = {
+  app_id: string;
+  created_at: string;
+  entity_id: string;
+  entity_type: string;
+  id: string;
+  is_veryfy: boolean;
+  updated_at: string;
+  user_id: string;
+};
+
+type UserProfile = {
+  app_id: string;
+  created_at: string;
+  id: string;
+  is_removed: boolean;
+  name: string;
+  updated_at: string;
+  user_name: string;
+};
+
 export type UserProfileResponse = AgoraApiResponse<{
-    id: string;
-    user_id: string;
-    email: string;
-    first_name: string;
-    last_name: string;
-    profile_type: string;
-    created_at: string;
-    updated_at: string;
+    auth: UserAuth,
+    login_method: UserLoginMethod,
+    user: UserProfile,
+    entity_type: string;
+    is_valid: boolean,
   }>
 
 export type SignUpResponse = AgoraApiResponse<{
