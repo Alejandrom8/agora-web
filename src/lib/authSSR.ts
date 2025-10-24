@@ -1,5 +1,6 @@
 // lib/auth-ssr.ts
 import type { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import * as Sentry from '@sentry/nextjs';
 
 /**
  * Helper reutilizable que protege páginas con SSR.
@@ -16,6 +17,7 @@ export function withAuth<P extends { [key: string]: any }>(
 
     if (res.status === 401) {
       const loginUrl = `/login?next=${encodeURIComponent(ctx.resolvedUrl)}`;
+      Sentry.logger.error(`Unauthorized access, redirecting user to ${loginUrl}`);
       return {
         redirect: {
           destination: loginUrl,
