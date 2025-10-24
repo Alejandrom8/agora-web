@@ -90,11 +90,10 @@ export default function LoginPage(): React.JSX.Element {
         await login(email, password);
         //enqueueSnackbar('Inicio de sesión exitoso', { variant: 'success' });
         router.push('/events');
-      } catch (err) {
-        console.log(err);
+      } catch {
         setError('No pudimos iniciar sesión. Inténtalo de nuevo.');
         setSubmitting(false);
-      } 
+      }
     }
   };
 
