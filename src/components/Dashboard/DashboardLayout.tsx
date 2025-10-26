@@ -29,7 +29,7 @@ import {
   useMediaQuery,
   Button,
 } from '@mui/material';
-import { alpha, useTheme, type Theme } from '@mui/material/styles';
+import { alpha, useTheme } from '@mui/material/styles';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import EventRoundedIcon from '@mui/icons-material/EventRounded';
@@ -75,14 +75,8 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 // Util logo
-const Logo: React.FC = () => (
-  <Stack direction="row" spacing={1} alignItems="center">
-    <img src={'/logo.svg'} style={{ width: '22px', height: '22px' }} />
-    <Typography variant="h6" fontWeight={900}>
-      Agora
-    </Typography>
-  </Stack>
-);
+import TypoLogo from '../App/TypoLogo';
+const Logo: React.FC = () => <TypoLogo />;
 
 // ------- ProtectedLayout --------
 // Renders children only if the user is authenticated; otherwise show a sign-in CTA or redirect.
@@ -127,7 +121,7 @@ export const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({ child
 export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
   const theme = useTheme();
-  const mdUp = useMediaQuery((t: Theme) => t.breakpoints.up('md'));
+  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
   const [open, setOpen] = React.useState(false);
 
   const toggle = () => setOpen((o) => !o);
@@ -150,7 +144,11 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
               sx={{
                 borderRadius: 1.5,
                 px: 1.25,
-                '&.active, &:hover': { backgroundColor: alpha(theme.palette.info.main, 0.12) },
+                color: theme.palette.text.primary,
+                '&.active, &:hover': {
+                  backgroundColor: alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.08 : 0.16),
+                  color: theme.palette.primary.main,
+                },
               }}
             >
               <ListItemIcon sx={{ minWidth: 36, color: 'inherit' }}>{item.icon}</ListItemIcon>
@@ -161,12 +159,12 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
       </Box>
 
       {/* Bottom: User bar */}
-      <Box sx={{ p: 1.5, borderTop: `1px solid ${alpha('#FFFFFF', 0.08)}` }}>
+  <Box sx={{ p: 1.5, borderTop: `1px solid ${alpha(theme.palette.divider, 0.12)}` }}>
         <Stack direction="row" gap={1} alignItems="center" justifyContent="space-between">
           <Stack direction="row" gap={1.25} alignItems="center">
             <Avatar sx={{ width: 36, height: 36 }}>AG</Avatar>
             <Box>
-              <Typography variant="body2" fontWeight={700}>
+              <Typography variant="body2" fontWeight={700} color="text.primary">
                 Carolina Arango
               </Typography>
               <Typography variant="caption" color="text.secondary">
@@ -201,7 +199,11 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
           position="fixed"
           color="transparent"
           elevation={0}
-          sx={{ backdropFilter: 'blur(8px)', borderBottom: `1px solid ${alpha('#FFFFFF', 0.08)}` }}
+          sx={{
+            backdropFilter: 'blur(8px)',
+            borderBottom: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
+            background: theme.palette.background.paper,
+          }}
         >
           <Toolbar>
             <IconButton onClick={toggle} edge="start" sx={{ mr: 1 }}>
@@ -226,9 +228,9 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
               position: 'relative',
               width: DRAWER_WIDTH,
               height: '100vh',
-              borderRight: `1px solid ${alpha('#FFFFFF', 0.08)}`,
+              borderRight: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
               backgroundImage: 'none',
-              backgroundColor: 'transparent'
+              backgroundColor: theme.palette.background.paper,
             },
           }}
         >
@@ -243,8 +245,9 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
           PaperProps={{
             sx: {
               width: DRAWER_WIDTH,
-              borderRight: `1px solid ${alpha('#FFFFFF', 0.08)}`,
+              borderRight: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
               backgroundImage: 'none',
+              backgroundColor: theme.palette.background.paper,
             },
           }}
         >
@@ -278,6 +281,7 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
           flexDirection: 'column',
           height: '100vh',
           overflow: 'hidden',
+          background: theme.palette.background.default,
         }}
       >
         {/* Spacer for mobile appbar */}

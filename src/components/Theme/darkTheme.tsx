@@ -1,17 +1,17 @@
-// theme/agoraTheme.light.ts
+// theme/agoraTheme.ts
 import { createTheme, alpha } from '@mui/material/styles';
 
-// Helpers (light)
-const bgBase = '#F6F8FB';
-const surface = '#FFFFFF';
+// Helpers
+const bgBase = '#0F1216';
+const surface = '#1E222A';
 const primary = '#0057C9';
-const secondary = '#343539'; // lo mantenemos para chips/contrastes puntuales en light
+const secondary = '#343539';
 const accent = '#0370FF';
 
-export const agoraThemeLight = createTheme({
-  cssVariables: true,
+export const darkTheme = createTheme({
+  cssVariables: true, // habilita vars CSS (MUI v5.14+)
   palette: {
-    mode: 'light',
+    mode: 'dark',
     primary: {
       main: primary,
       dark: '#0047A3',
@@ -24,6 +24,7 @@ export const agoraThemeLight = createTheme({
       dark: '#26272B',
       contrastText: '#FFFFFF',
     },
+    // Usamos "info" para el color de resaltado (accent)
     info: {
       main: accent,
       light: '#3A8AFF',
@@ -35,11 +36,11 @@ export const agoraThemeLight = createTheme({
       paper: surface,
     },
     text: {
-      primary: '#111418',
-      secondary: '#4A4F57',
-      disabled: '#8C929C',
+      primary: '#E8EAED',
+      secondary: '#B0B4BA',
+      disabled: '#7C818A',
     },
-    divider: alpha('#0B0D12', 0.1),
+    divider: alpha('#E8EAED', 0.08),
     success: {
       main: '#2ECC71',
       contrastText: '#0C1A12',
@@ -49,15 +50,15 @@ export const agoraThemeLight = createTheme({
       contrastText: '#1A1206',
     },
     error: {
-      main: '#E03636',
+      main: '#FF4D4F',
       contrastText: '#1A0E0E',
     },
     action: {
-      hover: alpha('#000000', 0.04),
-      selected: alpha('#000000', 0.06),
-      disabled: alpha('#000000', 0.26),
-      focus: alpha(accent, 0.18),
-      active: '#111418',
+      hover: alpha('#FFFFFF', 0.06),
+      selected: alpha('#FFFFFF', 0.1),
+      disabled: alpha('#FFFFFF', 0.38),
+      focus: alpha(accent, 0.24),
+      active: '#FFFFFF',
     },
   },
 
@@ -85,27 +86,25 @@ export const agoraThemeLight = createTheme({
     h4: { fontWeight: 700, fontSize: '1.5rem', lineHeight: 1.25 },
     h5: { fontWeight: 700, fontSize: '1.25rem' },
     h6: { fontWeight: 700, fontSize: '1.125rem' },
-    subtitle1: { fontWeight: 600, color: '#2C3138' },
-    subtitle2: { fontWeight: 600, color: '#5A606A' },
+    subtitle1: { fontWeight: 600, color: '#C9CED6' },
+    subtitle2: { fontWeight: 600, color: '#A8AFBA' },
     body1: { fontSize: '1rem', lineHeight: 1.65 },
-    body2: { fontSize: '0.925rem', lineHeight: 1.6, color: '#4F5560' },
+    body2: { fontSize: '0.925rem', lineHeight: 1.6, color: '#C0C5CF' },
     button: { fontWeight: 700, textTransform: 'none', letterSpacing: 0.2 },
     overline: { letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 700 },
-    caption: { color: '#6C7380' },
+    caption: { color: '#9AA1AC' },
   },
 
   components: {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundImage: `
-            radial-gradient(1200px 800px at 80% -10%, ${alpha(accent, 0.08)} 0%, transparent 60%),
-            radial-gradient(1000px 600px at -10% 120%, ${alpha(primary, 0.07)} 0%, transparent 60%)
-          `,
+          backgroundImage: `radial-gradient(1200px 800px at 80% -10%, ${alpha(accent, 0.06)} 0%, transparent 60%),
+                            radial-gradient(1000px 600px at -10% 120%, ${alpha(primary, 0.05)} 0%, transparent 60%)`,
         },
         '*::-webkit-scrollbar': { width: 10, height: 10 },
         '*::-webkit-scrollbar-thumb': {
-          backgroundColor: alpha('#000000', 0.22),
+          backgroundColor: alpha('#FFFFFF', 0.18),
           borderRadius: 8,
           border: `2px solid ${bgBase}`,
         },
@@ -115,9 +114,9 @@ export const agoraThemeLight = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          background: alpha('#FFFFFF', 0.7),
+          background: alpha('#0B0D12', 0.7),
           backdropFilter: 'saturate(140%) blur(10px)',
-          borderBottom: `1px solid ${alpha('#000000', 0.06)}`,
+          borderBottom: `1px solid ${alpha('#FFFFFF', 0.06)}`,
         },
       },
     },
@@ -131,7 +130,7 @@ export const agoraThemeLight = createTheme({
         root: {
           backgroundImage: 'none',
           backgroundColor: surface,
-          border: `1px solid ${alpha('#000000', 0.06)}`,
+          border: `1px solid ${alpha('#FFFFFF', 0.06)}`,
         },
       },
     },
@@ -141,8 +140,8 @@ export const agoraThemeLight = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 16,
-          background: `linear-gradient(180deg, ${alpha('#000000', 0.02)}, ${alpha('#000000', 0)})`,
-          boxShadow: `0 10px 30px ${alpha('#000', 0.12)}`,
+          background: `linear-gradient(180deg, ${alpha('#FFFFFF', 0.04)}, ${alpha('#FFFFFF', 0)})`,
+          boxShadow: `0 10px 30px ${alpha('#000', 0.35)}`,
         },
       },
     },
@@ -158,14 +157,14 @@ export const agoraThemeLight = createTheme({
           background: `linear-gradient(135deg, ${primary}, ${accent})`,
         },
         outlined: {
-          borderColor: alpha('#000000', 0.14),
+          borderColor: alpha('#FFFFFF', 0.24),
           '&:hover': {
-            borderColor: alpha('#000000', 0.28),
-            backgroundColor: alpha('#000000', 0.04),
+            borderColor: alpha('#FFFFFF', 0.4),
+            backgroundColor: alpha('#FFFFFF', 0.04),
           },
         },
         text: {
-          '&:hover': { backgroundColor: alpha(accent, 0.08) },
+          '&:hover': { backgroundColor: alpha(accent, 0.1) },
         },
       },
     },
@@ -174,18 +173,18 @@ export const agoraThemeLight = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 999,
-          backgroundColor: alpha('#000000', 0.04),
-          border: `1px solid ${alpha('#000000', 0.1)}`,
+          backgroundColor: alpha('#FFFFFF', 0.06),
+          border: `1px solid ${alpha('#FFFFFF', 0.1)}`,
         },
         colorPrimary: {
-          backgroundColor: alpha(primary, 0.14),
-          color: '#0A2B66',
-          borderColor: alpha(primary, 0.35),
+          backgroundColor: alpha(primary, 0.18),
+          color: '#DDEBFF',
+          borderColor: alpha(primary, 0.4),
         },
         colorSecondary: {
-          backgroundColor: alpha(secondary, 0.12),
-          color: '#1C1D22',
-          borderColor: alpha(secondary, 0.3),
+          backgroundColor: alpha(secondary, 0.18),
+          color: '#E7E9ED',
+          borderColor: alpha(secondary, 0.4),
         },
       },
     },
@@ -200,10 +199,10 @@ export const agoraThemeLight = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          backgroundColor: alpha('#000000', 0.02),
+          backgroundColor: alpha('#FFFFFF', 0.02),
           borderRadius: 12,
-          '& fieldset': { borderColor: alpha('#000000', 0.18) },
-          '&:hover fieldset': { borderColor: alpha('#000000', 0.28) },
+          '& fieldset': { borderColor: alpha('#FFFFFF', 0.18) },
+          '&:hover fieldset': { borderColor: alpha('#FFFFFF', 0.28) },
           '&.Mui-focused fieldset': { borderColor: accent },
         },
         input: {
@@ -227,8 +226,8 @@ export const agoraThemeLight = createTheme({
         root: {
           textTransform: 'none',
           fontWeight: 700,
-          color: alpha('#000000', 0.6),
-          '&.Mui-selected': { color: '#111418' },
+          color: alpha('#FFFFFF', 0.7),
+          '&.Mui-selected': { color: '#FFFFFF' },
         },
       },
     },
@@ -237,8 +236,8 @@ export const agoraThemeLight = createTheme({
       styleOverrides: {
         paper: {
           borderRadius: 20,
-          border: `1px solid ${alpha('#000000', 0.08)}`,
-          background: `linear-gradient(180deg, ${alpha('#000000', 0.02)}, ${alpha('#000000', 0)})`,
+          border: `1px solid ${alpha('#FFFFFF', 0.08)}`,
+          background: `linear-gradient(180deg, ${alpha('#FFFFFF', 0.04)}, ${alpha('#FFFFFF', 0)})`,
         },
       },
     },
@@ -246,9 +245,8 @@ export const agoraThemeLight = createTheme({
     MuiTooltip: {
       styleOverrides: {
         tooltip: {
-          backgroundColor: '#FFFFFF',
-          color: '#111418',
-          border: `1px solid ${alpha('#000000', 0.12)}`,
+          backgroundColor: '#0F1117',
+          border: `1px solid ${alpha('#FFFFFF', 0.12)}`,
         },
       },
     },
@@ -265,7 +263,8 @@ export const agoraThemeLight = createTheme({
     },
   },
 
-  // Tokens personalizados (mismo shape que el tema dark)
+  // Tokens personalizados para reusar en tu app
+  // (accessibles vía theme.custom.*)
   custom: {
     brand: {
       primary,
@@ -276,21 +275,22 @@ export const agoraThemeLight = createTheme({
     },
     gradient: {
       primary: `linear-gradient(135deg, ${primary}, ${accent})`,
-      subtle: `linear-gradient(180deg, ${alpha('#000000', 0.02)}, ${alpha('#000000', 0)})`,
+      subtle: `linear-gradient(180deg, ${alpha('#FFFFFF', 0.03)}, ${alpha('#FFFFFF', 0)})`,
     },
     shadow: {
-      lg: `0 10px 30px ${alpha('#000', 0.12)}`,
-      md: `0 6px 18px ${alpha('#000', 0.1)}`,
+      lg: `0 10px 30px ${alpha('#000', 0.35)}`,
+      md: `0 6px 18px ${alpha('#000', 0.28)}`,
     },
     badge: {
-      founder: { bg: alpha(primary, 0.12), color: '#0A2B66', border: alpha(primary, 0.35) },
-      investor: { bg: alpha('#2ECC71', 0.14), color: '#0D3A24', border: alpha('#2ECC71', 0.45) },
-      technologist: { bg: alpha(accent, 0.12), color: '#0A2B66', border: alpha(accent, 0.4) },
+      // útil para “Founder / Investor / Technologist”
+      founder: { bg: alpha(primary, 0.2), color: '#DDEBFF', border: alpha(primary, 0.5) },
+      investor: { bg: alpha('#2ECC71', 0.18), color: '#DFF7EA', border: alpha('#2ECC71', 0.45) },
+      technologist: { bg: alpha(accent, 0.2), color: '#E2ECFF', border: alpha(accent, 0.5) },
     },
   },
 });
 
-// Tipado para theme.custom (igual al tema dark)
+// Tipado opcional para acceder a theme.custom sin "any":
 declare module '@mui/material/styles' {
   interface Theme {
     custom: {

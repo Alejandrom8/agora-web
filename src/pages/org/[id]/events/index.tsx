@@ -37,7 +37,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import EventRoundedIcon from '@mui/icons-material/EventRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import CategoryRoundedIcon from '@mui/icons-material/CategoryRounded';
-import { ProtectedLayout } from '@/components/App/ProtectedLayout';
+import { ProtectedLayout } from '@/components/Dashboard/DashboardLayout';
 import { useRouter } from 'next/navigation';
 
 // If your App Router segment already wraps with ProtectedLayout, you don't need this import.

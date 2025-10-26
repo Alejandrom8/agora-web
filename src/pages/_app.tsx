@@ -1,16 +1,16 @@
 import React from 'react';
 import { SWRConfig } from 'swr';
 import type { AppProps } from 'next/app';
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import { agoraTheme } from '@/components/App/Theme';
+import { CssBaseline } from '@mui/material';
 import { bffClient } from '@/lib/clients/bff';
 import { SnackbarProvider } from 'notistack';
+import { AppThemeProvider } from '@/components/Theme/ThemeProvider';
 
 const swrFetcher = (endpoint: string) => bffClient.get(endpoint); // e.g. '/api/auth/me'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={agoraTheme}>
+    <AppThemeProvider>
       <CssBaseline />
       <SnackbarProvider maxSnack={3}>
         <SWRConfig value={{
@@ -22,6 +22,6 @@ export default function App({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </SWRConfig>
       </SnackbarProvider>
-    </ThemeProvider>
+    </AppThemeProvider>
   );
 }
