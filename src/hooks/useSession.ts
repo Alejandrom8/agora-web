@@ -20,8 +20,14 @@ export async function logout() {
   await mutate('/api/auth/me', null, false);
 }
 
-export async function signUp(email: string, password: string, user_name: string) {
-  await bffClient.post('/api/auth/signup', { email, password, user_name });
+type SignUpInput = {
+  email: string;
+  password: string;
+  user_name: string;
+};
+
+export async function signUp(input: SignUpInput) {
+  await bffClient.post('/api/auth/signup', input);
 }
 
 export async function verifyEmail(email: string, code: string) {
