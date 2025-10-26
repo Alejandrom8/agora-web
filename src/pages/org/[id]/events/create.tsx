@@ -46,7 +46,7 @@ import ImageRounded from '@mui/icons-material/ImageRounded';
 import PersonRounded from '@mui/icons-material/PersonRounded';
 import CloudUploadRounded from '@mui/icons-material/CloudUploadRounded';
 import DownloadRounded from '@mui/icons-material/DownloadRounded';
-import { ProtectedLayout } from '@/components/App/ProtectedLayout';
+import { ProtectedLayout } from '@/components/Dashboard/DashboardLayout';
 
 // Optional: enable Excel parsing if you installed xlsx
 // import * as XLSX from "xlsx";

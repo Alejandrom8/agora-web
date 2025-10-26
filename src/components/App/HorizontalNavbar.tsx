@@ -25,6 +25,7 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { useRouter } from 'next/router';
 import TypoLogo from '@/components/App/TypoLogo';
+import { ThemeToggleSwitch } from '../Theme/ThemeToggleSwitch';
 
 type NavItem = { label: string; href: string };
 const NAV_ITEMS: NavItem[] = [
@@ -49,9 +50,11 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
   // Cambia estilos al hacer scroll
   const scrolled = useScrollTrigger({ disableHysteresis: true, threshold: 8 });
 
-  // Fondo y bordes con glassmorphism
-  const bg = alpha('#0B0D12', scrolled ? 0.55 : 0.35);
-  const border = alpha('#FFFFFF', scrolled ? 0.16 : 0.12);
+  // Fondo y bordes con glassmorphism dependientes del tema
+  const isLight = theme.palette.mode === 'light';
+  const baseBg = isLight ? theme.palette.background.paper : theme.palette.background.default;
+  const bg = alpha(baseBg, scrolled ? 0.85 : 0.65);
+  const border = alpha(theme.palette.divider, scrolled ? 0.24 : 0.16);
 
   // Region selector
   const [region, setRegion] = React.useState<'MX' | 'ARG' | 'USA'>('MX');
@@ -63,7 +66,7 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
   return (
     <>
       {/* Contenedor flotante con pill */}
-      <Box sx={{ position: 'fixed', top: 20, left: 0, right: 0, zIndex: (t) => t.zIndex.appBar }}>
+  <Box sx={{ position: 'fixed', top: 20, left: 0, right: 0, zIndex: (t) => t.zIndex.appBar }}>
         <Container maxWidth="lg" disableGutters sx={{ px: { xs: 1.25, sm: 2, md: 0 } }}>
           <AppBar
             position="static"
@@ -73,7 +76,7 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
               background: bg,
               border: `1px solid ${border}`,
               borderRadius: 999,
-              boxShadow: `0 8px 30px ${alpha('#000', 0.35)}`,
+              boxShadow: `0 8px 30px ${alpha(theme.palette.common.black, isLight ? 0.10 : 0.35)}`,
               backdropFilter: 'saturate(140%) blur(10px)',
             }}
           >
@@ -105,7 +108,7 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                       underline="none"
                       sx={{
                         position: 'relative',
-                        color: 'rgba(255,255,255,0.85)',
+                        color: theme.palette.text.primary,
                         fontWeight: 500,
                         py: 0.5,
                         '&::after': {
@@ -116,12 +119,12 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                           height: '2px',
                           bottom: -4,
                           left: 0,
-                          backgroundColor: '#0370FF',
+                          backgroundColor: theme.palette.primary.main,
                           transformOrigin: 'bottom right',
                           transition: 'transform 0.25s ease-out',
                         },
                         '&:hover': {
-                          color: '#ffffff',
+                          color: theme.palette.primary.main,
                           '&::after': { transform: 'scaleX(1)', transformOrigin: 'bottom left' },
                         },
                       }}
@@ -161,8 +164,8 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                     variant="outlined"
                     color="inherit"
                     sx={{
-                      borderColor: alpha('#FFF', 0.2),
-                      bgcolor: alpha('#FFF', 0.04),
+                      borderColor: alpha(theme.palette.text.primary, 0.2),
+                      bgcolor: alpha(theme.palette.text.primary, 0.04),
                       textTransform: 'none',
                     }}
                   >
@@ -190,6 +193,7 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                       </MenuItem>
                     ))}
                   </Menu>
+                  <ThemeToggleSwitch />
                 </Stack>
               ) : (
                 <IconButton edge="end" onClick={() => setOpen(true)} aria-label="Abrir menú">
@@ -206,17 +210,17 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
         anchor="right"
         open={open}
         onClose={() => setOpen(false)}
-        PaperProps={{
-          sx: {
-            width: 320,
-            backgroundImage: 'none',
-            backgroundColor: alpha('#0B0D12', 0.98),
-            borderLeft: `1px solid ${alpha('#FFFFFF', 0.08)}`,
-            p: 1.5,
-            borderTopLeftRadius: 16,
-            borderBottomLeftRadius: 16,
-          },
-        }}
+          PaperProps={{
+            sx: {
+              width: 320,
+              backgroundImage: 'none',
+              backgroundColor: alpha(baseBg, 0.98),
+              borderLeft: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
+              p: 1.5,
+              borderTopLeftRadius: 16,
+              borderBottomLeftRadius: 16,
+            },
+          }}
       >
         <TypoLogo sx={{ px: 1, pb: 1, pt: 3, pl: 2 }} />
         <Divider sx={{ mb: 1, opacity: 0.2 }} />
@@ -263,7 +267,7 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                 label={`${REGION_FLAGS[code]} ${code}`}
                 onClick={() => setRegion(code)}
                 variant={region === code ? 'filled' : 'outlined'}
-                sx={{ borderColor: alpha('#FFF', 0.2) }}
+                sx={{ borderColor: alpha(theme.palette.text.primary, 0.2) }}
               />
             ))}
           </Stack>

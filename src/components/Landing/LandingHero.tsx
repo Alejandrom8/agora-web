@@ -9,16 +9,24 @@ import {
   Card,
   CardMedia,
   CardContent,
+  useTheme,
 } from '@mui/material';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded';
 import HubIcon from '@mui/icons-material/Hub';
 
-const primary = '#0057C9' as const;
-const accent = '#0370FF' as const;
-const accent2 = '#2a86f6' as const;
 
+// Los colores principales y acentos ahora dependen del theme
 export default function LandingHero() {
+  const theme = useTheme();
+  const isLight = theme.palette.mode === 'light';
+  const primary = theme.palette.primary.main;
+  const accent = isLight ? theme.palette.primary.light : theme.palette.primary.dark;
+  const accent2 = isLight ? theme.palette.info.light : theme.palette.info.dark;
+  const heroBg = isLight
+    ? 'rgba(255,255,255,0.85)'
+    : 'rgba(0,0,0,0.7)';
+
   return (
     <Box
       sx={{
@@ -37,7 +45,7 @@ export default function LandingHero() {
           overflow: 'hidden',
           width: '100%',
           minHeight: { xs: '100vh', md: '100vh', xl: 'auto' },
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          backgroundColor: heroBg,
           backdropFilter: 'blur(12px)',
           display: 'flex',
           justifyContent: 'center',
@@ -61,6 +69,7 @@ export default function LandingHero() {
                     sx={{
                       background: `linear-gradient(90deg, ${primary}, ${accent}, ${accent2})`,
                       backgroundClip: 'text',
+                      WebkitBackgroundClip: 'text',
                       color: 'transparent',
                       display: 'inline-block',
                     }}
@@ -73,6 +82,7 @@ export default function LandingHero() {
                     sx={{
                       background: `linear-gradient(90deg, ${accent2}, ${accent}, ${primary})`,
                       backgroundClip: 'text',
+                      WebkitBackgroundClip: 'text',
                       color: 'transparent',
                       display: 'inline-block',
                     }}
