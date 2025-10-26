@@ -8,12 +8,18 @@ import {
   Typography,
   TextField,
   Button,
+  Snackbar,
 } from '@mui/material';
 import { verifyEmail } from '@/hooks/useSession';
+import TypoLogo from '@/components/App/TypoLogo';
+import { useRouter } from 'next/router';
 
 
 function VerificationPage({ email }: { email: string }): React.JSX.Element {
   const [error, setError] = React.useState<string | null>(null);
+  const [submitting, setSubmitting] = React.useState(false);
+  const [ok, setOk] = React.useState(false);
+  const router = useRouter();
 
   const CELLS = 6;
   const [values, setValues] = React.useState<string[]>(
@@ -81,8 +87,12 @@ function VerificationPage({ email }: { email: string }): React.JSX.Element {
     if (!isComplete) return;
 
     try {
+      setSubmitting(true);
       await verifyEmail(email, code);
+      setOk(true);
+      router.push('/events');
     } catch {
+      setSubmitting(false);
       setError('Código inválido. Intenta nuevamente.');
       setValues(Array.from({ length: CELLS }, () => ''));
       focusAt(0);
@@ -103,6 +113,7 @@ function VerificationPage({ email }: { email: string }): React.JSX.Element {
           aria-label="Formulario de verificación de 6 dígitos"
         >
           <Stack spacing={3} alignItems="center">
+            <TypoLogo />
             <Stack spacing={1} alignItems="center">
               <Typography variant="h4" sx={{ fontWeight: 800, textAlign: 'center' }}>
                 Verifica tu código
@@ -150,10 +161,10 @@ function VerificationPage({ email }: { email: string }): React.JSX.Element {
               type="submit"
               variant="contained"
               size="large"
-              disabled={!isComplete}
+              disabled={!isComplete || submitting}
               sx={{ px: 4, fontWeight: 700 }}
             >
-              Verificar
+              {submitting ? 'Verificando...' : 'Verificar'}
             </Button>
 
             {/* Ayuda opcional */}
@@ -163,6 +174,12 @@ function VerificationPage({ email }: { email: string }): React.JSX.Element {
           </Stack>
         </Box>
       </Container>
+      <Snackbar
+        open={ok}
+        autoHideDuration={2500}
+        onClose={() => setOk(false)}
+        message="Código verificado. Redirigiendo…"
+      />
     </>
   );
 }

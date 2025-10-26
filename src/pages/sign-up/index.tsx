@@ -6,8 +6,8 @@ import {
   Stack,
   Typography,
   TextField,
-  Checkbox,
-  FormControlLabel,
+  // Checkbox,
+  // FormControlLabel,
   Button,
   Link as MLink,
   Divider,
@@ -63,7 +63,7 @@ export default function SignupPage(): React.JSX.Element {
   const [confirm, setConfirm] = React.useState('');
   const [showPw, setShowPw] = React.useState(false);
   const [showConfirm, setShowConfirm] = React.useState(false);
-  const [tos, setTos] = React.useState(true);
+  // const [tos, setTos] = React.useState(true);
   const [submitting, setSubmitting] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [ok, setOk] = React.useState(false);
@@ -78,15 +78,19 @@ export default function SignupPage(): React.JSX.Element {
 
     if (!username.trim()) return setError('Por favor ingresa tu nombre de usuario.');
     if (!isValidEmail(email)) return setError('Ingresa un correo válido.');
-    if (!tos) return setError('Debes aceptar los Términos y la Privacidad.');
+    //if (!tos) return setError('Debes aceptar los Términos y la Privacidad.');
     if (password.length < 8) return setError('La contraseña debe tener al menos 8 caracteres.');
     if (password !== confirm) return setError('Las contraseñas no coinciden.');
 
     try {
       setSubmitting(true);
-      await signUp(email, password, username);
+      await signUp({
+        email, 
+        password, 
+        user_name: username
+      });
       setOk(true);
-      router.push('/verify?email=' + encodeURIComponent(email));
+      router.push('/sign-up/verify?email=' + encodeURIComponent(email));
     } catch {
       setError('No pudimos crear tu cuenta. Intenta nuevamente.');
     } finally {
@@ -282,7 +286,7 @@ export default function SignupPage(): React.JSX.Element {
                     }}
                   />
 
-                  <FormControlLabel
+                  {/* <FormControlLabel
                     control={<Checkbox checked={tos} onChange={(e) => setTos(e.target.checked)} />}
                     label={
                       <Typography variant="body2">
@@ -290,7 +294,12 @@ export default function SignupPage(): React.JSX.Element {
                         <MLink href="#/privacy">Política de privacidad</MLink>.
                       </Typography>
                     }
-                  />
+                  /> */}
+
+                  <Typography variant="body2">
+                    Al continuar aceptas los <MLink href="#/terms">Términos</MLink> y la{' '}
+                    <MLink href="#/privacy">Política de privacidad</MLink>.
+                  </Typography>
 
                   <Button
                     type="submit"
@@ -308,7 +317,7 @@ export default function SignupPage(): React.JSX.Element {
                     </Typography>
                   </Divider>
 
-                  <Button variant="outlined" onClick={() => (window.location.href = '/login')}>
+                  <Button variant="outlined" onClick={() => router.push('/login')}>
                     Ir a Iniciar sesión
                   </Button>
 
