@@ -1,7 +1,3 @@
-// Agora Admin Dashboard — Material UI 5 + Recharts + TypeScript (Next.js friendly)
-// Save as: app/(app)/dashboard/page.tsx  (App Router)  or pages/dashboard.tsx (Pages Router)
-// Assumes your app already uses the Agora theme and ProtectedLayout.
-
 import * as React from 'react';
 import {
   Box,
@@ -40,7 +36,7 @@ import {
   Cell,
   Legend,
 } from 'recharts';
-import { ProtectedLayout } from '@/components/App/ProtectedLayout';
+import { ProtectedLayout } from '@/components/Dashboard/DashboardLayout';
 
 // -------------------------
 // Mock Data (replace with API calls)

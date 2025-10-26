@@ -30,15 +30,6 @@ import TypoLogo from '@/components/App/TypoLogo';
 import { signUp } from '@/hooks/useSession';
 import { useRouter } from 'next/router';
 
-// Roles & Categories aligned with Agora context
-// const ROLES = [
-//   { value: 'founder', label: 'Founder' },
-//   { value: 'investor', label: 'Inversionista' },
-//   { value: 'attendee', label: 'Asistente' },
-// ] as const;
-
-// const CATEGORIES = ['Speaker', 'Staff', 'Tecnólogo', 'Mentor', 'Jurado', 'Prensa'];
-
 const panelSx: SxProps<Theme> = () => ({
   borderRadius: 2,
   backgroundImage: 'none',
