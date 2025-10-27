@@ -20,7 +20,6 @@ import {
 import { alpha, type SxProps, type Theme } from '@mui/material/styles';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Visibility from '@mui/icons-material/Visibility';
-import LoginRounded from '@mui/icons-material/LoginRounded';
 import GoogleIcon from '@mui/icons-material/Google';
 import AppleIcon from '@mui/icons-material/Apple';
 import MailOutlineRounded from '@mui/icons-material/MailOutlineRounded';
@@ -95,7 +94,7 @@ export default function LoginPage(): React.JSX.Element {
         Sentry.logger.error(JSON.stringify(err));
         setError('No pudimos iniciar sesión. Inténtalo de nuevo.');
         setSubmitting(false);
-      } 
+      }
     }
   };
 
@@ -103,21 +102,33 @@ export default function LoginPage(): React.JSX.Element {
     <>
       <Head>
         <title>Agora | Login</title>
-        <meta name="description" content="Inicia sesión en Agora para crear y descubrir eventos tecnológicos." />
-        <meta name="keywords" content="Agora, login, acceso, eventos, tecnología, founders, inversionistas" />
+        <meta
+          name="description"
+          content="Inicia sesión en Agora para crear y descubrir eventos tecnológicos."
+        />
+        <meta
+          name="keywords"
+          content="Agora, login, acceso, eventos, tecnología, founders, inversionistas"
+        />
         <meta name="author" content="Agora Team" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="robots" content="index, follow" />
         {/* Open Graph */}
         <meta property="og:title" content="Agora | Login" />
-        <meta property="og:description" content="Inicia sesión en Agora para crear y descubrir eventos tecnológicos." />
+        <meta
+          property="og:description"
+          content="Inicia sesión en Agora para crear y descubrir eventos tecnológicos."
+        />
         <meta property="og:image" content="https://agora-web-three.vercel.app/og-image.png" />
         <meta property="og:url" content="https://agora-web-three.vercel.app/login" />
         <meta property="og:type" content="website" />
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Agora | Login" />
-        <meta name="twitter:description" content="Inicia sesión en Agora para crear y descubrir eventos tecnológicos." />
+        <meta
+          name="twitter:description"
+          content="Inicia sesión en Agora para crear y descubrir eventos tecnológicos."
+        />
         <meta name="twitter:image" content="https://agora-web-three.vercel.app/og-image.png" />
         <meta name="twitter:site" content="@agora" />
         <link rel="icon" href="/favicon.ico" />
@@ -133,11 +144,13 @@ export default function LoginPage(): React.JSX.Element {
                 Bienvenido de vuelta
               </Typography>
               <Typography color="text.secondary" textAlign="center">
-                {
-                  isEmailValidated
-                  ? <>Hola <strong>{email}</strong>, ingresa tu contraseña para continuar.</>
-                  : 'Inicia sesión para continuar a Agora.'
-                }
+                {isEmailValidated ? (
+                  <>
+                    Hola <strong>{email}</strong>, ingresa tu contraseña para continuar.
+                  </>
+                ) : (
+                  'Inicia sesión para continuar a Agora.'
+                )}
               </Typography>
             </Stack>
 
@@ -150,8 +163,7 @@ export default function LoginPage(): React.JSX.Element {
                     </Alert>
                   )}
 
-
-                  { !isEmailValidated && (
+                  {!isEmailValidated && (
                     <TextField
                       type="email"
                       label="Correo electrónico"
@@ -168,19 +180,23 @@ export default function LoginPage(): React.JSX.Element {
                           </InputAdornment>
                         ),
                         endAdornment: isEmailValidated && (
-                          <MLink underline='none' sx={{ cursor: 'pointer' }} onClick={() => {
-                            setIsEmailValidated(false);
-                            setPassword('');
-                          }}>
+                          <MLink
+                            underline="none"
+                            sx={{ cursor: 'pointer' }}
+                            onClick={() => {
+                              setIsEmailValidated(false);
+                              setPassword('');
+                            }}
+                          >
                             editar
                           </MLink>
-                        )
+                        ),
                       }}
                     />
                   )}
 
-                  {
-                    isEmailValidated && <>
+                  {isEmailValidated && (
+                    <>
                       <TextField
                         type={showPw ? 'text' : 'password'}
                         label="Contraseña"
@@ -191,6 +207,7 @@ export default function LoginPage(): React.JSX.Element {
                         required
                         autoComplete="current-password"
                         InputProps={{
+                          autoFocus: isEmailValidated,
                           startAdornment: (
                             <InputAdornment position="start">
                               <LockRounded />
@@ -209,7 +226,6 @@ export default function LoginPage(): React.JSX.Element {
                           ),
                         }}
                       />
-                      
 
                       <Stack
                         direction={{ xs: 'column', sm: 'row' }}
@@ -230,45 +246,42 @@ export default function LoginPage(): React.JSX.Element {
                         </MLink>
                       </Stack>
                     </>
-                  }
+                  )}
 
-                  <Button
-                    type="submit"
-                    size="large"
-                    variant="contained"
-                    startIcon={isEmailValidated && <LoginRounded />}
-                    disabled={submitting}
-                  >
-                    {
-                      isEmailValidated
-                        ? (submitting ? <CircularProgress size={24} /> : 'Ingresar')
-                        : (submitting ? <CircularProgress size={24} /> : 'Continuar')
-                    }
+                  <Button type="submit" size="large" variant="contained" disabled={submitting}>
+                    {isEmailValidated ? (
+                      submitting ? (
+                        <CircularProgress size={24} />
+                      ) : (
+                        'Ingresar'
+                      )
+                    ) : submitting ? (
+                      <CircularProgress size={24} />
+                    ) : (
+                      'Continuar'
+                    )}
                   </Button>
 
-                  {
-                    isEmailValidated && (
-                      <Button
-                        size="large"
-                        variant="outlined"
-                        onClick={() => {
-                          setIsEmailValidated(false);
-                          setPassword('');
-                        }}
-                      >
-                        Cancelar
-                      </Button>
-                    )
-                  }
+                  {isEmailValidated && (
+                    <Button
+                      size="large"
+                      variant="outlined"
+                      onClick={() => {
+                        setIsEmailValidated(false);
+                        setPassword('');
+                      }}
+                    >
+                      Regresar
+                    </Button>
+                  )}
 
-                  {
-                    !isEmailValidated && <>
+                  {!isEmailValidated && (
+                    <>
                       <Divider flexItem>
                         <Typography variant="caption" color="text.secondary">
                           o continúa con
                         </Typography>
                       </Divider>
-
 
                       <Stack spacing={2} direction={'row'} justifyContent="center">
                         <Button
@@ -294,7 +307,7 @@ export default function LoginPage(): React.JSX.Element {
                         >
                           Apple
                         </Button>
-                      </Stack>              
+                      </Stack>
 
                       <Typography variant="body2" color="text.secondary" textAlign="center">
                         ¿Aún no tienes cuenta?{' '}
@@ -303,7 +316,7 @@ export default function LoginPage(): React.JSX.Element {
                         </MLink>
                       </Typography>
                     </>
-                  }
+                  )}
                   {/* Security hint (roles/MFA) */}
                   {/*<Alert severity="info" variant="outlined" sx={{ mt: 1 }}>*/}
                   {/*  Para eventos con reglas avanzadas, los inversionistas podrían requerir{' '}*/}

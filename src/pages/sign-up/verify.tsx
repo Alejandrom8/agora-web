@@ -92,10 +92,11 @@ function VerificationPage({ email }: { email: string }): React.JSX.Element {
       setOk(true);
       router.push('/events');
     } catch {
-      setSubmitting(false);
       setError('Código inválido. Intenta nuevamente.');
       setValues(Array.from({ length: CELLS }, () => ''));
       focusAt(0);
+    } finally {
+      setSubmitting(false);
     }
   };
 
