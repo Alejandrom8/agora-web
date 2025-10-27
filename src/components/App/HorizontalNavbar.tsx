@@ -30,11 +30,10 @@ import { ThemeToggleSwitch } from '../Theme/ThemeToggleSwitch';
 type NavItem = { label: string; href: string };
 const NAV_ITEMS: NavItem[] = [
   { label: 'Eventos', href: '#funcionalidades' },
-  { label: 'Hosts', href: '#para-admins' },
+  { label: 'Se un Host', href: '/organizations' },
   { label: 'Precios', href: '#precios' },
   { label: 'Legal', href: '/legal' },
 ];
-
 
 const REGION_FLAGS: Record<string, string> = {
   MX: '🇲🇽',
@@ -66,7 +65,7 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
   return (
     <>
       {/* Contenedor flotante con pill */}
-  <Box sx={{ position: 'fixed', top: 20, left: 0, right: 0, zIndex: (t) => t.zIndex.appBar }}>
+      <Box sx={{ position: 'fixed', top: 20, left: 0, right: 0, zIndex: (t) => t.zIndex.appBar }}>
         <Container maxWidth="lg" disableGutters sx={{ px: { xs: 1.25, sm: 2, md: 0 } }}>
           <AppBar
             position="static"
@@ -76,16 +75,19 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
               background: bg,
               border: `1px solid ${border}`,
               borderRadius: 999,
-              boxShadow: `0 8px 30px ${alpha(theme.palette.common.black, isLight ? 0.10 : 0.35)}`,
+              boxShadow: `0 8px 30px ${alpha(theme.palette.common.black, isLight ? 0.1 : 0.35)}`,
               backdropFilter: 'saturate(140%) blur(10px)',
             }}
           >
-            <Toolbar sx={{ 
-              minHeight: { xs: 56, md: 64 }, px: { xs: 1, sm: 2.5, md: 3 }, 
-              display: { xs: 'flex' }, 
-              justifyContent: { xs: 'space-between'  },
-              paddingX: { xs: 3 }
-            }}>
+            <Toolbar
+              sx={{
+                minHeight: { xs: 56, md: 64 },
+                px: { xs: 1, sm: 2.5, md: 3 },
+                display: { xs: 'flex' },
+                justifyContent: { xs: 'space-between' },
+                paddingX: { xs: 3 },
+              }}
+            >
               {/* Izquierda: Logo */}
               <TypoLogo sx={{ mr: 1 }} />
 
@@ -169,7 +171,9 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                       textTransform: 'none',
                     }}
                   >
-                    <Box component="span" sx={{ mr: 1 }}>{REGION_FLAGS[region]}</Box>
+                    <Box component="span" sx={{ mr: 1 }}>
+                      {REGION_FLAGS[region]}
+                    </Box>
                     {region}
                   </Button>
                   <Menu
@@ -188,7 +192,9 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
                           handleCloseRegion();
                         }}
                       >
-                        <Box component="span" sx={{ mr: 1 }}>{REGION_FLAGS[code]}</Box>
+                        <Box component="span" sx={{ mr: 1 }}>
+                          {REGION_FLAGS[code]}
+                        </Box>
                         {code}
                       </MenuItem>
                     ))}
@@ -210,17 +216,17 @@ export default function HorizontalNavbarFloating(): React.JSX.Element {
         anchor="right"
         open={open}
         onClose={() => setOpen(false)}
-          PaperProps={{
-            sx: {
-              width: 320,
-              backgroundImage: 'none',
-              backgroundColor: alpha(baseBg, 0.98),
-              borderLeft: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
-              p: 1.5,
-              borderTopLeftRadius: 16,
-              borderBottomLeftRadius: 16,
-            },
-          }}
+        PaperProps={{
+          sx: {
+            width: 320,
+            backgroundImage: 'none',
+            backgroundColor: alpha(baseBg, 0.98),
+            borderLeft: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
+            p: 1.5,
+            borderTopLeftRadius: 16,
+            borderBottomLeftRadius: 16,
+          },
+        }}
       >
         <TypoLogo sx={{ px: 1, pb: 1, pt: 3, pl: 2 }} />
         <Divider sx={{ mb: 1, opacity: 0.2 }} />

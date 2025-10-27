@@ -25,6 +25,7 @@ import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import EventSeatRoundedIcon from '@mui/icons-material/EventSeatRounded';
 import { alpha } from '@mui/material/styles';
 import { withAuth } from '@/lib/authSSR';
+import LoggedInNavBar from '@/components/App/LoggedInNavBar';
 
 /**
  * Types
@@ -49,16 +50,17 @@ async function fetchEventsMock(): Promise<EventItem[]> {
       title: 'React & Coffee – CDMX',
       description:
         'Meetup para frontend lovers: charlas cortas, live-coding y networking con buena vibra.',
-      coverUrl: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1600&auto=format&fit=crop',
+      coverUrl:
+        'https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1600&auto=format&fit=crop',
       capacity: 120,
       categories: ['Tech', 'Frontend', 'Meetup'],
     },
     {
       id: 'agora-002',
       title: 'Diseño de Producto: de idea a MVP',
-      description:
-        'Workshop práctico para aterrizar tus ideas en un MVP funcional con foco en UX.',
-      coverUrl: 'https://images.unsplash.com/photo-1529336953121-ad5a0d43d0d2?q=80&w=1600&auto=format&fit=crop',
+      description: 'Workshop práctico para aterrizar tus ideas en un MVP funcional con foco en UX.',
+      coverUrl:
+        'https://images.unsplash.com/photo-1529336953121-ad5a0d43d0d2?q=80&w=1600&auto=format&fit=crop',
       capacity: 60,
       categories: ['Product', 'UX', 'Workshop'],
     },
@@ -67,7 +69,8 @@ async function fetchEventsMock(): Promise<EventItem[]> {
       title: 'Data & AI Night',
       description:
         'Charlas lightning sobre IA aplicada, casos de uso reales y demos de la comunidad.',
-      coverUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop',
+      coverUrl:
+        'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop',
       capacity: 200,
       categories: ['AI', 'Data', 'Tech'],
     },
@@ -274,9 +277,7 @@ function EventsPage() {
           .toLowerCase()
           .includes(normalizedQuery)
       : true;
-    const matchesCats = selected.length
-      ? selected.every((c) => ev.categories.includes(c))
-      : true;
+    const matchesCats = selected.length ? selected.every((c) => ev.categories.includes(c)) : true;
     return matchesQuery && matchesCats;
   });
 
@@ -291,15 +292,23 @@ function EventsPage() {
         <title>Eventos | Agora</title>
       </Head>
 
+      <LoggedInNavBar user={{ name: 'Alex', organization: 'Let Her Pitch' }} />
+
       <Box sx={{ pt: { xs: 2, md: 4 }, minHeight: '100vh', backgroundColor: 'transparent' }}>
         <Container maxWidth="lg">
           {/* Filter/Search */}
-          <FilterBar query={query} setQuery={setQuery} selected={selected} setSelected={setSelected} onClear={clearAll} />
+          <FilterBar
+            query={query}
+            setQuery={setQuery}
+            selected={selected}
+            setSelected={setSelected}
+            onClear={clearAll}
+          />
 
           {/* Content */}
           {loading ? (
-            <LoadingGrid />)
-          : filtered.length === 0 ? (
+            <LoadingGrid />
+          ) : filtered.length === 0 ? (
             <EmptyState onReset={clearAll} />
           ) : (
             <Grid container spacing={2}>

@@ -146,7 +146,10 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
                 px: 1.25,
                 color: theme.palette.text.primary,
                 '&.active, &:hover': {
-                  backgroundColor: alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.08 : 0.16),
+                  backgroundColor: alpha(
+                    theme.palette.primary.main,
+                    theme.palette.mode === 'light' ? 0.08 : 0.16,
+                  ),
                   color: theme.palette.primary.main,
                 },
               }}
@@ -159,7 +162,7 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
       </Box>
 
       {/* Bottom: User bar */}
-  <Box sx={{ p: 1.5, borderTop: `1px solid ${alpha(theme.palette.divider, 0.12)}` }}>
+      <Box sx={{ p: 1.5, borderTop: `1px solid ${alpha(theme.palette.divider, 0.12)}` }}>
         <Stack direction="row" gap={1} alignItems="center" justifyContent="space-between">
           <Stack direction="row" gap={1.25} alignItems="center">
             <Avatar sx={{ width: 36, height: 36 }}>AG</Avatar>
@@ -229,8 +232,7 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
               width: DRAWER_WIDTH,
               height: '100vh',
               borderRight: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
-              backgroundImage: 'none',
-              backgroundColor: theme.palette.background.paper,
+              backgroundColor: 'transparent',
             },
           }}
         >
