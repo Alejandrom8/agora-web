@@ -78,3 +78,91 @@ export type Organization = {
 };
 
 export type CreateOrgResponse = AgoraApiResponse<Organization>
+
+// Events Types
+export type EventSponsor = {
+  id: string;
+  name: string;
+  logo_image: string | null;
+  website_url: string;
+  tier: string;
+  order: number;
+};
+
+export type EventOrganization = {
+  id: string;
+  name: string;
+  logo_url: string;
+  website: string;
+};
+
+export type EventSocialLinks = {
+  instagram: string;
+  linkedin: string;
+  x: string;
+  facebook: string;
+  youtube: string;
+  website: string;
+};
+
+export type Event = {
+  id: string;
+  organization_id: string;
+  organization: EventOrganization;
+  name: string;
+  description: string;
+  location: string;
+  start_at: string;
+  end_at: string;
+  capacity: number;
+  is_public: boolean;
+  state: string;
+  cover_image: string | null;
+  social_links: EventSocialLinks;
+  sponsors_count: number;
+  sponsors: EventSponsor[];
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type EventsFiltersApplied = {
+  organization_id: string | null;
+  q: string | null;
+  state: string | null;
+  is_public: boolean | null;
+  full_response: boolean;
+  categories_id?: string | null;
+};
+
+export type EventsData = {
+  events: Event[];
+  count: number;
+  filters_applied: EventsFiltersApplied;
+};
+
+export type EventsResponse = AgoraApiResponse<EventsData>;
+
+// Categories Types
+export type Category = {
+  id: string;
+  name: string;
+  description: string;
+  parent_id: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type CategoriesFiltersApplied = {
+  parent_id: string | null;
+  root_only: boolean;
+  q: string | null;
+};
+
+export type CategoriesData = {
+  categories: Category[];
+  count: number;
+  filters_applied: CategoriesFiltersApplied;
+};
+
+export type CategoriesResponse = AgoraApiResponse<CategoriesData>;

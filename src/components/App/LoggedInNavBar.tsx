@@ -1,6 +1,7 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
@@ -88,15 +89,21 @@ export default function LoggedInNavBar({
     >
       <Toolbar
         sx={{
-          py: 4,
-          gap: 1.5,
-          minHeight: 72,
-          display: 'grid',
-          gridTemplateColumns: isSm ? '1fr auto' : '200px 1fr auto',
-          px: { md: 22, xs: 2 },
+          py: 1.5,
+          px: 0,
         }}
       >
-        {/* Left: Logo */}
+        <Container
+          maxWidth="lg"
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: isSm ? '1fr auto' : '200px 1fr auto',
+            gap: 1.5,
+            minHeight: 56,
+            alignItems: 'center',
+          }}
+        >
+          {/* Left: Logo */}
         <TypoLogo />
 
         {/* Middle: Pill Search (Airbnb-like) */}
@@ -193,6 +200,7 @@ export default function LoggedInNavBar({
             <Avatar alt={user.name} src={user.avatarUrl} sx={{ width: 32, height: 32 }} />
           </Paper>
         </Stack>
+        </Container>
 
         {/* Notifications popover (window style) */}
         <Popover
