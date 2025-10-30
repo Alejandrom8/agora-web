@@ -24,7 +24,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import EventSeatRoundedIcon from '@mui/icons-material/EventSeatRounded';
 import { alpha } from '@mui/material/styles';
-import { withAuth } from '@/lib/authSSR';
+import { withAuth } from '@/lib/withAuth';
 import LoggedInNavBar from '@/components/App/LoggedInNavBar';
 
 /**

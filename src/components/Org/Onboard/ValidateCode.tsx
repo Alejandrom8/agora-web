@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Box, Stack, Typography, TextField, Button } from '@mui/material';
 import TypoLogo from '@/components/App/TypoLogo';
 import { mockClient } from '@/lib/clients/mock';
-import { VerifyOrgInvitationCodeResponse } from '@/lib/bff/types';
+import { VerifyOrgInvitationCodeResponse } from '@/lib/v1/types';
 import { ApiError } from '@/lib/apiClient';
 
 type ValidateCodeProps = {
