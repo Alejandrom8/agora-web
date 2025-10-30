@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { createHandler } from '@/lib/bff/handler';
 import { saveSessionCookies } from '@/lib/bff/session';
 import { v1Client } from '@/lib/clients/v1';
-import { SessionTokens, VerifiyEmailResponse } from '@/lib/bff/types';
+import { SessionTokens, VerifiyEmailResponse } from '@/lib/v1/types';
 
 export default createHandler(['POST'], async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, code } = req.body;

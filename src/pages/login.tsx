@@ -24,10 +24,11 @@ import GoogleIcon from '@mui/icons-material/Google';
 import AppleIcon from '@mui/icons-material/Apple';
 import MailOutlineRounded from '@mui/icons-material/MailOutlineRounded';
 import LockRounded from '@mui/icons-material/LockRounded';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import TypoLogo from '@/components/App/TypoLogo';
 import { emailExists, login } from '@/hooks/useSession';
 import Link from 'next/link';
+import { createAuthHeader } from '@/lib/v1/utils';
 
 const panelSx: SxProps<Theme> = () => ({
   borderRadius: 2,
@@ -45,7 +46,7 @@ const subtleBg: SxProps<Theme> = (t) => ({
 // Simple email/password validation
 const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-export default function LoginPage(): React.JSX.Element {
+function LoginPage(): React.JSX.Element {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [showPw, setShowPw] = React.useState(false);
@@ -89,7 +90,8 @@ export default function LoginPage(): React.JSX.Element {
         setSubmitting(true);
         await login(email, password);
         //enqueueSnackbar('Inicio de sesión exitoso', { variant: 'success' });
-        router.push('/events');
+        const nextUrl = String(router.query?.next || '');
+        router.push((nextUrl && nextUrl !== '') ? nextUrl : '/events');
       } catch (err) {
         Sentry.logger.error(JSON.stringify(err));
         setError('No pudimos iniciar sesión. Inténtalo de nuevo.');
@@ -338,3 +340,17 @@ export default function LoginPage(): React.JSX.Element {
     </>
   );
 }
+
+export const getServerSideProps = (ctx) => {
+  const authHeader = createAuthHeader(ctx.req);
+  if (authHeader) return {
+    redirect: {
+      destination: '/events',
+      permanent: false,
+    }
+  };
+
+  return { props: {} };
+};
+
+export default LoginPage;

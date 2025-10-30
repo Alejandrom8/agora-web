@@ -1,15 +1,10 @@
-export type ApiError = {
-  code: number;
-  message: string;
-  scope: string;
-};
+import { ApiError, Organization } from "../v1/types";
 
-type AgoraApiResponse<T> = {
+type BffApiResponse<T> = {
   data: T | null;
   error: ApiError | null;
-  status_code: number;
+  message: string;
   success: boolean;
-  trace_id: string;
 };
 
 export type SessionTokens = {
@@ -17,7 +12,7 @@ export type SessionTokens = {
   refresh_token?: string;
 };
 
-export type LoginResponse = AgoraApiResponse<SessionTokens>
+export type LoginResponse = BffApiResponse<SessionTokens>
 
 type UserAuth = {
   app_id: string;
@@ -49,7 +44,7 @@ type UserProfile = {
   user_name: string;
 };
 
-export type UserProfileResponse = AgoraApiResponse<{
+export type UserProfileResponse = BffApiResponse<{
     auth: UserAuth,
     login_method: UserLoginMethod,
     user: UserProfile,
@@ -57,27 +52,20 @@ export type UserProfileResponse = AgoraApiResponse<{
     is_valid: boolean,
   }>
 
-export type SignUpResponse = AgoraApiResponse<{
+export type SignUpResponse = BffApiResponse<{
     message: string;
   }>
 
-export type VerifiyEmailResponse = AgoraApiResponse<SessionTokens>
+export type VerifiyEmailResponse = BffApiResponse<SessionTokens>
 
-export type EmailExistsResponse = AgoraApiResponse<{
+export type EmailExistsResponse = BffApiResponse<{
     error?: any;
     data?: boolean;
   }>
 
-export type VerifyOrgInvitationCodeResponse = AgoraApiResponse<object>
+export type VerifyOrgInvitationCodeResponse = BffApiResponse<object>
 
-export type Organization = {
-  id: string;
-  name: string;
-  description: string;
-  identifier: string;
-};
-
-export type CreateOrgResponse = AgoraApiResponse<Organization>
+export type CreateOrgResponse = BffApiResponse<Organization>
 
 // Events Types
 export type EventSponsor = {
@@ -141,7 +129,7 @@ export type EventsData = {
   filters_applied: EventsFiltersApplied;
 };
 
-export type EventsResponse = AgoraApiResponse<EventsData>;
+export type EventsResponse = BffApiResponse<EventsData>;
 
 export type EventResponse = AgoraApiResponse<Event>;
 
@@ -167,4 +155,5 @@ export type CategoriesData = {
   filters_applied: CategoriesFiltersApplied;
 };
 
-export type CategoriesResponse = AgoraApiResponse<CategoriesData>;
+export type CategoriesResponse = BffApiResponse<CategoriesData>;
+export type CreateOrg = BffApiResponse<Organization>;

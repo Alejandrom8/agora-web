@@ -38,7 +38,7 @@ const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 
 export default function RecoveryPage(): React.JSX.Element {
   const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [password] = React.useState('');
   const [submitting, setSubmitting] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const router = useRouter();
