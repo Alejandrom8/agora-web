@@ -143,6 +143,8 @@ export type EventsData = {
 
 export type EventsResponse = AgoraApiResponse<EventsData>;
 
+export type EventResponse = AgoraApiResponse<Event>;
+
 // Categories Types
 export type Category = {
   id: string;

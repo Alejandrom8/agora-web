@@ -10,7 +10,7 @@ import {
 import { withAuth } from '@/lib/authSSR';
 import LoggedInNavBar from '@/components/App/LoggedInNavBar';
 import { EventCard, EventCardSkeleton } from '@/components/Events/EventCard';
-import { EventFilters } from '@/components/Events/EventFilters';
+import { EventFilters } from '@/components/Events/EventsFilters';
 import { EventsHeader } from '@/components/Events/EventsHeader';
 import { EventsPagination } from '@/components/Events/EventsPagination';
 import { SkeletonGrid } from '@/components/Common/SkeletonGrid';
