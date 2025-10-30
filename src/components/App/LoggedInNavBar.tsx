@@ -31,6 +31,7 @@ import EventAvailableRoundedIcon from '@mui/icons-material/EventAvailableRounded
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import TypoLogo from '@/components/App/TypoLogo';
+import { ThemeToggleSwitch } from '@/components/Theme/ThemeToggleSwitch';
 
 /**
  * LoggedInNavBar — Agora style navbar for authenticated users
@@ -229,7 +230,7 @@ export default function LoggedInNavBar({
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
-          <Box sx={{ p: 1.25, minWidth: 320 }}>
+          <Box sx={{ py: 1.25, px: 1.5, minWidth: 320 }}>
             <Stack direction="row" spacing={1} alignItems="center" sx={{ px: 0.5, pb: 1 }}>
               <Avatar alt={user.name} src={user.avatarUrl} />
               <Box>
@@ -280,6 +281,24 @@ export default function LoggedInNavBar({
                 <ListItemText primary="Cerrar sesión" />
               </MenuItem>
             </MenuList>
+          </Box>
+
+          {/* Footer: Theme Toggle */}
+          <Divider />
+          <Box
+            sx={{
+              px: 2,
+              py: 1.5,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              bgcolor: alpha(theme.palette.background.default, 0.3),
+            }}
+          >
+            <Typography variant="body2" fontWeight={600} color="text.secondary">
+              Tema
+            </Typography>
+            <ThemeToggleSwitch />
           </Box>
         </Popover>
       </Toolbar>
