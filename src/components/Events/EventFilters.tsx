@@ -54,7 +54,7 @@ export function EventFilters({
         {/* Barra de búsqueda */}
         <TextField
           fullWidth
-          placeholder="Search events, topics, or locations..."
+          placeholder="Busca por el nombre del evento..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           variant="outlined"
