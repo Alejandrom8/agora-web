@@ -13,11 +13,14 @@ import {
   alpha,
   Alert,
   Container,
+  Snackbar,
 } from '@mui/material';
 import TypoLogo from '@/components/App/TypoLogo';
-import { mockClient } from '@/lib/clients/mock';
 import { ApiError } from '@/lib/apiClient';
-import { CreateOrgResponse, Organization } from '@/lib/bff/types';
+import { Organization } from '@/lib/v1/types';
+import AvatarUploader from '@/components/Form/AvatarUploader';
+import { bffClient } from '@/lib/clients/bff';
+import { CreateOrg } from '@/lib/bff/types';
 
 const panelSx: SxProps<Theme> = () => ({
   borderRadius: 2,
@@ -32,12 +35,12 @@ const subtleBg: SxProps<Theme> = (t) => ({
                      radial-gradient(1000px 600px at -10% 120%, ${alpha(t.palette.primary.main, 0.05)} 0%, transparent 60%)`,
 });
 
-function toOrgIdentirier(name: string) {
-    return name.trim().replace(/\s/g, '-').toLowerCase();
+function toOrgIdentifier(name: string) {
+  return name.trim().replace(/\s/g, '-').toLowerCase();
 }
 
 type CreateOrgFormProps = {
-    onOrgCreationSuccess: (input: Organization) => any;
+  onOrgCreationSuccess: (input: Organization) => any;
 };
 
 function CreateOrgForm({ onOrgCreationSuccess }: CreateOrgFormProps) {
@@ -45,31 +48,34 @@ function CreateOrgForm({ onOrgCreationSuccess }: CreateOrgFormProps) {
   const [orgName, setOrgName] = React.useState<string>('');
   const [orgIdentifier, setOrgIdentifier] = React.useState<string>('');
   const [orgDescription, setOrgDescription] = React.useState<string>('');
+  const [orgWebsite, setWebsite] = React.useState<string>('');
   const [submitting, setSubmitting] = React.useState<boolean>(false);
+  const [ok, setOk] = React.useState(false);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-        setSubmitting(true);
-        const result = await mockClient.post<CreateOrgResponse>('/org-create', { 
-            name: orgName, 
-            description: orgName, 
-            identifier: orgIdentifier 
-        });
-        console.log('ORG CREATION', result);
-        onOrgCreationSuccess?.(result.data as Organization);
-    } catch(error) {
-        if (error instanceof ApiError) {
-            setError(error.message);
-        }
+      setSubmitting(true);
+      const result = await bffClient.post<CreateOrg>('/api/dashboard/org/create', {
+        name: orgName,
+        description: orgName,
+        website: orgWebsite,
+      });
+      onOrgCreationSuccess?.(result.data as Organization);
+      setOk(true);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        setError(error.message);
+      } else {
         setError('Hubo un error al crear tu organización');
+      }
     } finally {
-        setSubmitting(false);
+      setSubmitting(false);
     }
   };
 
   React.useEffect(() => {
-    setOrgIdentifier(toOrgIdentirier(orgName));
+    setOrgIdentifier(toOrgIdentifier(orgName));
   }, [orgName]);
 
   return (
@@ -90,6 +96,8 @@ function CreateOrgForm({ onOrgCreationSuccess }: CreateOrgFormProps) {
           <Card sx={panelSx}>
             <CardContent sx={{ p: { xs: 3, md: 4 } }}>
               <Stack component="form" spacing={2} onSubmit={onSubmit} noValidate>
+                <AvatarUploader onFileUpload={(f) => console.log(f)} />
+
                 {error && (
                   <Alert severity="error" variant="outlined">
                     {error}
@@ -97,8 +105,8 @@ function CreateOrgForm({ onOrgCreationSuccess }: CreateOrgFormProps) {
                 )}
 
                 <TextField
-                  label="Nombre de la organización"
-                  placeholder="Nombre de la organización"
+                  label="Nombre de tu organización"
+                  placeholder="Nombre de tu organización"
                   value={orgName}
                   onChange={(e) => setOrgName(e.target.value)}
                   fullWidth
@@ -116,6 +124,15 @@ function CreateOrgForm({ onOrgCreationSuccess }: CreateOrgFormProps) {
                 />
 
                 <TextField
+                  label="Sitio web"
+                  placeholder="Sitio Web"
+                  value={orgWebsite}
+                  onChange={(e) => setWebsite(e.target.value)}
+                  fullWidth
+                  required
+                />
+
+                <TextField
                   label="Breve descripción"
                   placeholder="Breve descripción"
                   value={orgDescription}
@@ -126,14 +143,25 @@ function CreateOrgForm({ onOrgCreationSuccess }: CreateOrgFormProps) {
                   rows={4}
                 />
 
-                <Button type="submit" size="large" variant="contained" disabled={submitting}>
-                  {submitting ? 'Creando organización...' : 'Crear organización'}
-                </Button>
+                <Stack direction="column" spacing={2}>
+                  <Button type="submit" size="large" variant="contained" disabled={submitting}>
+                    {submitting ? 'Creando tu organización...' : 'Crear'}
+                  </Button>
+                  <Button size="large" color="primary" variant="outlined" disabled={submitting}>
+                    Cancelar
+                  </Button>
+                </Stack>
               </Stack>
             </CardContent>
           </Card>
         </Container>
       </Box>
+      <Snackbar
+        open={ok}
+        autoHideDuration={2500}
+        onClose={() => setOk(false)}
+        message="Organización creada... Redirigiendo"
+      />
     </Box>
   );
 }
