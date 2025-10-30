@@ -17,7 +17,6 @@ import {
 import CalendarTodayRoundedIcon from '@mui/icons-material/CalendarTodayRounded';
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
-import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import { Event } from '@/lib/bff/types';
 
 export interface EventCardData {
