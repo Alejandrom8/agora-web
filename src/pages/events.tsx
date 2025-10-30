@@ -7,7 +7,7 @@ import {
   Typography,
   Chip,
 } from '@mui/material';
-import { withAuth } from '@/lib/authSSR';
+import { withAuth } from '@/lib/withAuth';
 import LoggedInNavBar from '@/components/App/LoggedInNavBar';
 import { EventCard, EventCardSkeleton } from '@/components/Events/EventCard';
 import { EventFilters } from '@/components/Events/EventFilters';

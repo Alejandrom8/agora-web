@@ -140,8 +140,12 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 16,
-          background: `linear-gradient(180deg, ${alpha('#FFFFFF', 0.04)}, ${alpha('#FFFFFF', 0)})`,
-          boxShadow: `0 10px 30px ${alpha('#000', 0.35)}`,
+          //background: `linear-gradient(180deg, ${alpha('#FFFFFF', 0.04)}, ${alpha('#FFFFFF', 0)})`,
+          //boxShadow: `0 10px 30px ${alpha('#000', 0.35)}`,
+          backgroundColor: 'transparent',
+          elevation: 0,
+          boxShadow: 'none',
+          backgroundImage: 'none',
         },
       },
     },

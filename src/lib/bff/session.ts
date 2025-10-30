@@ -1,5 +1,5 @@
 import { createAuthCookie, setCookies } from '@/lib/cookies';
-import { SessionTokens } from './types';
+import { SessionTokens } from '../v1/types';
 
 /**
  * Guarda cookies de sesión de forma estándar.

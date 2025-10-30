@@ -34,7 +34,6 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import EventRoundedIcon from '@mui/icons-material/EventRounded';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
-import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { useRouter } from 'next/navigation';
@@ -57,7 +56,7 @@ const useAuth = () => {
 };
 
 // ------- Layout constants -------
-const DRAWER_WIDTH = 240;
+const DRAWER_WIDTH = 230;
 
 // ------- Nav config -------
 interface NavItem {
@@ -68,19 +67,19 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { label: 'Resumen', href: '/manage', icon: <DashboardRoundedIcon /> },
-  { label: 'Agenda', href: '/manage/events', icon: <EventRoundedIcon /> },
-  { label: 'Speakers', href: '/manage/attendees', icon: <MicExternalOnIcon /> },
+  { label: 'Mis eventos', href: '/manage/events', icon: <EventRoundedIcon /> },
+  { label: 'Miembros', href: '/manage/attendees', icon: <MicExternalOnIcon /> },
   { label: 'Asistentes', href: '/manage/analytics', icon: <PeopleAltRoundedIcon /> },
-  { label: 'Feedback', href: '/manage/analytics', icon: <InsightsRoundedIcon /> },
 ];
 
 // Util logo
 import TypoLogo from '../App/TypoLogo';
+import Head from 'next/head';
 const Logo: React.FC = () => <TypoLogo />;
 
 // ------- ProtectedLayout --------
 // Renders children only if the user is authenticated; otherwise show a sign-in CTA or redirect.
-export const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ProtectedLayout: React.FC<{ children: React.ReactNode, title?: string }> = ({ children, title = 'Dashboard' }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -92,30 +91,33 @@ export const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({ child
   }
   if (!user) {
     // App Router: you might redirect in a server component or middleware instead.
-    return (
-      <Box
-        sx={{
-          minHeight: '100dvh',
-          display: 'grid',
-          placeItems: 'center',
-          textAlign: 'center',
-          p: 3,
-        }}
-      >
-        <Typography variant="h5" fontWeight={800} gutterBottom>
-          Debes iniciar sesión
-        </Typography>
-        <Typography color="text.secondary" sx={{ mb: 2 }}>
-          Inicia sesión para acceder al panel de administración de Agora.
-        </Typography>
-        <Button href="/login" variant="contained">
-          Ir a Ingresar
-        </Button>
-      </Box>
-    );
+    return <Box
+      sx={{
+        minHeight: '100dvh',
+        display: 'grid',
+        placeItems: 'center',
+        textAlign: 'center',
+        p: 3,
+      }}
+    >
+      <Typography variant="h5" fontWeight={800} gutterBottom>
+        Debes iniciar sesión
+      </Typography>
+      <Typography color="text.secondary" sx={{ mb: 2 }}>
+        Inicia sesión para acceder al panel de administración de Agora.
+      </Typography>
+      <Button href="/login" variant="contained">
+        Ir a Ingresar
+      </Button>
+    </Box>;
   }
 
-  return <AppLayout>{children}</AppLayout>;
+  return <>
+    <Head>
+      <title>{`${title} | Agora`}</title>
+    </Head>
+    <AppLayout>{children}</AppLayout>
+  </>;
 };
 // ------- AppLayout --------
 export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
