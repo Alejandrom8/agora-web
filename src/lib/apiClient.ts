@@ -63,7 +63,6 @@ export class ApiClient {
         });
 
         const text = await res.text();
-        console.log(text);
         const data = text ? JSON.parse(text) : null;
 
         if (!res.ok) {

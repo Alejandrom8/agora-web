@@ -15,7 +15,7 @@ export async function login(email: string, password: string) {
 }
 
 export async function logout() {
-  await bffClient.post('/api/auth/logout');
+  await bffClient.delete('/api/auth/logout');
   await mutate('/api/auth/me', null, false);
 }
 

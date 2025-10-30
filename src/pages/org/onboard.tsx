@@ -56,9 +56,7 @@ export const getServerSideProps = withAuth<OrgOnboardProps>(async ({ authHeader,
   // Check if the user has any existing organziation
   try {
     const currentUser = await v1Client.get<UserProfileResponse>(`/core/v1/users/me`, authHeader);
-    console.log(currentUser);
     const result = await v1Client.get<ListOrganizations>(`/dashboard/v1/organizations?created_by=${currentUser.data?.user.id}`, authHeader);
-    console.log(result);
     if (result && (result.data?.count || 0) > 0) {
       const org = result.data?.organizations[0];
       return {

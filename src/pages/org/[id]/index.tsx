@@ -24,7 +24,6 @@ function AdminDashboardPage({ org_id }: AdminPageProps): React.JSX.Element {
   };
 
   useEffect(() => {
-    console.log(organization);
     if (!organization && !isLoading) {
       setError(orgError || 'Hubo un problema al cargar tu organizacion');
     }
