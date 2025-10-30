@@ -27,7 +27,6 @@ import {
   Stack,
   Tooltip,
   useMediaQuery,
-  Button,
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
@@ -47,14 +46,6 @@ import MicExternalOnIcon from '@mui/icons-material/MicExternalOn';
 //   return { user: data?.user ?? null, loading: status === "loading", signOut };
 // };
 
-const useAuth = () => {
-  // Demo user; change to real auth
-  const [loading] = React.useState(false);
-  const user = { name: 'Alejandro Gómez', email: 'alex@example.com' };
-  const signOut = () => console.log('signOut()');
-  return { user, loading, signOut };
-};
-
 // ------- Layout constants -------
 const DRAWER_WIDTH = 230;
 
@@ -66,7 +57,7 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Resumen', href: '/manage', icon: <DashboardRoundedIcon /> },
+  { label: 'Inicio', href: '/org', icon: <DashboardRoundedIcon /> },
   { label: 'Mis eventos', href: '/manage/events', icon: <EventRoundedIcon /> },
   { label: 'Miembros', href: '/manage/attendees', icon: <MicExternalOnIcon /> },
   { label: 'Asistentes', href: '/manage/analytics', icon: <PeopleAltRoundedIcon /> },
@@ -75,52 +66,32 @@ const NAV_ITEMS: NavItem[] = [
 // Util logo
 import TypoLogo from '../App/TypoLogo';
 import Head from 'next/head';
+import { useSession } from '@/hooks/useSession';
+import { UserProfile } from '@/lib/v1/types';
 const Logo: React.FC = () => <TypoLogo />;
 
 // ------- ProtectedLayout --------
 // Renders children only if the user is authenticated; otherwise show a sign-in CTA or redirect.
 export const ProtectedLayout: React.FC<{ children: React.ReactNode, title?: string }> = ({ children, title = 'Dashboard' }) => {
-  const { user, loading } = useAuth();
+  const { user, isLoading } = useSession();
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Box sx={{ minHeight: '100dvh', display: 'grid', placeItems: 'center' }}>
         <Typography color="text.secondary">Cargando…</Typography>
       </Box>
     );
   }
-  if (!user) {
-    // App Router: you might redirect in a server component or middleware instead.
-    return <Box
-      sx={{
-        minHeight: '100dvh',
-        display: 'grid',
-        placeItems: 'center',
-        textAlign: 'center',
-        p: 3,
-      }}
-    >
-      <Typography variant="h5" fontWeight={800} gutterBottom>
-        Debes iniciar sesión
-      </Typography>
-      <Typography color="text.secondary" sx={{ mb: 2 }}>
-        Inicia sesión para acceder al panel de administración de Agora.
-      </Typography>
-      <Button href="/login" variant="contained">
-        Ir a Ingresar
-      </Button>
-    </Box>;
-  }
 
   return <>
     <Head>
       <title>{`${title} | Agora`}</title>
     </Head>
-    <AppLayout>{children}</AppLayout>
+    <AppLayout user={user}>{children}</AppLayout>
   </>;
 };
 // ------- AppLayout --------
-export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AppLayout: React.FC<{ user: UserProfile | null, children: React.ReactNode }> = ({ user, children }) => {
   const router = useRouter();
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
@@ -167,10 +138,10 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
       <Box sx={{ p: 1.5, borderTop: `1px solid ${alpha(theme.palette.divider, 0.12)}` }}>
         <Stack direction="row" gap={1} alignItems="center" justifyContent="space-between">
           <Stack direction="row" gap={1.25} alignItems="center">
-            <Avatar sx={{ width: 36, height: 36 }}>AG</Avatar>
+            <Avatar sx={{ width: 36, height: 36 }}>{}</Avatar>
             <Box>
               <Typography variant="body2" fontWeight={700} color="text.primary">
-                Carolina Arango
+                {user?.name}
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 Admin
@@ -184,7 +155,7 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
               </IconButton>
             </Tooltip>
             <Tooltip title="Salir">
-              <IconButton size="small" onClick={() => console.log('signOut()')}>
+              <IconButton size="small" onClick={() => router.push('/logout')}>
                 {' '}
                 {/* replace with real signOut */}
                 <LogoutRoundedIcon fontSize="small" />
