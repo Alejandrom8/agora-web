@@ -131,7 +131,7 @@ export type EventsData = {
 
 export type EventsResponse = BffApiResponse<EventsData>;
 
-export type EventResponse = AgoraApiResponse<Event>;
+export type EventResponse = BffApiResponse<Event>;
 
 // Categories Types
 export type Category = {

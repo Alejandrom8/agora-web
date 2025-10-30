@@ -19,14 +19,14 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import LanguageIcon from '@mui/icons-material/Language';
 import { Event } from '@/lib/bff/types';
-import { withAuth } from '@/lib/authSSR';
+import { withAuth } from '@/lib/withAuth';
 import { bffClient } from '@/lib/clients/bff';
 import { EventCover } from '@/components/Events/EventCover';
 import { EventDetailHeader } from '@/components/Events/EventDetailHeader';
 import { EventSummaryCard } from '@/components/Events/EventSummaryCard';
 import { SponsorCard } from '@/components/Events/SponsorCard';
 
-interface EventPageProps {
+type EventPageProps = {
   event: Event;
 }
 
