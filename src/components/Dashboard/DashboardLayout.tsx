@@ -34,7 +34,6 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import EventRoundedIcon from '@mui/icons-material/EventRounded';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
-import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { useRouter } from 'next/navigation';

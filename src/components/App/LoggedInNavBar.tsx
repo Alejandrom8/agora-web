@@ -17,13 +17,11 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { alpha, Theme, useTheme } from '@mui/material/styles';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { alpha, useTheme } from '@mui/material/styles';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
-import LanguageRoundedIcon from '@mui/icons-material/LanguageRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import EventAvailableRoundedIcon from '@mui/icons-material/EventAvailableRounded';
@@ -52,8 +50,6 @@ export type LoggedInNavBarProps = {
 export default function LoggedInNavBar({
   user,
   onCreateEvent,
-  onGoHome,
-  onOpenSearch,
   onLogout,
 }: LoggedInNavBarProps) {
   const theme = useTheme();
@@ -277,39 +273,6 @@ export default function LoggedInNavBar({
       </Toolbar>
     </AppBar>
   );
-}
-
-function FieldChip({ label, value }: { label: string; value: string }) {
-  const theme = useTheme();
-  return (
-    <Stack direction="row" spacing={1} alignItems="center" sx={{ px: 1.25, py: 0.75 }}>
-      <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
-        {label}
-      </Typography>
-      <Divider
-        orientation="vertical"
-        flexItem
-        sx={{ height: 16, borderColor: alpha(theme.palette.text.primary, 0.08) }}
-      />
-      <Typography variant="body2" sx={{ fontWeight: 600 }}>
-        {value}
-      </Typography>
-    </Stack>
-  );
-}
-
-function windowPaper(theme: Theme) {
-  return {
-    borderRadius: 3,
-    overflow: 'hidden',
-    border: `1px solid ${alpha(theme.palette.divider, 0.6)}`,
-    backgroundImage:
-      theme.palette.mode === 'dark'
-        ? 'linear-gradient(180deg, rgba(20,24,38,0.98) 0%, rgba(20,24,38,0.94) 100%)'
-        : 'linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.94) 100%)',
-    backdropFilter: 'saturate(160%) blur(8px)',
-    boxShadow: '0 2px 6px rgba(0,0,0,0.06), 0 12px 32px rgba(0,0,0,0.12)',
-  } as const;
 }
 
 function EmptyState({ title, description }: { title: string; description: string }) {

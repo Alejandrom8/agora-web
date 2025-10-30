@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Grid,
@@ -7,8 +7,6 @@ import {
   Card,
   CardContent,
   Chip,
-  ToggleButtonGroup,
-  ToggleButton,
   Divider,
   alpha,
   Button,
@@ -36,7 +34,6 @@ import {
   Legend,
 } from 'recharts';
 import { Organization } from '@/lib/v1/types';
-import EventSelector from './EventSelector';
 
 // -------------------------
 // Mock Data (replace with API calls)
