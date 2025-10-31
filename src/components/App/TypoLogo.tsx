@@ -1,6 +1,7 @@
 import { Stack, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import Image from 'next/image';
 
 export default function TypoLogo({ ...props }) {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function TypoLogo({ ...props }) {
       onClick={handleLogoClick}
       sx={{ cursor: 'pointer' }}
     >
-      <img src={'/logo.svg'} style={{ width: '25px', height: '25px', filter: logoFilter }} />
+      <Image src={'/logo.svg'} width={25} height={25} alt="Agora Logo" style={{ filter: logoFilter }} />
       <Typography variant="h6" fontWeight={900} letterSpacing={0.2}>
         Agora
       </Typography>
