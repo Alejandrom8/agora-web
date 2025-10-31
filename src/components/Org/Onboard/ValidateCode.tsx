@@ -83,8 +83,7 @@ function ValidateCode({ initialCode, initialError, onCodeVerificationSuccess }: 
 
     try {
       setSubmitting(true);
-      const result = await mockClient.post<VerifyOrgInvitationCodeResponse>('/org-verify-code', { code });
-      console.log('MOCK RESULT', result);
+      await mockClient.post<VerifyOrgInvitationCodeResponse>('/org-verify-code', { code });
       onCodeVerificationSuccess?.();
     } catch (error) {
       if (error instanceof ApiError) {

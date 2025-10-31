@@ -129,7 +129,6 @@ function NewEventWizardPage({ authHeader }: NewEventWizardPageProps): React.JSX.
     try {
       setSaving(true);
       const payload = { ...form };
-      console.log(payload);
       const orgId = router.query.id;
       const result = await bffClient.post<Event>(`/api/dashboard/org/${orgId}/event/new`, payload);
       Sentry.logger.info('Nuevo evento creado', payload);
@@ -145,8 +144,7 @@ function NewEventWizardPage({ authHeader }: NewEventWizardPageProps): React.JSX.
       Sentry.logger.info('Portada del evento subida', payload);
       setToast({ open: true, message: 'Evento creado con éxito', severity: 'success' });
       router.push(`/org/${orgId}`);
-    } catch (error) {
-      console.log(error);
+    } catch {
       setToast({ open: true, message: 'No se pudo crear el evento', severity: 'error' });
     } finally {
       setSaving(false);

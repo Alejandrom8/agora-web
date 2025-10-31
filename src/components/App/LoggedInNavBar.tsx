@@ -30,6 +30,7 @@ import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import TypoLogo from '@/components/App/TypoLogo';
 import { ThemeToggleSwitch } from '@/components/Theme/ThemeToggleSwitch';
+import { useRouter } from 'next/router';
 
 /**
  * LoggedInNavBar — Agora style navbar for authenticated users
@@ -52,10 +53,10 @@ export type LoggedInNavBarProps = {
 export default function LoggedInNavBar({
   user,
   onCreateEvent,
-  onLogout,
 }: LoggedInNavBarProps) {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const router = useRouter();
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const [notifEl, setNotifEl] = React.useState<HTMLElement | null>(null);
@@ -71,6 +72,10 @@ export default function LoggedInNavBar({
   // Brand tokens (adjust to Agora theme if available)
   const AGORA_ACCENT = theme.palette.primary.main; // brand accent
   const AGORA_BG = theme.palette.mode === 'dark' ? alpha('#0B1020', 0.6) : alpha('#FFFFFF', 0.6);
+
+  const onLogout = () => {
+    router.push('/logout');
+  };
 
   return (
     <AppBar
