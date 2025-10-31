@@ -131,6 +131,8 @@ export type EventsData = {
 
 export type EventsResponse = BffApiResponse<EventsData>;
 
+export type EventResponse = BffApiResponse<Event>;
+
 // Categories Types
 export type Category = {
   id: string;
