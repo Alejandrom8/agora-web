@@ -151,3 +151,48 @@ export type Event = {
 };
 
 export type CreateEventResult = AgoraApiResponse<Event>;
+
+type OrgMember = {
+  id: string;
+  user_id: string;
+  name: string;
+  status: string;
+  role: string;
+  avatarUrl: string;
+  organization_id: string;
+  invited_by: string;
+  joined_at: string;
+  created_at: string;
+  updated_at: string;
+};
+
+type ListOrgMembersFilters = {
+  organization_id: string;
+  user_id: string | null;
+};
+
+export type ListOrgMembers = {
+  organization_members: OrgMember[];
+  count: number;
+  filters_applied: ListOrgMembersFilters;
+};
+
+export type ListOrgMembersResult = AgoraApiResponse<ListOrgMembers>;
+
+export type EventStats = {
+  event_id: string;
+  event_name: string;
+  event_state: 'PLANNED' | 'ONGOING' | 'COMPLETED' | string;
+  organization_id: string;
+  organization_name: string;
+  total_sub_events: number;
+  total_attendees: number;
+  attendees_breakdown: {
+    founder: number;
+    investor: number;
+    attendee: number;
+    total: number;
+  };
+};
+
+export type GetEventStatsResult = AgoraApiResponse<EventStats>;

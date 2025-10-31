@@ -7,6 +7,9 @@ const surface = '#1E222A';
 const primary = '#0057C9';
 const secondary = '#343539';
 const accent = '#0370FF';
+const success = '#2ECC71';
+const error = '#FF4D4F';
+const warning = '#F5A524';
 
 export const darkTheme = createTheme({
   cssVariables: true, // habilita vars CSS (MUI v5.14+)
@@ -42,15 +45,15 @@ export const darkTheme = createTheme({
     },
     divider: alpha('#E8EAED', 0.08),
     success: {
-      main: '#2ECC71',
+      main: success,
       contrastText: '#0C1A12',
     },
     warning: {
-      main: '#F5A524',
+      main: warning,
       contrastText: '#1A1206',
     },
     error: {
-      main: '#FF4D4F',
+      main: error,
       contrastText: '#1A0E0E',
     },
     action: {
@@ -190,6 +193,21 @@ export const darkTheme = createTheme({
           color: '#E7E9ED',
           borderColor: alpha(secondary, 0.4),
         },
+        colorSuccess: {
+          backgroundColor: alpha(success, 0.06),
+          color: success,
+          border: `1px solid ${alpha('#FFFFFF', 0.1)}`,
+        },
+        colorWarning: {
+          backgroundColor: alpha(warning, 0.06),
+          color: warning,
+          border: `1px solid ${alpha('#FFFFFF', 0.1)}`,
+        },
+        colorError: {
+          backgroundColor: alpha(error, 0.06),
+          color: error,
+          border: `1px solid ${alpha('#FFFFFF', 0.1)}`,
+        },
       },
     },
 
@@ -241,7 +259,6 @@ export const darkTheme = createTheme({
         paper: {
           borderRadius: 20,
           border: `1px solid ${alpha('#FFFFFF', 0.08)}`,
-          background: `linear-gradient(180deg, ${alpha('#FFFFFF', 0.04)}, ${alpha('#FFFFFF', 0)})`,
         },
       },
     },
