@@ -12,13 +12,20 @@ const SwitchRoot = styled(ButtonBase)(({ theme }) => ({
   borderRadius: 20,
   border: `1.5px solid ${theme.palette.divider}`,
   padding: 2,
-  background: 'transparent',
-  transition: 'border-color 0.2s',
+  background: theme.palette.mode === 'dark' 
+    ? 'rgba(255, 255, 255, 0.03)' 
+    : 'rgba(0, 0, 0, 0.03)',
+  transition: 'all 0.2s ease',
   minWidth: 64,
   minHeight: 32,
   boxSizing: 'border-box',
   overflow: 'hidden',
   cursor: 'pointer',
+  '&:hover': {
+    background: theme.palette.mode === 'dark' 
+      ? 'rgba(255, 255, 255, 0.05)' 
+      : 'rgba(0, 0, 0, 0.05)',
+  },
 }));
 
 const Option = styled(Box, {
@@ -32,13 +39,21 @@ const Option = styled(Box, {
   width: 32,
   height: 28,
   borderRadius: 16,
-  background: selected ? '#fff' : 'transparent',
+  background: selected 
+    ? theme.palette.mode === 'dark'
+      ? 'rgba(255, 255, 255, 0.1)'
+      : '#FFFFFF'
+    : 'transparent',
   color: selected ? theme.palette.primary.main : theme.palette.text.secondary,
-  boxShadow: selected ? '0 1px 6px 0 rgba(0,0,0,0.04)' : 'none',
+  boxShadow: selected 
+    ? theme.palette.mode === 'dark'
+      ? '0 1px 6px 0 rgba(0,0,0,0.2)'
+      : '0 1px 6px 0 rgba(0,0,0,0.06)'
+    : 'none',
   border: 'none',
   fontWeight: 700,
   fontSize: 16,
-  transition: 'background 0.25s, color 0.25s',
+  transition: 'all 0.25s ease',
 }));
 
 export const ThemeToggleSwitch: React.FC = () => {
