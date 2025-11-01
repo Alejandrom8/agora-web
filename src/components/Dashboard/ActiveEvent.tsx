@@ -76,16 +76,15 @@ const ActiveEventCard: React.FC<{ event: OrgEvent | undefined }> = ({ event }) =
     <Card
       sx={{
         p: 2,
-        borderRadius: 3,
+        borderRadius: 1.5,
         boxShadow: 'none',
       }}
     >
-      <Stack spacing={2}>
+      <Stack spacing={2} direction={'row'}>
         {/* Cover */}
         <Box
           sx={{
             position: 'relative',
-            width: '100%',
             aspectRatio: '16 / 9',
             borderRadius: 2,
             overflow: 'hidden',
@@ -96,7 +95,7 @@ const ActiveEventCard: React.FC<{ event: OrgEvent | undefined }> = ({ event }) =
             component="img"
             src={event?.cover_image || '/art_1.png'}
             alt={event?.name}
-            sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            sx={{ width: '250px', height: '200px', objectFit: 'cover', display: 'block' }}
           />
           <Chip
             label="Activo"
@@ -106,106 +105,109 @@ const ActiveEventCard: React.FC<{ event: OrgEvent | undefined }> = ({ event }) =
           />
         </Box>
 
-        {/* Location */}
-        <Stack direction="row" spacing={1} alignItems="center">
-          <PlaceOutlined fontSize="small" />
-          <Typography variant="body2" color="text.secondary" noWrap>
-            {event?.location}
+        <Stack spacing={2}>
+          {/* Location */}
+          <Stack direction="row" spacing={1} alignItems="center">
+            <PlaceOutlined fontSize="small" />
+            <Typography variant="body2" color="text.secondary" noWrap>
+              {event?.location}
+            </Typography>
+          </Stack>
+
+          {/* Title */}
+          <Typography variant="h4" fontWeight={800} sx={{ lineHeight: 1.1 }}>
+            {event?.name}
           </Typography>
-        </Stack>
 
-        {/* Title */}
-        <Typography variant="h6" fontWeight={800} sx={{ lineHeight: 1.1 }}>
-          {event?.name}
-        </Typography>
-
-        {/* Date range */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-          {/* Inicio */}
-          <Stack direction="row" alignItems="center" spacing={1.5}>
-            <Box
-              sx={{
-                position: 'relative',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                mr: 0.5,
-              }}
-            >
-              <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: 'text.secondary' }} />
-              <Box sx={{ flex: 1, width: 1, bgcolor: 'text.disabled', opacity: 0.4, my: 0.3 }} />
-              <Box sx={{ flex: 1, width: 1, bgcolor: 'text.disabled', opacity: 0.4, my: 0.3 }} />
-              <Box sx={{ flex: 1, width: 1, bgcolor: 'text.disabled', opacity: 0.4, my: 0.3 }} />
+          {/* Date range */}
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+            {/* Inicio */}
+            <Stack direction="row" alignItems="center" spacing={1.5}>
               <Box
                 sx={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: '50%',
-                  border: '2px solid',
-                  borderColor: 'text.secondary',
-                  bgcolor: 'transparent',
+                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  mr: 0.5,
                 }}
-              />
-            </Box>
-            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Typography variant="body2" fontWeight={600} color="text.primary">
-                  Inicio
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {new Intl.DateTimeFormat('es-MX', {
-                    weekday: 'short',
-                    day: '2-digit',
-                    month: 'short',
-                  }).format(new Date(event.start_at))}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {new Intl.DateTimeFormat('es-MX', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true,
-                  }).format(new Date(event.start_at))}
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Typography variant="body2" fontWeight={600} color="text.primary">
-                  Fin
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {new Intl.DateTimeFormat('es-MX', {
-                    weekday: 'short',
-                    day: '2-digit',
-                    month: 'short',
-                  }).format(new Date(event.end_at))}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {new Intl.DateTimeFormat('es-MX', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true,
-                  }).format(new Date(event.end_at))}
-                </Typography>
-              </Stack>
-            </Box>
-          </Stack>
-        </Box>
+              >
+                <Box
+                  sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: 'text.secondary' }}
+                />
+                <Box sx={{ flex: 1, width: 1, bgcolor: 'text.disabled', opacity: 0.4, my: 0.3 }} />
+                <Box sx={{ flex: 1, width: 1, bgcolor: 'text.disabled', opacity: 0.4, my: 0.3 }} />
+                <Box sx={{ flex: 1, width: 1, bgcolor: 'text.disabled', opacity: 0.4, my: 0.3 }} />
+                <Box
+                  sx={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: '50%',
+                    border: '2px solid',
+                    borderColor: 'text.secondary',
+                    bgcolor: 'transparent',
+                  }}
+                />
+              </Box>
+              <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Typography variant="body2" fontWeight={600} color="text.primary">
+                    Inicio
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {new Intl.DateTimeFormat('es-MX', {
+                      weekday: 'short',
+                      day: '2-digit',
+                      month: 'short',
+                    }).format(new Date(event.start_at))}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {new Intl.DateTimeFormat('es-MX', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true,
+                    }).format(new Date(event.start_at))}
+                  </Typography>
+                </Stack>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Typography variant="body2" fontWeight={600} color="text.primary">
+                    Fin
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {new Intl.DateTimeFormat('es-MX', {
+                      weekday: 'short',
+                      day: '2-digit',
+                      month: 'short',
+                    }).format(new Date(event.end_at))}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {new Intl.DateTimeFormat('es-MX', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true,
+                    }).format(new Date(event.end_at))}
+                  </Typography>
+                </Stack>
+              </Box>
+            </Stack>
+          </Box>
 
-        {/* Description */}
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{
-            display: '-webkit-box',
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}
-        >
-          {event.description}
-        </Typography>
+          {/* Description */}
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}
+          >
+            {event.description}
+          </Typography>
 
-        {/* Actions */}
-        {/* <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+          {/* Actions */}
+          {/* <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
           {event.eventUrl && (
             <Button
               variant="outlined"
@@ -233,7 +235,7 @@ const ActiveEventCard: React.FC<{ event: OrgEvent | undefined }> = ({ event }) =
             </Button>
           )}
         </Stack> */}
-
+        </Stack>
       </Stack>
     </Card>
   );

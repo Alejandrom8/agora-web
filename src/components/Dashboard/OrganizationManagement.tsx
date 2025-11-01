@@ -1,5 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Stack, Typography, Card, CardContent, alpha, Button } from '@mui/material';
+import {
+  Box,
+  Grid,
+  Stack,
+  Typography,
+  Card,
+  CardContent,
+  alpha,
+  Button,
+  Chip,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
 import {
@@ -11,11 +25,15 @@ import {
   BarChart,
   Bar,
   Legend,
+  ReferenceLine,
 } from 'recharts';
 import CalendarMonthRounded from '@mui/icons-material/CalendarMonthRounded';
 import LibraryAddRounded from '@mui/icons-material/LibraryAddRounded';
 import PersonAddAlt1Rounded from '@mui/icons-material/PersonAddAlt1Rounded';
 import GroupAddRounded from '@mui/icons-material/GroupAddRounded';
+import CheckCircleOutlineRounded from '@mui/icons-material/CheckCircleOutlineRounded';
+import WarningAmberRounded from '@mui/icons-material/WarningAmberRounded';
+import InsightsRounded from '@mui/icons-material/InsightsRounded';
 import { Organization, OrgEvent } from '@/lib/v1/types';
 import EventSelector from './EventSelector';
 import ActiveEventCard from './ActiveEvent';
@@ -40,6 +58,19 @@ const seriesCombined = [
   { day: '09-22', countA: 27, countB: 35 },
   { day: '09-23', countA: 41, countB: 36 },
   { day: '09-24', countA: 43, countB: 36 },
+];
+
+// Mock goal and alerts for insights (can be replaced by real data later)
+const DAILY_GOAL = 50; // registros objetivo por día (mock)
+
+const alertsMock: { id: string; type: 'success' | 'warning' | 'info'; text: string }[] = [
+  {
+    id: 'a1',
+    type: 'warning',
+    text: '15 asistentes no han elegido sub‑evento. Envía un recordatorio.',
+  },
+  { id: 'a2', type: 'info', text: 'Crecimiento de registros +23% vs la semana pasada.' },
+  { id: 'a3', type: 'success', text: 'Todos los speakers tienen materiales cargados.' },
 ];
 
 const CardSection: React.FC<{
@@ -117,16 +148,16 @@ export default function OrganizationManagement({ org }: OrganizationManagementPr
     () =>
       seriesCombined.map((d) => ({
         day: d.day,
-        event: d.countA,            // evento principal (mock)
+        event: d.countA, // evento principal (mock)
         sub1: Math.max(0, Math.round(d.countA * 0.55)), // sub-evento A (mock)
-        sub2: d.countB,             // sub-evento B (mock)
+        sub2: d.countB, // sub-evento B (mock)
       })),
-    []
+    [],
   );
 
   return (
     <Stack spacing={3}>
-      {/* Header */}
+      {/*Header*/}
       <Stack
         direction={{ xs: 'column', md: 'row' }}
         justifyContent="space-between"
@@ -137,86 +168,89 @@ export default function OrganizationManagement({ org }: OrganizationManagementPr
           <Typography variant="h4" fontWeight={900}>
             {org?.name}
           </Typography>
-          <Typography color="text.secondary">Panel analítico de tu organizacion</Typography>
+          <Typography color="text.secondary">Centro de Control de tu organización</Typography>
         </Box>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={1.5}
+          alignItems={{ xs: 'flex-start', sm: 'center' }}
+        >
           <EventSelector orgId={org?.id} onEventChanged={handleChangeSelectedEvent} />
+          {currentEvent && (
+            <Chip size="small" label="En curso" color="success" variant="outlined" />
+          )}
           <Button color="primary" variant="contained" startIcon={<EditIcon />}>
             Editar evento
           </Button>
         </Stack>
       </Stack>
-
       <Grid container spacing={2}>
         {/** Left Side */}
-        <Grid size={{ xs: 12, md: 5 }}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Stack direction={'column'} spacing={2}>
-            <CardSection title="✨ Evento activo">
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 12, md: 12 }}>
-                  <ActiveEventCard event={currentEvent} />
-                  {/* Quick Actions */}
-                  <Box sx={{ mt: 1.5 }}>
-                    <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
-                      Acciones rápidas
-                    </Typography>
-                    <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        startIcon={<CalendarMonthRounded />}
-                        onClick={() => {
-                          /* TODO: open agenda editor */
-                        }}
-                        sx={{ borderRadius: 2 }}
-                      >
-                        Editar agenda
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        startIcon={<LibraryAddRounded />}
-                        onClick={() => {
-                          /* TODO: open create sub-event */
-                        }}
-                        sx={{ borderRadius: 2 }}
-                      >
-                        Agregar sub-evento
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        startIcon={<PersonAddAlt1Rounded />}
-                        onClick={() => {
-                          /* TODO: open add attendee */
-                        }}
-                        sx={{ borderRadius: 2 }}
-                      >
-                        Agregar asistente
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        startIcon={<GroupAddRounded />}
-                        onClick={() => {
-                          /* TODO: open add staff member */
-                        }}
-                        sx={{ borderRadius: 2 }}
-                      >
-                        Agregar miembro
-                      </Button>
-                    </Stack>
-                  </Box>
-                  {/* End Quick Actions */}
-                </Grid>
-              </Grid>
+            <ActiveEventCard event={currentEvent} />
+
+            <CardSection title="Acciones rápidas" subtitle="Tareas frecuentes del host">
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} flexWrap="wrap">
+                <Button
+                  variant="outlined"
+                  startIcon={<CalendarMonthRounded />}
+                  onClick={() => router.push(`/org/${org.id}/events/${currentEvent?.id}/agenda`)}
+                >
+                  Ver agenda
+                </Button>
+                <Button
+                  variant="outlined"
+                  startIcon={<LibraryAddRounded />}
+                  onClick={() =>
+                    router.push(`/org/${org.id}/events/${currentEvent?.id}/subevents/new`)
+                  }
+                >
+                  Agregar sub‑evento
+                </Button>
+                <Button
+                  variant="outlined"
+                  startIcon={<PersonAddAlt1Rounded />}
+                  onClick={() => router.push(`/org/${org.id}/events/${currentEvent?.id}/attendees`)}
+                >
+                  Ver asistentes
+                </Button>
+                <Button
+                  variant="outlined"
+                  startIcon={<GroupAddRounded />}
+                  onClick={() => router.push(`/org/${org.id}/team`)}
+                >
+                  Agregar miembro
+                </Button>
+              </Stack>
             </CardSection>
+
             <OrgMembersCard orgId={org?.id} onWatchAll={() => router.push(`/org/${org.id}/team`)} />
+
+            <Grid size={12}>
+              <CardSection title="Alertas e insights" subtitle="Recomendaciones del sistema">
+                <List dense>
+                  {alertsMock.map((a) => (
+                    <ListItem key={a.id} disableGutters>
+                      <ListItemIcon sx={{ minWidth: 36 }}>
+                        {a.type === 'success' && <CheckCircleOutlineRounded color="success" />}
+                        {a.type === 'warning' && <WarningAmberRounded color="warning" />}
+                        {a.type === 'info' && <InsightsRounded color="info" />}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={a.text}
+                        primaryTypographyProps={{ variant: 'body2' }}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </CardSection>
+            </Grid>
           </Stack>
         </Grid>
 
         {/** Right Side */}
-        <Grid size={{ xs: 12, md: 7 }}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Stack direction="column" spacing={2}>
             {/* KPIs */}
             <EventAnalytics eventId={currentEvent?.id} />
@@ -233,8 +267,15 @@ export default function OrganizationManagement({ org }: OrganizationManagementPr
                         width={400}
                         height={250}
                       >
-                        <CartesianGrid strokeDasharray="3 3" stroke={alpha(theme.palette.text.primary, 0.08)} />
-                        <XAxis dataKey="day" stroke={alpha(theme.palette.text.primary, 0.5)} tickMargin={8} />
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                          stroke={alpha(theme.palette.text.primary, 0.08)}
+                        />
+                        <XAxis
+                          dataKey="day"
+                          stroke={alpha(theme.palette.text.primary, 0.5)}
+                          tickMargin={8}
+                        />
                         <YAxis stroke={alpha(theme.palette.text.primary, 0.5)} />
                         <Tooltip
                           contentStyle={{
@@ -243,8 +284,30 @@ export default function OrganizationManagement({ org }: OrganizationManagementPr
                           }}
                         />
                         <Legend wrapperStyle={{ fontSize: 12 }} />
-                        <Bar dataKey="sub1" name="Sub‑evento A" stackId="a" fill={theme.palette.primary.main} radius={[4,4,0,0]} />
-                        <Bar dataKey="sub2" name="Sub‑evento B" stackId="a" fill={theme.palette.success.main} />
+                        <ReferenceLine
+                          y={DAILY_GOAL}
+                          stroke={alpha(theme.palette.warning.main, 0.9)}
+                          strokeDasharray="6 6"
+                          label={{
+                            position: 'right',
+                            value: `Meta diaria (${DAILY_GOAL})`,
+                            fill: theme.palette.text.secondary,
+                            fontSize: 12,
+                          }}
+                        />
+                        <Bar
+                          dataKey="sub1"
+                          name="Sub‑evento A"
+                          stackId="a"
+                          fill={theme.palette.primary.main}
+                          radius={[4, 4, 0, 0]}
+                        />
+                        <Bar
+                          dataKey="sub2"
+                          name="Sub‑evento B"
+                          stackId="a"
+                          fill={theme.palette.success.main}
+                        />
                       </BarChart>
                     </ResponsiveContainer>
                   </Box>

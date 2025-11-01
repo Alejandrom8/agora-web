@@ -35,8 +35,16 @@ import EventRoundedIcon from '@mui/icons-material/EventRounded';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import { useRouter } from 'next/navigation';
-import MicExternalOnIcon from '@mui/icons-material/MicExternalOn';
+import { useRouter, usePathname } from 'next/navigation';
+import Diversity3RoundedIcon from '@mui/icons-material/Diversity3Rounded';
+import ExtensionRoundedIcon from '@mui/icons-material/ExtensionRounded';
+
+// Util logo
+import TypoLogo from '../App/TypoLogo';
+import Head from 'next/head';
+import { useSession } from '@/hooks/useSession';
+import { User, UserRole } from '@/lib/v1/types';
+import { useMemo } from 'react';
 
 // ------- Mock auth hook (replace with NextAuth or your auth) -------
 // Example with NextAuth:
@@ -49,30 +57,124 @@ import MicExternalOnIcon from '@mui/icons-material/MicExternalOn';
 // ------- Layout constants -------
 const DRAWER_WIDTH = 230;
 
-// ------- Nav config -------
+// ------- Nav config (contextual) -------
+// Context & rules
+type AppCtx = {
+  roles: Array<UserRole>;
+  orgId?: string;
+  activeEventId?: string; // undefined si no hay evento
+};
+
+type Predicate = (ctx: AppCtx) => boolean;
+type HrefBuilder = (ctx: AppCtx) => string;
+
 interface NavItem {
   label: string;
-  href: string;
   icon: React.ReactNode;
+  href?: string; // estático
+  buildHref?: HrefBuilder; // dinámico (usa eventId, etc.)
+  allowedRoles?: Array<UserRole>; // RBAC
+  visibleIf?: Predicate; // visibilidad condicional
+  disabledIf?: Predicate; // deshabilitar condicional
+}
+interface NavGroup {
+  title: string;
+  items: NavItem[];
+  visibleIf?: Predicate;
 }
 
-const NAV_ITEMS: NavItem[] = [
-  { label: 'Inicio', href: '/org', icon: <DashboardRoundedIcon /> },
-  { label: 'Mis eventos', href: '/manage/events', icon: <EventRoundedIcon /> },
-  { label: 'Miembros', href: '/manage/attendees', icon: <MicExternalOnIcon /> },
-  { label: 'Asistentes', href: '/manage/analytics', icon: <PeopleAltRoundedIcon /> },
+const NAV_GROUPS: NavGroup[] = [
+  {
+    title: 'Esenciales',
+    items: [
+      { label: 'Inicio', icon: <DashboardRoundedIcon />, href: '/org' },
+      {
+        label: 'Mis eventos',
+        icon: <EventRoundedIcon />,
+        allowedRoles: ['owner', 'member'],
+        buildHref: ({ orgId }) => `/org/${orgId}/events`,
+      },
+      {
+        label: 'Evento actual',
+        icon: <EventRoundedIcon />,
+        buildHref: ({ activeEventId, orgId }) => `/org/${orgId}/event/${activeEventId}`,
+        visibleIf: ({ activeEventId }) => Boolean(activeEventId),
+      },
+    ],
+  },
+  {
+    title: 'Operación',
+    items: [
+      {
+        label: 'Agenda',
+        icon: <EventRoundedIcon />,
+        buildHref: ({ activeEventId, orgId }) => `/org/${orgId}/event/${activeEventId}/agenda`,
+        allowedRoles: ['owner', 'member'],
+        disabledIf: ({ activeEventId }) => !activeEventId,
+      },
+      {
+        label: 'Sub-eventos',
+        icon: <EventRoundedIcon />,
+        buildHref: ({ activeEventId, orgId }) => `/org/${orgId}/event/${activeEventId}/subevents`,
+        allowedRoles: ['owner', 'member'],
+        disabledIf: ({ activeEventId }) => !activeEventId,
+      },
+      {
+        label: 'Asistentes',
+        icon: <PeopleAltRoundedIcon />,
+        buildHref: ({ activeEventId, orgId }) => `/org/${orgId}/event/${activeEventId}/attendees`,
+        allowedRoles: ['owner', 'member'],
+        disabledIf: ({ activeEventId }) => !activeEventId,
+      },
+      {
+        label: 'Sponsors',
+        icon: <Diversity3RoundedIcon />,
+        buildHref: ({ activeEventId, orgId }) => `/org/${orgId}/event/${activeEventId}/sponsors`,
+        allowedRoles: ['owner', 'member'],
+        visibleIf: ({ activeEventId }) => Boolean(activeEventId),
+      },
+      // { label: 'Comunicaciones', href: '/manage/comms', icon: <MailOutlineRoundedIcon /> },
+      // { label: 'Recursos', href: '/manage/resources', icon: <FolderRoundedIcon /> },
+    ],
+  },
+  // {
+  //   title: 'Crecimiento',
+  //   items: [
+  //     { label: 'Analítica', href: '/manage/analytics', icon: <AssessmentRoundedIcon /> },
+  //     { label: 'Feedback & Encuestas', href: '/manage/feedback', icon: <PollRoundedIcon /> },
+  //     { label: 'Reportes', href: '/manage/reports', icon: <UploadFileRoundedIcon /> },
+  //   ],
+  // },
+  {
+    title: 'Administración',
+    items: [
+      {
+        label: 'Equipo y Roles',
+        icon: <PeopleAltRoundedIcon />,
+        href: '/manage/team',
+        allowedRoles: ['owner'],
+      },
+      {
+        label: 'Integraciones',
+        icon: <ExtensionRoundedIcon />,
+        href: '/manage/integrations',
+        allowedRoles: ['owner', 'member'],
+      },
+      // { label: 'Configuración', href: '/settings/organization', icon: <TuneRoundedIcon /> },
+      // { label: 'Facturación', href: '/settings/billing', icon: <CreditCardRoundedIcon /> },
+      // { label: 'Ayuda & Soporte', href: '/help', icon: <HelpOutlineRoundedIcon /> },
+    ],
+  },
 ];
 
-// Util logo
-import TypoLogo from '../App/TypoLogo';
-import Head from 'next/head';
-import { useSession } from '@/hooks/useSession';
-import { UserProfile } from '@/lib/v1/types';
 const Logo: React.FC = () => <TypoLogo />;
 
 // ------- ProtectedLayout --------
 // Renders children only if the user is authenticated; otherwise show a sign-in CTA or redirect.
-export const ProtectedLayout: React.FC<{ children: React.ReactNode, title?: string }> = ({ children, title = 'Dashboard' }) => {
+export const ProtectedLayout: React.FC<{ children: React.ReactNode; title?: string }> = ({
+  children,
+  title = 'Dashboard',
+}) => {
   const { user, isLoading } = useSession();
 
   if (isLoading) {
@@ -83,19 +185,72 @@ export const ProtectedLayout: React.FC<{ children: React.ReactNode, title?: stri
     );
   }
 
-  return <>
-    <Head>
-      <title>{`${title} | Agora`}</title>
-    </Head>
-    <AppLayout user={user}>{children}</AppLayout>
-  </>;
+  return (
+    <>
+      <Head>
+        <title>{`${title} | Agora`}</title>
+      </Head>
+      <AppLayout user={user}>{children}</AppLayout>
+    </>
+  );
 };
 // ------- AppLayout --------
-export const AppLayout: React.FC<{ user: UserProfile | null, children: React.ReactNode }> = ({ user, children }) => {
+export const AppLayout: React.FC<{ user: User | null; children: React.ReactNode }> = ({
+  user,
+  children,
+}) => {
   const router = useRouter();
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
   const [open, setOpen] = React.useState(false);
+  // const { data: activeEvent } = useSWR<OrgEvent>(
+  //   `/api/dashboard/org/${user?.organizations?.[0]?.id}/events?active=true`,
+  // );
+
+  const pathname = usePathname();
+
+  // TODO: Conectar con tu store/swr real. Para ahora, usa un valor opcional.
+  const activeEventId = useMemo(() => '6902c28929fee86059af6e91', []);
+
+  // Derivar roles desde la sesión (acepta user.role o user.roles)
+  const roles = React.useMemo(() => {
+    const rs = [user?.organizations?.[0]?.role];
+    return Array.isArray(rs) ? (rs as AppCtx['roles']) : [];
+  }, [user]);
+
+  const ctx: AppCtx = React.useMemo(
+    () => ({ roles, activeEventId, orgId: user?.organizations?.[0]?.id }),
+    [roles, user, activeEventId],
+  );
+
+  const isActive = (href: string) => {
+    if (!pathname || !href) return false;
+    return pathname === href;
+  };
+
+  const canSee = (item: NavItem) =>
+    (!item.allowedRoles || item.allowedRoles.some((r) => ctx.roles.includes(r))) &&
+    (!item.visibleIf || item.visibleIf(ctx));
+
+  const computeHref = (item: NavItem) => item.href ?? (item.buildHref ? item.buildHref(ctx) : '#');
+
+  const builtMenu: NavGroup[] = React.useMemo(() => {
+    return NAV_GROUPS.filter((g) => !g.visibleIf || g.visibleIf(ctx))
+      .map((g) => ({
+        ...g,
+        items: g.items
+          .filter((i) => canSee(i))
+          .map(
+            (i) =>
+              ({
+                ...i,
+                href: computeHref(i),
+                disabled: i.disabledIf ? i.disabledIf(ctx) : false,
+              }) as NavItem & { disabled?: boolean },
+          ),
+      }))
+      .filter((g) => g.items.length > 0);
+  }, [ctx]);
 
   const toggle = () => setOpen((o) => !o);
 
@@ -107,31 +262,61 @@ export const AppLayout: React.FC<{ user: UserProfile | null, children: React.Rea
       </Box>
       <Divider sx={{ opacity: 0.1 }} />
 
-      {/* Middle: Nav */}
+      {/* Middle: Nav (grouped) */}
       <Box sx={{ px: 1, py: 1 }}>
-        <List sx={{ gap: 0.5, display: 'grid' }}>
-          {NAV_ITEMS.map((item) => (
-            <ListItemButton
-              key={item.href}
-              onClick={() => router.push(item.href)}
-              sx={{
-                borderRadius: 1.5,
-                px: 1.25,
-                color: theme.palette.text.primary,
-                '&.active, &:hover': {
-                  backgroundColor: alpha(
-                    theme.palette.primary.main,
-                    theme.palette.mode === 'light' ? 0.08 : 0.16,
-                  ),
-                  color: theme.palette.primary.main,
-                },
-              }}
-            >
-              <ListItemIcon sx={{ minWidth: 36, color: 'inherit' }}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.label} />
-            </ListItemButton>
+        <Stack spacing={1.25}>
+          {builtMenu.map((group, gi) => (
+            <Box key={group.title}>
+              <Typography
+                variant="overline"
+                sx={{
+                  px: 1.25,
+                  mb: 0.5,
+                  display: 'block',
+                  letterSpacing: 0.5,
+                  color: alpha(theme.palette.text.secondary, 0.9),
+                }}
+              >
+                {group.title}
+              </Typography>
+              <List sx={{ gap: 0.5, display: 'grid', mt: 0.5 }}>
+                {group.items.map((item) => (
+                  <ListItemButton
+                    key={item.label}
+                    onClick={() =>
+                      !('disabled' in item && (item as any).disabled) &&
+                      router.push(item.href as string)
+                    }
+                    selected={isActive(item.href as string)}
+                    disabled={('disabled' in item && (item as any).disabled) as boolean}
+                    sx={{
+                      borderRadius: 1.5,
+                      px: 1.25,
+                      '&.Mui-selected': {
+                        backgroundColor: alpha(
+                          theme.palette.primary.main,
+                          theme.palette.mode === 'light' ? 0.12 : 0.22,
+                        ),
+                        color: theme.palette.primary.main,
+                      },
+                      '&:hover': {
+                        backgroundColor: alpha(
+                          theme.palette.primary.main,
+                          theme.palette.mode === 'light' ? 0.08 : 0.16,
+                        ),
+                        color: theme.palette.primary.main,
+                      },
+                    }}
+                  >
+                    <ListItemIcon sx={{ minWidth: 36, color: 'inherit' }}>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.label} />
+                  </ListItemButton>
+                ))}
+              </List>
+              {gi < builtMenu.length - 1 && <Divider sx={{ my: 1.25, opacity: 0.12 }} />}
+            </Box>
           ))}
-        </List>
+        </Stack>
       </Box>
 
       {/* Bottom: User bar */}
@@ -141,10 +326,10 @@ export const AppLayout: React.FC<{ user: UserProfile | null, children: React.Rea
             <Avatar sx={{ width: 36, height: 36 }}>{}</Avatar>
             <Box>
               <Typography variant="body2" fontWeight={700} color="text.primary">
-                {user?.name}
+                {user?.user?.name}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                Admin
+                {roles?.[0]}
               </Typography>
             </Box>
           </Stack>
