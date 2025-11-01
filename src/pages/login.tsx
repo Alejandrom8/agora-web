@@ -91,7 +91,7 @@ function LoginPage(): React.JSX.Element {
         await login(email, password);
         //enqueueSnackbar('Inicio de sesión exitoso', { variant: 'success' });
         const nextUrl = String(router.query?.next || '');
-        router.push((nextUrl && nextUrl !== '') ? nextUrl : '/events');
+        router.push(nextUrl && nextUrl !== '' ? nextUrl : '/events');
       } catch (err) {
         Sentry.logger.error(JSON.stringify(err));
         setError('No pudimos iniciar sesión. Inténtalo de nuevo.');
@@ -343,12 +343,13 @@ function LoginPage(): React.JSX.Element {
 
 export const getServerSideProps = (ctx) => {
   const authHeader = createAuthHeader(ctx.req);
-  if (authHeader) return {
-    redirect: {
-      destination: '/events',
-      permanent: false,
-    }
-  };
+  if (authHeader)
+    return {
+      redirect: {
+        destination: '/events',
+        permanent: false,
+      },
+    };
 
   return { props: {} };
 };

@@ -2,13 +2,20 @@ import { useOrgEvents } from "@/hooks/useOrg";
 import { TextField, MenuItem, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import WarningIcon from '@mui/icons-material/Warning';
+import { OrgEvent } from "@/lib/v1/types";
 
-export default function EventSelector({ orgId }: { orgId: string }) {
+export default function EventSelector({ orgId, onEventChanged }: { orgId: string, onEventChanged: (event: OrgEvent) => any }) {
   const { events, isLoading, error } = useOrgEvents(orgId);
   const [selected, setSelected] = useState<string | null>(null);
 
   const handleEventchange = (eventId: string) => {
     setSelected(eventId);
+    if (events && eventId) {
+      const selectedEventIndex = events?.findIndex((e) => {
+        return e.id === eventId;
+      });
+      onEventChanged(events[selectedEventIndex]);
+    }
   };
 
   const StartAdornment = () => {

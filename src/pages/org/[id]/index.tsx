@@ -41,25 +41,38 @@ function AdminDashboardPage({ org_id }: AdminPageProps): React.JSX.Element {
           </Alert>
         </Box>
       )}
-      {!loading && !events?.length && <Box sx={{ 
-        width: '100%', height: '100%', 
-        display: 'grid', placeItems: 'center' 
-      }}>
-        <Stack direction={'column'} spacing={4}>
-          <Stack direction={'column'} spacing={1} alignItems="center">
-            <Typography variant="h4" fontWeight={800}>
-              Aún no tienes eventos
-            </Typography>
-            <Typography variant="h6" color="text.secondary">
-              !Empieza creando tu primer evento en Agora!
-            </Typography>
+      {!loading && !events?.length && (
+        <Box
+          sx={{
+            width: '100%',
+            height: '100%',
+            display: 'grid',
+            placeItems: 'center',
+          }}
+        >
+          <Stack direction={'column'} spacing={4}>
+            <Stack direction={'column'} spacing={1} alignItems="center">
+              <Typography variant="h4" fontWeight={800}>
+                Aún no tienes eventos
+              </Typography>
+              <Typography variant="h6" color="text.secondary">
+                !Empieza creando tu primer evento en Agora!
+              </Typography>
+            </Stack>
+            <Button
+              color="primary"
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={handleCreateEvent}
+            >
+              Crear mi primer evento
+            </Button>
           </Stack>
-          <Button color="primary" variant="contained" startIcon={<AddIcon />} onClick={handleCreateEvent}>
-            Crear mi primer evento
-          </Button>
-        </Stack>
-      </Box>}
-      {!isLoading && !error && events && events?.length > 0 && <OrganizationManagement org={organization as Organization} />}
+        </Box>
+      )}
+      {!isLoading && !error && events && events?.length > 0 && (
+        <OrganizationManagement org={organization as Organization} />
+      )}
     </ProtectedLayout>
   );
 }

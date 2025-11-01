@@ -24,7 +24,7 @@ export default function LandingHero() {
   const accent = isLight ? theme.palette.primary.light : theme.palette.primary.dark;
   const accent2 = isLight ? theme.palette.info.light : theme.palette.info.dark;
   const heroBg = isLight
-    ? 'rgba(255,255,255,0.85)'
+    ? 'rgba(255,255,255,0.7)'
     : 'rgba(0,0,0,0.7)';
 
   return (

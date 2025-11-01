@@ -2,10 +2,10 @@
 import useSWR, { mutate } from 'swr';
 import { bffClient } from '@/lib/clients/bff';
 import { EmailExistsResponse } from '@/lib/clients/types';
-import { UserProfile } from '@/lib/v1/types';
+import { User } from '@/lib/v1/types';
 
 export function useSession() {
-  const { data, error, isLoading } = useSWR<UserProfile>('/api/auth/me');
+  const { data, error, isLoading } = useSWR<User>('/api/auth/me');
   return { user: data ?? null, isLoading, isError: !!error };
 }
 

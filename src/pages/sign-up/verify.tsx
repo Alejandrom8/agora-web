@@ -1,19 +1,10 @@
 // pages/verification.tsx
 import * as React from 'react';
 import Head from 'next/head';
-import {
-  Box,
-  Container,
-  Stack,
-  Typography,
-  TextField,
-  Button,
-  Snackbar,
-} from '@mui/material';
+import { Box, Container, Stack, Typography, TextField, Button, Snackbar } from '@mui/material';
 import { verifyEmail } from '@/hooks/useSession';
 import TypoLogo from '@/components/App/TypoLogo';
 import { useRouter } from 'next/router';
-
 
 function VerificationPage({ email }: { email: string }): React.JSX.Element {
   const [error, setError] = React.useState<string | null>(null);
@@ -22,9 +13,7 @@ function VerificationPage({ email }: { email: string }): React.JSX.Element {
   const router = useRouter();
 
   const CELLS = 6;
-  const [values, setValues] = React.useState<string[]>(
-    Array.from({ length: CELLS }, () => '')
-  );
+  const [values, setValues] = React.useState<string[]>(Array.from({ length: CELLS }, () => ''));
   const inputsRef = React.useRef<Array<HTMLInputElement | null>>([]);
 
   const focusAt = (idx: number) => {
@@ -90,7 +79,8 @@ function VerificationPage({ email }: { email: string }): React.JSX.Element {
       setSubmitting(true);
       await verifyEmail(email, code);
       setOk(true);
-      router.push('/events');
+      const nextUrl = String(router.query?.next || '');
+      router.push(nextUrl && nextUrl !== '' ? nextUrl : '/events');
     } catch {
       setError('Código inválido. Intenta nuevamente.');
       setValues(Array.from({ length: CELLS }, () => ''));
@@ -170,7 +160,10 @@ function VerificationPage({ email }: { email: string }): React.JSX.Element {
 
             {/* Ayuda opcional */}
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              ¿No recibiste el código? <Button variant="text" size="small">Reenviar</Button>
+              ¿No recibiste el código?{' '}
+              <Button variant="text" size="small">
+                Reenviar
+              </Button>
             </Typography>
           </Stack>
         </Box>

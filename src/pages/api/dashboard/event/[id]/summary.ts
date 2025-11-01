@@ -1,22 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createHandler, getAuthedHeaders } from '@/lib/bff/handler';
 import { v1Client } from '@/lib/clients/v1';
-import { GetOrgEvents } from '@/lib/v1/types';
+import { GetEventStatsResult } from '@/lib/v1/types';
 
 export default createHandler(['GET'], async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id, active } = req.query;
-  const result = await v1Client.get<GetOrgEvents>(
-    `/dashboard/v1/events?organization_id=${id}&full_response=true`,
+  const { id } = req.query;
+  const result = await v1Client.get<GetEventStatsResult>(
+    `/dashboard/v1/analytics/events/${id}/summary`,
     getAuthedHeaders(req),
   );
 
   if (result.error) {
     res.status(result?.error?.code).json({ success: false, message: result?.error?.message });
-    return;
-  }
-
-  if (active) {
-    res.status(200).json(result.data?.events[0]);
     return;
   }
 

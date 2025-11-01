@@ -18,6 +18,7 @@ import {
   Chip,
   Card,
   CardContent,
+  CardMedia,
   IconButton,
   Tooltip,
   Dialog,
@@ -54,6 +55,7 @@ export type EventRow = {
   date: string; // ISO YYYY-MM-DD
   attendees: number;
   categories: string[];
+  coverUrl: string; // portada del evento
 };
 
 const ALL_CATEGORIES = ['AI', 'Fintech', 'Climate', 'Web3', 'SaaS', 'HealthTech', 'EdTech'];
@@ -65,6 +67,13 @@ const ATTENDEE_RANGES = [
   { value: '201-500', label: '201–500' },
   { value: '501+', label: '500+' },
 ] as const;
+
+const FALLBACK_COVERS = [
+  'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1515165562835-c3b8c2b7d5d4?q=80&w=1200&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1200&auto=format&fit=crop',
+];
+const coverFor = (seedIndex: number) => FALLBACK_COVERS[seedIndex % FALLBACK_COVERS.length];
 
 function inRange(att: number, range: (typeof ATTENDEE_RANGES)[number]['value']) {
   switch (range) {
@@ -89,6 +98,7 @@ const seed: EventRow[] = [
     date: '2025-10-15',
     attendees: 280,
     categories: ['AI', 'Fintech'],
+    coverUrl: coverFor(0),
   },
   {
     id: 'evt-2',
@@ -97,6 +107,7 @@ const seed: EventRow[] = [
     date: '2025-11-02',
     attendees: 520,
     categories: ['AI', 'SaaS'],
+    coverUrl: coverFor(1),
   },
   {
     id: 'evt-3',
@@ -105,6 +116,7 @@ const seed: EventRow[] = [
     date: '2025-09-30',
     attendees: 110,
     categories: ['Climate'],
+    coverUrl: coverFor(2),
   },
 ];
 
@@ -125,6 +137,7 @@ const emptyEvent: EventRow = {
   date: new Date().toISOString().slice(0, 10),
   attendees: 0,
   categories: [],
+  coverUrl: coverFor(0),
 };
 
 function EventFormDialog({
@@ -170,6 +183,12 @@ function EventFormDialog({
             fullWidth
             multiline
             minRows={3}
+          />
+          <TextField
+            label="URL de portada"
+            value={form.coverUrl}
+            onChange={(e) => setForm({ ...form, coverUrl: e.target.value })}
+            fullWidth
           />
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 6 }}>
@@ -449,89 +468,162 @@ export default function AdminEventsPage(): React.JSX.Element {
           </CardContent>
         </Card>
 
-        {/* Table */}
+        {/* Hero destacado (primer resultado) */}
+        {filtered[0] && (
+          <Card sx={{ overflow: 'hidden', borderRadius: 3 }}>
+            <Box sx={{ position: 'relative', height: { xs: 220, md: 320 } }}>
+              <Box
+                component="img"
+                src={filtered[0].coverUrl}
+                alt={filtered[0].title}
+                sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+              <Box
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: () =>
+                    `linear-gradient(180deg, ${alpha('#000', 0)} 20%, ${alpha('#000', 0.6)} 100%)`,
+                }}
+              />
+              <Stack sx={{ position: 'absolute', left: 24, bottom: 20, right: 24 }} spacing={1}>
+                <Typography
+                  variant="h3"
+                  fontWeight={900}
+                  sx={{ textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}
+                >
+                  {filtered[0].title}
+                </Typography>
+                <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
+                  <Chip label={new Date(filtered[0].date).toDateString()} size="small" />
+                  <Chip label={`${filtered[0].attendees} asistentes`} size="small" />
+                  {filtered[0].categories.map((c) => (
+                    <Chip key={c} label={c} size="small" />
+                  ))}
+                </Stack>
+              </Stack>
+              <Stack sx={{ position: 'absolute', right: 16, top: 16 }} direction="row" spacing={1}>
+                <Tooltip title="Editar">
+                  <IconButton
+                    color="inherit"
+                    onClick={() => onEdit(filtered[0])}
+                    sx={{ bgcolor: alpha('#000', 0.35) }}
+                  >
+                    <EditRoundedIcon sx={{ color: '#fff' }} />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Eliminar">
+                  <IconButton
+                    color="inherit"
+                    onClick={() => onDelete(filtered[0].id)}
+                    sx={{ bgcolor: alpha('#000', 0.35) }}
+                  >
+                    <DeleteRoundedIcon sx={{ color: '#fff' }} />
+                  </IconButton>
+                </Tooltip>
+              </Stack>
+            </Box>
+          </Card>
+        )}
+
+        {/* Galería de eventos (enfatiza portada y título) */}
         <Card>
           <CardContent>
-            <Box component="table" sx={{ width: '100%', borderCollapse: 'collapse' }}>
-              <Box
-                component="thead"
-                sx={{
-                  '& th': {
-                    textAlign: 'left',
-                    py: 1,
-                    color: 'text.secondary',
-                    borderBottom: () => `1px solid ${alpha('#FFFFFF', 0.08)}`,
-                  },
-                }}
-              >
-                <Box component="tr">
-                  <Box component="th">Título</Box>
-                  <Box component="th">Fecha</Box>
-                  <Box component="th">Asistentes</Box>
-                  <Box component="th">Categorías</Box>
-                  <Box component="th" sx={{ textAlign: 'right' }}>
-                    Acciones
-                  </Box>
-                </Box>
-              </Box>
-              <Box
-                component="tbody"
-                sx={{
-                  '& td': { py: 1.25, borderBottom: () => `1px solid ${alpha('#FFFFFF', 0.06)}` },
-                }}
-              >
-                {filtered.map((r) => (
-                  <Box component="tr" key={r.id}>
-                    <Box component="td">
-                      <Stack spacing={0.25}>
-                        <Typography fontWeight={700}>{r.title}</Typography>
-                        {r.description && (
-                          <Typography variant="body2" color="text.secondary" noWrap>
-                            {r.description}
-                          </Typography>
-                        )}
+            <Grid container spacing={2}>
+              {filtered.map((r) => (
+                <Grid key={r.id} size={{ xs: 12, sm: 6, md: 4 }}>
+                  <Card sx={{ overflow: 'hidden', borderRadius: 2, position: 'relative' }}>
+                    <Box sx={{ position: 'relative', height: 220 }}>
+                      <CardMedia
+                        component="img"
+                        image={r.coverUrl}
+                        alt={r.title}
+                        sx={{ height: '100%', objectFit: 'cover' }}
+                      />
+                      <Box
+                        sx={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: () =>
+                            `linear-gradient(180deg, ${alpha('#000', 0)} 40%, ${alpha('#000', 0.65)} 100%)`,
+                        }}
+                      />
+                      <Stack
+                        spacing={0.5}
+                        sx={{ position: 'absolute', left: 12, right: 12, bottom: 12 }}
+                      >
+                        <Typography
+                          variant="h6"
+                          fontWeight={800}
+                          sx={{ color: '#fff', textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
+                        >
+                          {r.title}
+                        </Typography>
+                        <Stack direction="row" spacing={0.5} flexWrap="wrap">
+                          <Chip
+                            label={new Date(r.date).toLocaleDateString()}
+                            size="small"
+                            sx={{ bgcolor: alpha('#fff', 0.12), color: '#fff' }}
+                          />
+                          <Chip
+                            label={`${r.attendees} asistentes`}
+                            size="small"
+                            sx={{ bgcolor: alpha('#fff', 0.12), color: '#fff' }}
+                          />
+                          {r.categories.map((c) => (
+                            <Chip
+                              key={c}
+                              label={c}
+                              size="small"
+                              sx={{ bgcolor: alpha('#fff', 0.12), color: '#fff' }}
+                            />
+                          ))}
+                        </Stack>
+                      </Stack>
+                      <Stack
+                        direction="row"
+                        spacing={0.5}
+                        sx={{ position: 'absolute', top: 8, right: 8 }}
+                      >
+                        <Tooltip title="Editar">
+                          <IconButton
+                            size="small"
+                            onClick={() => onEdit(r)}
+                            sx={{ bgcolor: alpha('#000', 0.35) }}
+                          >
+                            <EditRoundedIcon sx={{ color: '#fff' }} />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Eliminar">
+                          <IconButton
+                            size="small"
+                            color="error"
+                            onClick={() => onDelete(r.id)}
+                            sx={{ bgcolor: alpha('#000', 0.35) }}
+                          >
+                            <DeleteRoundedIcon sx={{ color: '#fff' }} />
+                          </IconButton>
+                        </Tooltip>
                       </Stack>
                     </Box>
-                    <Box component="td">
-                      <Typography>{new Date(r.date).toDateString()}</Typography>
-                    </Box>
-                    <Box component="td">
-                      <Typography>{r.attendees}</Typography>
-                    </Box>
-                    <Box component="td">
-                      <Stack direction="row" gap={0.5} flexWrap="wrap">
-                        {r.categories.map((c) => (
-                          <Chip key={c} size="small" label={c} />
-                        ))}
-                      </Stack>
-                    </Box>
-                    <Box component="td" sx={{ textAlign: 'right' }}>
-                      <Tooltip title="Editar">
-                        <IconButton onClick={() => onEdit(r)}>
-                          <EditRoundedIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Eliminar">
-                        <IconButton color="error" onClick={() => onDelete(r.id)}>
-                          <DeleteRoundedIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
+                    {r.description && (
+                      <CardContent>
+                        <Typography variant="body2" color="text.secondary" noWrap>
+                          {r.description}
+                        </Typography>
+                      </CardContent>
+                    )}
+                  </Card>
+                </Grid>
+              ))}
+              {filtered.length === 0 && (
+                <Grid size={12}>
+                  <Box sx={{ py: 4, textAlign: 'center', color: 'text.secondary' }}>
+                    No hay eventos con los filtros actuales.
                   </Box>
-                ))}
-                {filtered.length === 0 && (
-                  <Box component="tr">
-                    <Box
-                      component="td"
-                      colSpan={5}
-                      sx={{ py: 4, textAlign: 'center', color: 'text.secondary' }}
-                    >
-                      No hay eventos con los filtros actuales.
-                    </Box>
-                  </Box>
-                )}
-              </Box>
-            </Box>
+                </Grid>
+              )}
+            </Grid>
           </CardContent>
         </Card>
 
